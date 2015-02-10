@@ -1,11 +1,11 @@
 {
   "name": "kesci2.0",
   "version": "0.0.0",
+  "homepage": "https://github.com/Nihiue/kesci2.0",
   "authors": [
     "wanglei <nihiue@gmail.com>"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -14,8 +14,9 @@
     "tests"
   ],
   "dependencies": {
-    "angularjs": "~1.3.12",
+    "angular-route": "~1.3.12",
     "bootstrap": "~3.3.2",
+    "angular": "~1.3.12",
     "jquery": "~2.1.3"
   }
 }
