@@ -44,6 +44,7 @@ function($scope) {
 		name:"超级码力程序设计竞赛",
 		match_id:"123213",
 		host:"Avazu",
+		type:"程序开发",
 		win_teams:["猪八戒背媳妇","好想吃粽子","高铁侠"],
 		stage:"result",		
 		img:"images/d.jpg",
