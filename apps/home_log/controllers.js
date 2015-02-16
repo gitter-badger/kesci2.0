@@ -39,6 +39,15 @@ function($scope) {
 		img:"images/d.jpg",
 		submit_due:"1月20日",
 		team_num:12
+	},
+	{
+		name:"超级码力程序设计竞赛",
+		match_id:"123213",
+		host:"Avazu",
+		win_teams:["猪八戒背媳妇","好想吃粽子","高铁侠"],
+		stage:"result",		
+		img:"images/d.jpg",
+		
 	}];
 	
 	$scope.friend_news=[
