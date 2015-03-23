@@ -3,12 +3,24 @@
 var myAppModule = angular.module('myApp', ['ngRoute']);
 
 myAppModule.controller('navbarCtr',
-function($scope,$rootScope) {  
+function($scope,$rootScope,$http) {  
 	$rootScope.$on('$routeChangeSuccess', function(){
         if(arguments[1]&&arguments[1].$$route&&arguments[1].$$route.controller)
             $scope.ctrName=arguments[1].$$route.controller;
     }); 
-    });
+	$scope.doLogout=function(){
+				$http({
+						method  : 'POST',
+						url     : '/kesci_backend/api/auth/logout',
+						data    : "",
+						headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    		}).success(function(data) {    		
+    		if(data.msg&&data.msg.indexOf("successfully")>-1){
+    			window.location.href="../home_def/index.html";
+    		}
+    	});
+	}
+});
 myAppModule.controller('newsCtr',
 function($scope) {
 

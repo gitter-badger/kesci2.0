@@ -6,7 +6,15 @@ myAppModule.controller('headerCtr',
 function($scope,$http) {
 	$scope.isReg=false;
 	$scope.showPinDiv=false;
-		$scope.updateCaptchaUrl=function(){
+    $http({
+          method  : 'GET',
+          url     : '/kesci_backend/api/auth/check_status'
+      }).success(function(data) {
+        if(data.is_login){
+          window.location.href="../home_log/index.html";
+        } 
+      });
+	$scope.updateCaptchaUrl=function(){
 		$scope.captcha_url="";
 		$http({
         	method  : 'GET',
@@ -67,4 +75,35 @@ function($scope,$http) {
 
     	});
 	};
+});
+myAppModule.controller('emcCtr',
+function($scope) {
+
+$scope.teachers=[{
+   "name":"金耀辉",
+   "desc":["电子信息与电气工程学院，教授","网络信息中心副主任","博士生导师"],
+   "img": "./images/emc/jinyaohui.jpg"
+},{
+   "name":"张鹏翥",
+   "desc":["安泰经管学院，教授","管理信息系统专业主任","博士生导师"],
+   "img": "./images/emc/zhangpengzhu.jpg"
+},{
+   "name":"韩东",
+   "desc":["交大数学系，系主任","博士生导师"],
+   "img": "./images/emc/handong.jpg"
+},{
+   "name":"韩挺",
+   "desc":["交大媒体与设计学院，副院长","工业设计专业主任"],
+   "img": "./images/emc/hanting.jpg"
+},{
+   "name":"张娅",
+   "desc":["交大电子学院，副教授","博士生导师"],
+   "img": "./images/emc/zhangya.jpg"
+},{
+   "name":"EMC评委",
+   "desc":["云计算、大数据和安全IT解决方案"],
+   "img": "./images/emc/emc.jpg"
+}
+]
+
 });

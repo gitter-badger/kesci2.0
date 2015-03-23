@@ -103,8 +103,8 @@
 		</div>
 	</div>
 </div>
-<div class="container">
-	<div class="content-box" style="background:url(./images/heading.jpg) no-repeat center;background-size:cover;color:#eee;border-radius:10px;">
+<div class="container" ng-controller="emcCtr">
+	<div class="content-box" style="background:url(./images/emc/heading.jpg) no-repeat center;background-size:cover;color:#eee;border-radius:10px;">
 		<div style="text-align:center;margin-top:100px;letter-spacing: 2px;">
 			<h1>EMC杯交大智慧校园数据分析大赛</h1>
 			<br>			
@@ -130,16 +130,23 @@
 		<li>激发数据文化，通过学习、培训、比赛，激发上海高校的数据文化，激发师生参与到大数据时代的数据分析实践之中。</li>
 		</ul>
 		<br><br>
+		<h2 style="text-align:center">—— 赛事评委 ——</h2>
+		<div class="row" style="text-align:center;">
+			<div class="col-sm-6" ng-repeat="item in teachers">
+				<img class="img-circle img-thumbnail" style="height:180px;width:auto;margin-top:50px" ng-src="{{item.img}}">
+				<h3>{{item.name}}</h3>
+				<p><span ng-repeat="s in item.desc">{{s}}<br/></span></p>
+			</div>
+		</div>
+		<br><br>
 		<h2 style="text-align:center">—— 比赛内容 ——</h2>
 		<br>
 		<b>赛题一：校园餐饮消费分析</b>
 		<ul>
-		<li>分析交大餐饮消费的规律受到哪些外部因素的影响，如互联网外卖行业、天气、
-季节、食堂地理位置、学期考试安排。</li>
+		<li>分析交大餐饮消费的规律受到哪些外部因素的影响，如互联网外卖行业、天气、季节、食堂地理位置、学期考试安排。</li>
 		<li>使用Excel、Python、R等数据分析软件。</li>
 		<li>优化校园服务，借助数据分析的成果降低校园餐饮系统的浪费，提高师生用餐的满意度。</li>
-		<li>通过可视化或数学模型，形成12页以内PPT形式数据分析报告和数据分析程序，
-基于数据分析提出政策建议，从而改进食堂的经营效益，提高服务师生的水平。</li>
+		<li>通过可视化或数学模型，形成12页以内PPT形式数据分析报告和数据分析程序，基于数据分析提出政策建议，从而改进食堂的经营效益，提高服务师生的水平。</li>
 		</ul>		
 		<b>赛题二：校园无线网络流量分析</b>
 		<ul>
@@ -151,7 +158,7 @@
 		<p>团队成员由1-5人构成，参赛团队可以选择任一题目展开分析项目。</p>
 		<p>提交作品格式：数据分析程序代码	 +	12页PPT以内的数据分析报告</p>
 		<br><br>
-	<h2 style="text-align:center">—— 比赛奖项 ——</h2>
+	<h2 style="text-align:center">—— 奖项设置 ——</h2>
 	<br>
 	<table style="display:block;width:12em;" class="center-block">
 			<tr><td>综合分析大奖</td><td>：1万元</td></tr>

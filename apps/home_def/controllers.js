@@ -103,6 +103,14 @@ myAppModule.controller('headerCtr',
 function($scope,$http) {
 	$scope.isReg=false;
 	$scope.showPinDiv=false;
+  $http({
+          method  : 'GET',
+          url     : '/kesci_backend/api/auth/check_status'
+      }).success(function(data) {
+        if(data.is_login){
+          window.location.href="../home_log/index.html";
+        } 
+      });
 	$scope.updateCaptchaUrl=function(){
 		$scope.captcha_url="";
 		$http({
@@ -129,7 +137,7 @@ function($scope,$http) {
     			window.location.href="../home_log/index.html";
     		}
     		if(data.status=="not_activated"){
-    			alert("您试图登录的账户尚未通过邮箱激活,请登录邮箱验证您的帐户后登录.")
+    			alert("您试图登录的账户尚未通过邮箱激活,请登录邮箱验证您的帐户后登录.");
     		}
     		else if(data.errors&&data.errors.errors){
     			$scope.login_errors=data.errors.errors;
