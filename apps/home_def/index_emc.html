@@ -43,20 +43,27 @@
 			  <div ng-show="!isReg">
 				  <div class="header-form-header">
 					  <span>登录 Kesci</span>
-					  <a class="form-link" ng-click="isReg=true" href="#">去注册 <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a>
+					  <a class="form-link" ng-click="isReg=true;updateCaptchaUrl();" href="#">去注册 <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a>
 				  </div>
-				  <form>
+				  <form ng-submit="submitLoginForm()" id="login-form">
 				  <div class="form-group">			    
-				    <input type="email" class="form-control" placeholder="Email">
+				    <input name="email" type="email" class="form-control" placeholder="Email">
 				  </div>
 				  <div class="form-group">			    
-				    <input type="password" class="form-control" placeholder="Password">
-				  </div>			  
+				    <input name="password" type="password" class="form-control" placeholder="Password">
+				  </div>
+				  <div class="form-group" ng-show="require_login_captcha">	
+				   	<img ng-src="{{captcha_url}}" ng-show="captcha_url">	
+				   </div> 
+				  <div class="form-group" ng-show="require_login_captcha">		    
+				    <input name="captcha" type="text" class="form-control" placeholder="验证码">
+				  </div> 
+				  <div class="alert alert-danger" role="alert" ng-repeat="item in login_errors">{{item}}</div>		
 				  <div class="checkbox">
 				    <label>
-				      <input type="checkbox"> 记住我
+				      <input type="checkbox" name="remember" checked> 记住我
 				    </label>
-				    <a class="form-link">忘记密码?</a>
+				    <a class="form-link" target="_blank" href="/kesci_backend/auth/forgot_password">忘记密码?</a>
 				  </div>
 				  <button type="submit" class="btn btn-default">登 录</button>
 				</form>
@@ -66,24 +73,28 @@
 				  <span>注册 Kesci<span>
 				  <a class="form-link" ng-click="isReg=false" href="#">去登录 <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></a>
 				</div>
-				<form>
+				<form ng-submit="submitRegForm()" id="reg-form">
 				  <div class="form-group">			    
-				    <input class="double-input form-control" type="text" placeholder="姓">
+				    <input name="name_0" class="double-input form-control" type="text" placeholder="姓">
 				    <span class="double-input-spacing"></span> 
-				    <input class="double-input form-control"  type="text" placeholder="名">
+				    <input name="name_1" class="double-input form-control"  type="text" placeholder="名">
 				  </div>
 				  <div class="form-group">			    
-				    <input type="email" class="form-control" placeholder="邮箱">
+				    <input name="email" type="email" class="form-control" placeholder="邮箱">
 				  </div>					
 				   <div class="form-group">			    
-				    <input type="password" class="form-control" placeholder="密码">
+				    <input name="password" type="password" class="form-control" placeholder="密码">
 				  </div>	
 				   <div class="form-group">			    
-				    <input type="password" class="form-control" placeholder="重复密码">
+				    <input name="confirm_password" type="password" class="form-control" placeholder="重复密码">
 				  </div>	
-				   <div class="form-group">			    
-				    <input type="text" class="form-control" placeholder="验证码">
-				  </div>  			
+				  <div class="form-group">	
+				   	<img ng-src="{{captcha_url}}" ng-show="captcha_url">	
+				  </div>  	
+				  <div class="form-group">		    
+				    <input name="captcha" type="text" class="form-control" placeholder="验证码">
+				  </div>  		
+				    <div class="alert alert-danger" role="alert" ng-repeat="item in reg_errors">{{item}}</div>		
 				  <button type="submit" class="btn btn-default">注 册</button>
 				</form>
 			</div>
