@@ -360,6 +360,6 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
             controller: 'usercenter_profile'
         })       
         .otherwise({
-            redirectTo: '/news'
+            redirectTo: '/mine'
         });
 }]);
