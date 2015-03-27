@@ -36,7 +36,7 @@
         <li ng-class="{'active':ctrName=='discoverCtr'}"><a href="#/discover"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 发现</a></li>	        
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a>{{userStatus.username}}</a></li>
+        <li><a><b>{{userStatus.username}}</b> ({{userStatus.email}})</a></li>
         <li ng-class="{'active':ctrName=='usercenterCtr'}" class="dropdown">
           <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 用户中心 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">

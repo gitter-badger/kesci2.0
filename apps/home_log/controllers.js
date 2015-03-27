@@ -30,6 +30,8 @@ function($scope,$rootScope,$http,userStatus) {
     		if(typeof(data.username)!="undefined"){
     			$scope.userStatus.username=data.username;
     			$scope.userStatus.user_id=data.user_id;
+    			$scope.userStatus.email=data.email;
+    			$scope.userStatus.activated=data.activated;
     		}
     });
 	$rootScope.$on('$routeChangeSuccess', function(){
@@ -254,7 +256,7 @@ function($scope,selectSource) {
 	$scope.currentTab=0;
 	$scope.selectSource=selectSource;
 	$scope.clearAllForms=function(){	
-		/*$scope.competitionSearch_name="";
+		$scope.competitionSearch_name="";
 		$scope.competitionSearch_selectedDistrict=[];
 		$scope.competitionSearch_selectedType=[];
 		$scope.competitionSearch_selectedTime="不限";
@@ -265,8 +267,7 @@ function($scope,selectSource) {
 		$scope.peopleSearch_name=[];
 		$scope.peopleSearch_selectedCompetition=[];
 		$scope.peopleSearch_selectedDistrict=[];
-		$scope.peopleSearch_selectedSkill=[];*/
-		//$("form").reset();
+		$scope.peopleSearch_selectedSkill=[];
 	}
 
 	$scope.clearAllForms();
@@ -293,16 +294,36 @@ function($scope,selectSource) {
 	 
 });
 myAppModule.controller('usercenter_profile',
-function($scope,selectSource) {
+function($scope,$http,selectSource) {
+	$scope.tmp_universityList=[];
 	$scope.removePfRecord=function(model,index){confirm("删除此记录?")?model.splice(index,1):0};
+	$scope.updateUniversityList=function(){
+		if($scope.myprofile && $scope.myprofile.university_district){
+			$http({
+				method  : 'GET',
+				url     : '../shared/data/college/'+$scope.myprofile.university_district+'.json',
+
+    		}).success(function(data) {   
+    			for(var c in data){
+    				if(data.hasOwnProperty(c)){
+    					$scope.tmp_universityList=data[c];
+    					if(!$scope.tmp_university)
+    						$scope.tmp_university=$scope.myprofile.university;
+    				}
+    			}
+    });
+
+		}
+	}
 	$scope.selectSource=selectSource;	
 	$scope.myprofile={
             "user_id":"1111",
             "name":"周小胖",
             "district":"上海",
-            "university":"上海交大",
-            "skills":["PHP","Dota","WoW"],
-            "interests":["数据分析","python"],
+            "university_district":"上海",
+            "university":"上海交通大学",
+            "skills":["主成分分析","Python","Spark"],
+            "interests":["数据分析","数据挖掘","推荐算法"],
             "bref_intro":"Without a sense of identity, there can be no real struggle.",
             "current_competition":"Avazu编程大赛",
             "last_online":"一天前",
@@ -364,6 +385,7 @@ function($scope,selectSource) {
 	            "description":"数据分析和建模"
             }]                   
 };
+$scope.updateUniversityList();
 });
 myAppModule.controller('usercenter_account',
 	function($scope,$http,userStatus){

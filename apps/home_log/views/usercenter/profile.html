@@ -24,7 +24,18 @@
 				  		</tr>
 				  		<tr>
 				  			<td class="item-table-title">大学</td>
-					  		<td><select class="form-control" ng-model="myprofile.university" ng-options="m for m in selectSource.universityList"> </select>
+					  		<td>
+					  			<div class="row">
+					  				<div class="col-sm-4">
+					  						<select class="form-control"  ng-model="myprofile.university_district" ng-change="updateUniversityList();" ng-options="m for m in selectSource.districtList"> 
+
+					  						</select>
+					  				</div>
+					  				<div class="col-sm-8">
+					  						<select class="form-control" ng-model="tmp_university" ng-options="m for m in tmp_universityList">
+					  						</select>
+					  				</div>
+					  		</div>
 					  		</td>
 				  		</tr>
 				  		<tr>
@@ -42,7 +53,7 @@
 
 			  			<tr>
 				  			<td class="item-table-title">兴趣</td>
-				  			<td><select  multiple class="form-control" ng-model="myprofile.interests" ng-options="m for m in selectSource.interestsList"> </select><br>	  		
+				  			<td><select  multiple class="form-control" ng-model="myprofile.interests" ng-options="m for m in selectSource.competitionTypeList"> </select><br>	  		
 				  			<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in myprofile.interests">{{rs}}</span></div>  
 				  			</td>
 			  			</tr>
