@@ -19,19 +19,14 @@
 			  </div>
 			  <div class="form-group">
 			    <label>类型</label>
-				 <select class="form-control" ng-model="competitionSearch_selectedType" multiple>
-				  <option>设计</option>
-				  <option>编程</option>				  			  
+				 <select class="form-control" ng-model="competitionSearch_selectedType" multiple ng-options="m for m in selectSource.competitionTypeList">
+				 		  			  
 				</select>
 			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in competitionSearch_selectedType">{{rs}}</span></div> 
 			</div>
 			<div class="form-group">
 			    <label>时间</label>	
-			    <select class="form-control" ng-model="competitionSearch_selectedTime">
-				  <option>不限</option>
-				  <option>一个月内</option>
-				  <option>三个月内</option>	
-				  <option>半年内</option>				  			  
+			    <select class="form-control" ng-model="competitionSearch_selectedTime" ng-options="m for m in selectSource.competitionStageList">		  			  
 				</select>		   
 			</div>
 			  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查 找</button>

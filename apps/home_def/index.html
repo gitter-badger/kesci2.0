@@ -14,24 +14,6 @@
 
 <body ng-app="myApp">
 	<div id="page-header" ng-controller="headerCtr">
-		<div id="pin-div">
-
-			<div id="pin-div-button" ng-click="showPindiv=!showPindiv;console.log('asd');">意见反馈</div>
-			 <div id="pin-div-content" ng-show="showPindiv">			
-				<form>
-				  <div class="form-group">	
-				  	<label class="control-label">您的邮箱:</label>		    
-				    <input type="email" class="form-control" placeholder="请在此处填写您的邮箱">
-				  </div>
-				  <div class="form-group">	
-				  	<label class="control-label">您的意见:</label>		  		    
-				    <textarea class="form-control" placeholder="请在此处填写您的意见"  rows="5"></textarea>
-				  </div>
-				  <button type="submit" class="btn btn-primary">提 交</button> 
-				  <button class="btn btn-default" ng-click="showPindiv=false">取 消</button>
-				</form>
-			</div>
-		</div>
 	<div class="container">
 		<div class="row">
 		  <div id="header-logo" class="col-md-6">
@@ -47,10 +29,10 @@
 				  </div>
 				  <form ng-submit="submitLoginForm()" id="login-form">
 				  <div class="form-group">			    
-				    <input name="email" type="email" class="form-control" placeholder="Email">
+				    <input name="email" type="email" class="form-control" placeholder="Email"  required>
 				  </div>
 				  <div class="form-group">			    
-				    <input name="password" type="password" class="form-control" placeholder="Password">
+				    <input name="password" type="password" class="form-control" placeholder="Password"  required>
 				  </div>
 				  <div class="form-group" ng-show="require_login_captcha">	
 				   	<img ng-src="{{captcha_url}}" ng-show="captcha_url">	

@@ -36,12 +36,12 @@
         <li ng-class="{'active':ctrName=='discoverCtr'}"><a href="#/discover"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> 发现</a></li>	        
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a >周大胖</a></li>
-        <li class="dropdown">
+        <li><a>{{userStatus.username}}</a></li>
+        <li ng-class="{'active':ctrName=='usercenterCtr'}" class="dropdown">
           <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 用户中心 <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#/usercenter/msg"><span class="glyphicon glyphicon-comment" aria-hidden="true"> </span> 我的消息</a></li>
-            <li class="divider"></li>
+           <!-- <li><a href="#/usercenter/msg"><span class="glyphicon glyphicon-comment" aria-hidden="true"> </span> 我的消息</a></li>
+            <li class="divider"></li>-->
             <li><a href="#/usercenter/profile"><span class="glyphicon glyphicon-file" aria-hidden="true"> </span> 修改资料</a></li>
             <li><a href="#/usercenter/account"><span class="glyphicon glyphicon-cog" aria-hidden="true"> </span> 账户安全</a></li>
             <li class="divider"></li>

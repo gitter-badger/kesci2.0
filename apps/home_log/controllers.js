@@ -2,11 +2,44 @@
 
 var myAppModule = angular.module('myApp', ['ngRoute']);
 
+myAppModule.value('userStatus', {
+  username: "",
+  user_id: "",
+  email:"",
+  img:"images/de.png",
+});
+myAppModule.constant('selectSource', {
+		skillList:["数学模型","推荐系统","回归","分类","聚类","主成分分析","因子分析","数据清洗","SQL","Hadoop","Spark","自然语言处理","图像处理","机器学习","最优化","R Programming","Python","SAS","SPSS","数据可视化","Tableau","RapidMiner","Weka","Excel","数据分析写作","商业分析","web开发"],
+		districtList:["北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆","台湾","香港","澳门"],
+		universityList:["上海交大","复旦大学","华东师大"],
+		competitionTypeList:["数据分析","数据挖掘","推荐算法","预测","数据建模","数据可视化","数据工程","数据应用构建"],
+		competitionStageList:["不限","尚未开始","报名中","进行中","作品评选中","已结束"],
+		competitionList:["EMC杯智慧校园数据分析大赛"]
+});
 myAppModule.controller('navbarCtr',
-function($scope,$rootScope,$http) {  
+function($scope,$rootScope,$http,userStatus) { 
+	$scope.userStatus=userStatus; 
+	$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/auth/check_status',
+
+    		}).success(function(data) {   
+    		if(data.is_login===false){
+    			window.location.href="../home_def/"
+    		}
+    		if(typeof(data.username)!="undefined"){
+    			$scope.userStatus.username=data.username;
+    			$scope.userStatus.user_id=data.user_id;
+    		}
+    });
 	$rootScope.$on('$routeChangeSuccess', function(){
-        if(arguments[1]&&arguments[1].$$route&&arguments[1].$$route.controller)
-            $scope.ctrName=arguments[1].$$route.controller;
+        if(arguments[1]&&arguments[1].$$route&&arguments[1].$$route.controller){
+       		$scope.ctrName=arguments[1].$$route.controller;
+       		if ($scope.ctrName.indexOf("usercenter")>-1) {
+       			$scope.ctrName="usercenterCtr";
+       		};
+       	}
+            
     }); 
 	$scope.doLogout=function(){
 				$http({
@@ -16,7 +49,7 @@ function($scope,$rootScope,$http) {
 						headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     		}).success(function(data) {    		
     		if(data.msg&&data.msg.indexOf("successfully")>-1){
-    			window.location.href="../home_def/index.html";
+    			window.location.href="../home_def/";
     		}
     	});
 	}
@@ -217,15 +250,11 @@ function($scope) {
 
 });
 myAppModule.controller('discoverCtr',
-function($scope) {
+function($scope,selectSource) {
 	$scope.currentTab=0;
-	$scope.selectSource={
-		skillList:["JavaScript","PHP","MySQL","AngularJS","CSS","SilverLight",".Net"],
-		districtList:["北京","上海","杭州","武汉"],
-		competitionList:["12123","23123"]
-	};	
+	$scope.selectSource=selectSource;
 	$scope.clearAllForms=function(){	
-		$scope.competitionSearch_name="";
+		/*$scope.competitionSearch_name="";
 		$scope.competitionSearch_selectedDistrict=[];
 		$scope.competitionSearch_selectedType=[];
 		$scope.competitionSearch_selectedTime="不限";
@@ -236,7 +265,8 @@ function($scope) {
 		$scope.peopleSearch_name=[];
 		$scope.peopleSearch_selectedCompetition=[];
 		$scope.peopleSearch_selectedDistrict=[];
-		$scope.peopleSearch_selectedSkill=[];
+		$scope.peopleSearch_selectedSkill=[];*/
+		//$("form").reset();
 	}
 
 	$scope.clearAllForms();
@@ -263,14 +293,9 @@ function($scope) {
 	 
 });
 myAppModule.controller('usercenter_profile',
-function($scope) {
+function($scope,selectSource) {
 	$scope.removePfRecord=function(model,index){confirm("删除此记录?")?model.splice(index,1):0};
-	$scope.selectSource={
-		skillList:["JavaScript","PHP","Dota","WoW","MySQL","AngularJS","CSS","SilverLight",".Net"],
-		interestsList:["数据分析","python","ML"],
-		districtList:["上海","北京","广州"],
-		universityList:["上海交大","复旦大学","华东师大"]
-	};	
+	$scope.selectSource=selectSource;	
 	$scope.myprofile={
             "user_id":"1111",
             "name":"周小胖",
@@ -283,7 +308,7 @@ function($scope) {
             "last_online":"一天前",
             "reply_rate":"90%",
             "avg_reply_time":"24小时",
-            "img":"images/e.jpg",    
+            "img":"images/de.png",    
             "competitions_exps":[{
 				    "start_date":"2014-01-02",
 				    "end_date":"2014-02-04",
@@ -340,7 +365,12 @@ function($scope) {
             }]                   
 };
 });
+myAppModule.controller('usercenter_account',
+	function($scope,$http,userStatus){
+		$scope.userStatus=userStatus;
+		$scope.currentTab=0;
 
+	});
 myAppModule.config(['$routeProvider',function ($routeProvider) {
     $routeProvider
         .when('/news', {
@@ -358,8 +388,10 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         .when('/usercenter/profile', {
             templateUrl: 'views/usercenter/profile.html',
             controller: 'usercenter_profile'
-        })       
-        .otherwise({
+        }).when('/usercenter/account', {
+            templateUrl: 'views/usercenter/account.html',
+            controller: 'usercenter_account'
+        }).otherwise({
             redirectTo: '/mine'
         });
 }]);

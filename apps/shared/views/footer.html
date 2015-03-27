@@ -1,3 +1,20 @@
+<div id="pin-div">
+	<div id="pin-div-button" onclick="$('#pin-div-content').toggle();">意见反馈</div>
+	<div id="pin-div-content" style="display:none">			
+		<form id="feedback-form">
+		  <div class="form-group">	
+		  	<label class="control-label">您的邮箱:</label>		    
+		    <input type="email" class="form-control" placeholder="请在此处填写您的邮箱">
+		  </div>
+		  <div class="form-group">	
+		  	<label class="control-label">您的意见:</label>		  		    
+		    <textarea class="form-control" placeholder="请在此处填写您的意见"  rows="5"></textarea>
+		  </div>
+		  <button type="submit" class="btn btn-primary">提 交</button> 
+		  <button class="btn btn-default" onclick="$('#pin-div-content').hide();">取 消</button>
+		</form>
+	</div>
+</div>
 <footer id="page-footer">
 <div class="container">
 	<div class="row">

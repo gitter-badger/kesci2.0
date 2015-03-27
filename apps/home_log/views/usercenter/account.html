@@ -1,0 +1,51 @@
+<div class="row">
+		<div class="col-md-3">
+			<div class="content-box">
+				<img class="img-thumbnail img-circle profile-img" ng-src="{{userStatus.img}}"/>
+				<p class="profile-name">{{userStatus.username}}</p>
+				<table class="table profile-table">
+				<tr><td class="item-table-title">用户ID</td><td>{{userStatus.user_id}}</td></tr>	
+				<tr><td class="item-table-title">绑定邮箱</td><td>{{userStatus.email}}</td></tr>		
+				</table>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<ul class="nav nav-tabs">
+			  <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0"><a><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> 修改密码</a></li>    
+			  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1"><a><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 修改绑定邮箱</a></li>
+			</ul>
+			<div class="content-box no_margintop">
+				<div class="discover-form-container" ng-show="currentTab==0">
+						<form>
+						  <div class="form-group">
+						  	<label>当前密码</label>			  
+						    <input type="password" class="form-control" name="old_password" placeholder="请输入当前密码" required>
+						  </div>
+						  <div class="form-group">
+						  	<label>新密码</label>			  
+						    <input type="password" class="form-control" name="new_password" placeholder="请输入新密码" required>
+						  </div>
+						  <div class="form-group">
+						  	<label>确认新密码</label>			  
+						    <input type="password" class="form-control" name="confirm_new_password" placeholder="请输入确认新密码" required>
+						  </div>				
+						  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 提交</button>
+					</form>
+				</div>
+				<div class="discover-form-container" ng-show="currentTab==1">
+						<form>
+						  <div class="form-group">
+						  	<label>账户密码</label>			  
+						    <input type="password" class="form-control" name="password" placeholder="请输入账户密码"  required>
+						  </div>
+						  <div class="form-group">
+						  	<label>新绑定邮箱地址</label>			  
+						    <input type="email" class="form-control" name="email" placeholder="请输入新绑定邮箱地址"  required>
+						  </div>				
+						  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 提交</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+</div>
