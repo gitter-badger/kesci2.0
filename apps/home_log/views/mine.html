@@ -1,4 +1,4 @@
-<div class="content-box " ng-repeat="item in my_competition">
+<!--<div class="content-box " ng-repeat="item in my_competition">
 		<div class="content-box-item" >
 	  		<div class="row">		
 	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail"  ng-src="{{item.img}}"></div>	
@@ -36,5 +36,51 @@
 		</div>
 </div>
 
+-->
 
 
+
+	<div class="alert alert-info" role="alert" ng-show="emc_data.is_reg.comp_0===false">
+		<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> 
+		<span style="margin-right: 2em">你尚未参加 EMC杯-智慧校园数据分析大赛</span>
+		<a  class="btn btn-default" href="#" role="button">现在参加</a>
+	</div>
+
+
+	<div class="alert alert-info" role="alert" ng-show="emc_data.is_reg.asso_0===false">	
+			<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> 
+			<span style="margin-right: 2em">你尚未参加 数据科学训练营</span>
+			<a  class="btn btn-default" href="#" role="button">现在参加</a>
+		
+	</div>
+	<div class="alert alert-info" role="alert" ng-show="emc_data.is_reg.asso_0===false">	
+			<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> 
+			<span style="margin-right: 2em">你尚未参加 数据分析训练营</span>
+			<a  class="btn btn-default" href="#" role="button">现在参加</a>	
+	</div>
+
+	<div class="content-box ">
+		<div class="content-box-item" >
+	  		<div class="row">		
+	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail"  ng-src="{{item.img}}"></div>	
+	  			<div class="col-sm-4 content-box-item-detail">	
+		  			<div class="item-title text-center">EMC杯交大智慧校园数据分析大赛</div>
+		  			<table class="table table-striped">						  		
+				  		<tr>							  			
+				  			<td class="item-table-title">阶段</td><td>报名中</td>
+				  		</tr>							  		
+				  		<tr>
+				  			<td class="item-table-title">报名截止</td><td>{{item.sign_due}}</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">作品截止</td><td>{{item.submit_due}}</td>					  		  	
+				  		</tr>
+				  	</table>							  		
+	  			</div>
+	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail img-circle"  src="../shared/images/undefined.png"></div>
+	  			<div class="col-sm-4 content-box-item-detail">
+		  				<div style="padding-top:4em;">暂无组队信息</div>
+			  	</div>
+	  		</div>
+		</div>
+</div>

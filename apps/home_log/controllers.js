@@ -44,7 +44,7 @@ function($scope,$rootScope,$http,userStatus) {
             
     }); 
 	$scope.doLogout=function(){
-				$http({
+			$http({
 						method  : 'POST',
 						url     : '/kesci_backend/api/auth/logout',
 						data    : "",
@@ -178,8 +178,43 @@ function($scope) {
 });
 
 myAppModule.controller('mineCtr',
-function($scope) {
-	$scope.competition_stage_map={"not_start":"报名中","ongoing":"进行中","finished":"作品评选中","result":"结果揭晓"};
+function($scope,$http) {
+		$scope.emc_data={is_reg:{},reg_num:{}};
+		$http({
+						method  : 'GET',
+						url     : ' /kesci_backend/api/associations/is_registered?association_id=1,2'
+    		}).success(function(data) {    		
+    		 for(var k in data.data){
+    		 	$scope.emc_data.is_reg["asso_"+data.data[k].association_id]=data.data[k].flag;
+    		 	}
+    	});
+    /*	$http({
+						method  : 'GET',
+						url     : ' /kesci_backend/api/associations/register_num?association_id=1,2'
+    		}).success(function(data) {    		
+    		 for(var k in data.data){
+    		 	$scope.emc_data.reg_num["asso_"+data.data[k].association_id]=data.data[k].register_num;
+    		 	}
+    	});*/
+    	$http({
+						method  : 'GET',
+						url     : ' /kesci_backend/api/competitions/is_registered?competition_id=1'
+    		}).success(function(data) {    		
+    		 for(var k in data.data){
+    		 	$scope.emc_data.is_reg["comp_"+data.data[k].competition_id]=data.data[k].flag;
+    		 	}
+    	});
+    
+    	/*$http({
+						method  : 'GET',
+						url     : ' /kesci_backend/api/competitions/register_num?competition_id=1'
+    		}).success(function(data) {    		
+    		 for(var k in data.data){
+    		 	$scope.emc_data.reg_num["comp_"+data.data[k].competition_id]=data.data[k].register_num;
+    		 	}
+    	});*/
+		
+	/*$scope.competition_stage_map={"not_start":"报名中","ongoing":"进行中","finished":"作品评选中","result":"结果揭晓"};
 	$scope.my_competition=[{
 		name:"超级码力程序设计竞赛",
 		competition_id:"123213",
@@ -249,7 +284,7 @@ function($scope) {
 			img:"images/e.jpg"
 		}
 	}];
-
+*/
 });
 myAppModule.controller('discoverCtr',
 function($scope,selectSource) {
@@ -271,29 +306,14 @@ function($scope,selectSource) {
 	}
 
 	$scope.clearAllForms();
-	$scope.addLabel=function (model,labels) {
-		if(!labels||labels.length<1){
-			return
-		}
-		for (var idx=0;idx<labels.length;idx++){
-			var label=labels[idx];
-			if(!label||model.indexOf(label)>-1){
-				continue;
-			}
-			model.push(label);
-		}		
-	}
-	$scope.removeLabel=function(model,label){
-		var idx = model.indexOf(label);
-		if(!label||idx<0){
-			return;
-		}
-		model.splice(idx,1);
+
+	$scope.devInfo=function(){
+		alert("此功能尚处于开发之中,敬请期待.");
 	}
 
 	 
 });
-myAppModule.controller('usercenter_profile',
+myAppModule.controller('usercenter_profile_edit',
 function($scope,$http,selectSource) {
 	$scope.tmp_universityList=[];
 	$scope.removePfRecord=function(model,index){confirm("删除此记录?")?model.splice(index,1):0};
@@ -387,6 +407,79 @@ function($scope,$http,selectSource) {
 };
 $scope.updateUniversityList();
 });
+
+myAppModule.controller('usercenter_profile',
+function($scope,$http) {
+	$scope.myprofile={
+            "user_id":"1111",
+            "name":"周小胖",
+            "district":"上海",
+            "university_district":"上海",
+            "university":"上海交通大学",
+            "skills":["主成分分析","Python","Spark"],
+            "interests":["数据分析","数据挖掘","推荐算法"],
+            "bref_intro":"Without a sense of identity, there can be no real struggle.",
+            "current_competition":"Avazu编程大赛",
+            "last_online":"一天前",
+            "reply_rate":"90%",
+            "avg_reply_time":"24小时",
+            "img":"images/de.png",    
+            "competitions_exps":[{
+				    "start_date":"2014-01-02",
+				    "end_date":"2014-02-04",
+					"competition_name":"美国数学建模大赛",
+					"award":"一等奖",
+				    "project_url":"www.baidu.com",
+				    "kesci_competition":"True",
+				},{
+				    "start_date":"2014-01-02",
+				    "end_date":"2014-02-04",
+					"competition_name":"美国数学建模大赛",
+					"award":"二等奖",
+				    "project_url":"www.baidu.com",
+				    "kesci_competition":"True",
+				},{
+				    "start_date":"2014-01-02",
+				    "end_date":"2014-02-04",
+					"competition_name":"美国数学建模大赛",
+					"award":"三等奖",
+				    "project_url":"www.baidu.com",
+				    "kesci_competition":"True",
+				}],
+			"edu_exps":[{
+			    "start_date":"2014-01-02",
+			    "end_date":"2014-02-04",
+			    "university":"上海交通大学",
+			    "department":"数学系",
+			    "major":"应用统计",
+			    "level":"研究生"    
+				},
+				{
+			    "start_date":"2014-01-02",
+			    "end_date":"2014-02-04",
+			    "university":"上海交通大学",
+			    "department":"数学系",
+			    "major":"应用统计",
+			    "level":"研究生"    
+			}],
+			"practice_exps":[{
+	            "id":"111",
+	            "start_date":"2014-01-02",
+	            "end_date":"2014-02-04",
+	            "organzition":"中国银联信用卡中心",
+	            "job":"数据分析实习生",
+	            "description":"数据分析和建模"
+            },
+            {
+	            "id":"111",
+	            "start_date":"2014-01-02",
+	            "end_date":"2014-02-04",
+	            "organzition":"中国银联信用卡中心",
+	            "job":"数据分析实习生",
+	            "description":"数据分析和建模"
+            }]                   
+};
+});
 myAppModule.controller('usercenter_account',
 	function($scope,$http,userStatus){
 		$scope.userStatus=userStatus;
@@ -406,10 +499,12 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         .when('/discover', {
             templateUrl: 'views/discover.html',
             controller: 'discoverCtr'
-        }) 
-        .when('/usercenter/profile', {
+        }).when('/usercenter/profile', {
             templateUrl: 'views/usercenter/profile.html',
             controller: 'usercenter_profile'
+        }).when('/usercenter/profile/edit', {
+            templateUrl: 'views/usercenter/profile_edit.html',
+            controller: 'usercenter_profile_edit'
         }).when('/usercenter/account', {
             templateUrl: 'views/usercenter/account.html',
             controller: 'usercenter_account'

@@ -26,5 +26,5 @@
 .table>tbody>tr>td{vertical-align: middle;}
 .profile-table>tbody>tr>td{padding:1em}
 .profile-label-containera{padding: 0.5em 0;font-size: 1.2em;width: 12em;}
-.profile-subtile{padding:1em 0;}
-.profile-well-container{padding:1em 0em;border-bottom:1px solid #DDDDDD;}
+.profile-subtile{font-size:1.2em;padding:1em 0;}
+.profile-well-container{padding:1em 0;border-bottom:1px solid #DDDDDD;}

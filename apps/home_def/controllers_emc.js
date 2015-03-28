@@ -100,9 +100,17 @@ $scope.teachers=[{
    "desc":["交大电子学院，副教授","博士生导师"],
    "img": "./images/emc/zhangya.jpg"
 },{
-   "name":"EMC评委",
-   "desc":["云计算、大数据和安全IT解决方案"],
-   "img": "./images/emc/emc.jpg"
+   "name":"符冰",
+   "desc":["上海交通大学网络信息中心","服务部主管"],
+   "img": "./images/emc/fubing.jpg"
+},{
+   "name":"陈春曦",
+   "desc":["EMC中国卓越研发集团","上海公司总经理"],
+   "img": "./images/emc/chenchunxi.jpg"
+},{
+   "name":"蔡远进",
+   "desc":["后勤集团财务总监"],
+   "img": "./images/emc/caiyuanjin.jpg"
 }
 ]
 

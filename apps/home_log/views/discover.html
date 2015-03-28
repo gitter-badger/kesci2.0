@@ -5,7 +5,7 @@
 	</ul>
 <div class="content-box no_margintop">
 	<div class="discover-form-container" ng-show="currentTab==0">
-			<form>
+			<form ng-submit="devInfo();">
 
 			  <div class="form-group">
 			  	<label>比赛名称</label>			  
@@ -34,7 +34,7 @@
 			</form>
 	</div>
 		<div class="discover-form-container" ng-show="currentTab==1">
-			<form>
+			<form ng-submit="devInfo();">
 			  <div class="form-group">
 			  	<label>团队名称</label>			  
 			    <input type="text" ng-model="teamSearch_name" class="form-control" placeholder="输入关键字查找">
@@ -65,7 +65,7 @@
 			</form>
 	</div>
 	<div class="discover-form-container" ng-show="currentTab==2">
-			<form>
+			<form ng-submit="devInfo();">
 			  <div class="form-group">
 			  	<label>用户姓名</label>			  
 			    <input type="text" ng-model="peopleSearch_name" class="form-control" placeholder="输入关键字查找">
