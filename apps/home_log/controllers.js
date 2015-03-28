@@ -58,7 +58,7 @@ function($scope,$rootScope,$http,userStatus) {
 });
 myAppModule.controller('newsCtr',
 function($scope) {
-
+/*
 	$scope.competition_stage_map={"not_start":"报名中","ongoing":"进行中","finished":"作品评选中","result":"结果揭晓"}
 	
 	$scope.followed_competition=[{
@@ -174,7 +174,7 @@ function($scope) {
 		{title:"JavaScript 教程",url:"http://www.w3school.com.cn/js/"},
 		{title:"HTML 系列教程",url:"http://www.w3school.com.cn/h.asp"},
 		{title:"XML 系列教程",url:"http://www.w3school.com.cn/x.asp"},
-	]
+	]*/
 });
 
 myAppModule.controller('mineCtr',
@@ -187,6 +187,7 @@ function($scope,$http) {
     		 for(var k in data.data){
     		 	$scope.emc_data.is_reg["asso_"+data.data[k].association_id]=data.data[k].flag;
     		 	}
+    		 	console.log($scope.emc_data);
     	});
     /*	$http({
 						method  : 'GET',
@@ -203,6 +204,7 @@ function($scope,$http) {
     		 for(var k in data.data){
     		 	$scope.emc_data.is_reg["comp_"+data.data[k].competition_id]=data.data[k].flag;
     		 	}
+    		 		console.log($scope.emc_data);
     	});
     
     	/*$http({
@@ -482,8 +484,25 @@ function($scope,$http) {
 });
 myAppModule.controller('usercenter_account',
 	function($scope,$http,userStatus){
-		$scope.userStatus=userStatus;
+		$scope.default_values={
+			email:userStatus.email,
+			username:userStatus.username
+		}
 		$scope.currentTab=0;
+
+	});
+
+myAppModule.controller('action_competition_register',
+	function($scope,$http,$routeParams,userStatus){	
+		console.log($routeParams);
+		$scope.userStatus=userStatus;
+		$scope.form_id=$routeParams.id;
+
+	});
+myAppModule.controller('action_association_register',
+	function($scope,$http,$routeParams,userStatus){
+		$scope.userStatus=userStatus;
+		$scope.form_id=$routeParams.id;
 
 	});
 myAppModule.config(['$routeProvider',function ($routeProvider) {
@@ -508,6 +527,12 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/usercenter/account', {
             templateUrl: 'views/usercenter/account.html',
             controller: 'usercenter_account'
+        }).when('/action/competition/register/:id', {
+            templateUrl: 'views/action/competition_register.html',
+            controller: 'action_competition_register'
+        }).when('/action/association/register/:id', {
+            templateUrl: 'views/action/association_register.html',
+            controller: 'action_association_register'
         }).otherwise({
             redirectTo: '/mine'
         });

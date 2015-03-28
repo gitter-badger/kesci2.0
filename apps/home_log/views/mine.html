@@ -40,47 +40,120 @@
 
 
 
-	<div class="alert alert-info" role="alert" ng-show="emc_data.is_reg.comp_0===false">
-		<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> 
-		<span style="margin-right: 2em">你尚未参加 EMC杯-智慧校园数据分析大赛</span>
-		<a  class="btn btn-default" href="#" role="button">现在参加</a>
-	</div>
-
-
-	<div class="alert alert-info" role="alert" ng-show="emc_data.is_reg.asso_0===false">	
-			<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> 
-			<span style="margin-right: 2em">你尚未参加 数据科学训练营</span>
-			<a  class="btn btn-default" href="#" role="button">现在参加</a>
-		
-	</div>
-	<div class="alert alert-info" role="alert" ng-show="emc_data.is_reg.asso_0===false">	
-			<span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> 
-			<span style="margin-right: 2em">你尚未参加 数据分析训练营</span>
-			<a  class="btn btn-default" href="#" role="button">现在参加</a>	
-	</div>
-
 	<div class="content-box ">
+		<span ng-show="emc_data.is_reg.comp_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+		<span class="label label-warning" style="font-size:1em" ng-show="emc_data.is_reg.comp_1===false" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
+		
 		<div class="content-box-item" >
 	  		<div class="row">		
-	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail"  ng-src="{{item.img}}"></div>	
+	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail"  src="../home_def/images/emc/emc_comp.png">	  			
+	  				<div style="text-align:center" ng-show="emc_data.is_reg.comp_1===false"><a class="btn btn-sm btn-default"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 现在报名</a></div>
+	  			</div>	
 	  			<div class="col-sm-4 content-box-item-detail">	
-		  			<div class="item-title text-center">EMC杯交大智慧校园数据分析大赛</div>
+		  			<div class="item-title text-center">EMC杯交大智慧校园数据分析大赛 </div>
 		  			<table class="table table-striped">						  		
 				  		<tr>							  			
 				  			<td class="item-table-title">阶段</td><td>报名中</td>
 				  		</tr>							  		
 				  		<tr>
-				  			<td class="item-table-title">报名截止</td><td>{{item.sign_due}}</td>
+				  			<td class="item-table-title">宣讲会</td><td>4月9日19：00,网络中心8楼</td>
 				  		</tr>
 				  		<tr>
-					  		<td class="item-table-title">作品截止</td><td>{{item.submit_due}}</td>					  		  	
+					  		<td class="item-table-title">作品截止</td><td>2015.5.20</td>					  		  	
 				  		</tr>
 				  	</table>							  		
 	  			</div>
-	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail img-circle"  src="../shared/images/undefined.png"></div>
+	  			<div class="col-sm-2"><!--<img class="content-box-item-img img-thumbnail img-circle"  src="../shared/images/undefined.png">--></div>
 	  			<div class="col-sm-4 content-box-item-detail">
-		  				<div style="padding-top:4em;">暂无组队信息</div>
+		  				<!--<div style="padding-top:4em;">暂无组队信息</div>-->
 			  	</div>
 	  		</div>
 		</div>
+
+</div>
+
+	<div class="content-box ">
+		<span ng-show="emc_data.is_reg.asso_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+		<span ng-show="emc_data.is_reg.asso_1===false" class="label label-warning" style="font-size:1em"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
+		<div class="content-box-item" >
+
+	  		<div class="row">		
+	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail"  src="../home_def/images/emc/trainning_g.png">
+	  					<div style="text-align:center" ng-show="emc_data.is_reg.asso_1===false"><a class="btn btn-sm btn-default"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 现在报名</a></div>
+	  			</div>	
+	  			<div class="col-sm-4 content-box-item-detail">	
+		  			<div class="item-title text-center">数据科学训练营 </div>
+		  			<table class="table table-striped">						  		
+				  		<tr>							  			
+				  			<td class="item-table-title">阶段</td><td>报名中</td>
+				  		</tr>							  		
+				  		<tr>
+				  			<td class="item-table-title">内容</td><td>R语言</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">面向群体</td><td>以理工科同学为主体</td>					  		  	
+				  		</tr>
+				  	</table>							  		
+	  			</div>
+	  			<div class="col-sm-1"></div>
+	  			<div class="col-sm-5 content-box-item-detail">
+		  			<div class="item-title text-center">主要任务</div> 		
+		  			<table class="table table-striped">						  		
+				  		<tr>							  			
+				  			<td class="item-table-title">1)</td><td>阅读教材《R语言实战》</td>
+				  		</tr>							  		
+				  		<tr>
+				  			<td class="item-table-title">2)</td><td>在DataCamp.com平台，完成每周一次的大作业任务</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">3)</td><td>结业任务为组队参加交大智能校园数据分析比赛</td>					  		  	
+				  		</tr>
+				  	</table>	
+			  	</div>
+	  		</div>
+		</div>
+		<div style="text-align:right"><a href="../shared/images/trainning_r_detail.png" target="_blank">了解更多...</a></div>
+</div>
+
+	<div class="content-box ">
+		<span ng-show="emc_data.is_reg.asso_2===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+		<span ng-show="emc_data.is_reg.asso_2===false" class="label label-warning" style="font-size:1em"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
+		<div class="content-box-item" >
+	  		<div class="row">		
+	  			<div class="col-sm-2"><img class="content-box-item-img img-thumbnail"  src="../home_def/images/emc/trainning_o.png">
+	  					<div style="text-align:center" ng-show="emc_data.is_reg.asso_2===false"><a class="btn btn-sm btn-default"> <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> 现在报名</a></div>
+	  			</div>	
+	  			<div class="col-sm-4 content-box-item-detail">	
+		  			<div class="item-title text-center">数据分析训练营 </div>
+		  			<table class="table table-striped">						  		
+				  		<tr>							  			
+				  			<td class="item-table-title">阶段</td><td>报名中</td>
+				  		</tr>							  		
+				  		<tr>
+				  			<td class="item-table-title">学习内容</td><td>Excel</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">面向群体</td><td>以社科同学为主体</td>					  		  	
+				  		</tr>
+				  	</table>							  		
+	  			</div>
+	  			<div class="col-sm-1"></div>
+	  			<div class="col-sm-5 content-box-item-detail">		  			
+				  		<div class="item-title text-center">主要任务</div> 		
+					  			<table class="table table-striped">						  		
+							  		<tr>							  			
+							  			<td class="item-table-title">1)</td><td>阅读《你早该这么玩Excel》、《谁说菜鸟不会数据分析》</td>
+							  		</tr>							  		
+							  		<tr>
+							  			<td class="item-table-title">2)</td><td>完成每周一次的大作业任务</td>
+							  		</tr>
+							  		<tr>
+								  		<td class="item-table-title">3)</td><td>参加小组PK赛</td>					  		  	
+							  		</tr>
+							 </table>	
+			  	</div>
+	  		</div>
+
+		</div>
+		<div style="text-align:right"><a href="../shared/images/trainning_excel_detail.png" target="_blank">了解更多...</a></div>
 </div>

@@ -1,0 +1,29 @@
+<div class="content-box no_margintop">
+  <div class="discover-form-container">
+  <form>
+        <div class="form-group">
+          <label>真实姓名</label>       
+          <input type="text" ng-model="default_values.username" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>联系邮箱</label>       
+          <input type="email" ng-model="default_values.email" class="form-control">
+        </div>
+       <div class="form-group">
+          <label>手机号码</label>       
+          <input type="text" class="form-control">
+        </div>
+         <div class="form-group">
+          <label>微信账号</label>       
+          <input type="text" class="form-control">
+        </div>
+      <div class="form-group">
+          <label>时间</label> 
+          <select class="form-control" ng-model="competitionSearch_selectedTime" ng-options="m for m in selectSource.competitionStageList">             
+        </select>      
+      </div>
+        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查 找</button>
+         <button type="button" class="btn btn-default" ng-click="clearAllForms();">清 除</button>
+      </form>
+  </div>
+</div>
