@@ -1,5 +1,22 @@
 //Home_Login controllers.js
 
+function ng_serialize(ng_form){
+  	var arr=[];
+  	for (var k in ng_form){
+  		var v ="";
+  		var obj = ng_form[k];
+  		if(! ng_form.hasOwnProperty(k)||!obj||!obj.$name)
+  			continue;
+  	
+  		if(obj.$viewValue){
+  			v=obj.$viewValue.join?obj.$viewValue.join(","):obj.$viewValue;
+  		}
+  		arr.push(obj.$name+"="+encodeURIComponent(v));
+  	}
+  	return arr.join("&");
+  }
+
+
 var myAppModule = angular.module('myApp', ['ngRoute']);
 
 myAppModule.value('userStatus', {
@@ -316,15 +333,20 @@ function($scope,selectSource) {
 	 
 });
 myAppModule.controller('usercenter_profile_edit',
-function($scope,$http,selectSource) {
+function($scope,$http,selectSource,userStatus) {
+  $scope.userStatus=userStatus;
+  $scope.currentTab=0;
   $scope.dirtyFlag={};
+  $scope.tabMsg={};
+  $scope.tabLoadFlag=[false,false,false];
+  $scope.selectSource=selectSource;
+
   $scope.setDirtyFlag=function(type,index){
-   
-    $scope.dirtyFlag[type+","+index]=true;
+    $scope.dirtyFlag[type+"_"+index]=true;
     console.log("setDirtyFlag:",type,index);
   }
 	
-	$scope.removePfRecord=function(type,index){
+  $scope.removePfRecord=function(type,index){
     //confirm("删除此记录?")?model.splice(index,1):0
     switch(type){
       case "edu_exp":
@@ -336,7 +358,6 @@ function($scope,$http,selectSource) {
       default:
         console.log("removePfRecorError:",type);
       }
-
   };
   $scope.addPfRecord=function(type){
     switch(type){
@@ -351,122 +372,116 @@ function($scope,$http,selectSource) {
       }
   }
 
+  $scope.modelLoader=function(idx,force){
+  	$scope.tabMsg={};
+  	var modelname=["basic_info","contact_info","detail_info"];
+  	if(!(idx<3 && idx>-1))
+  		return;
+  	if(!force && $scope.tabLoadFlag[idx])
+  		return;  	
+  	$http({
+        method  : 'GET',
+        url     : '/kesci_backend/api/api_users/'+[modelname[idx]]
+        }).success(function(data) {   
+          $scope.tabLoadFlag[idx]=true;
+          $scope[modelname[idx]]=data;
+          if(idx===0)
+          	$scope.updateUniversityList();
+    });
+  }
+
+
   $scope.checkAndSubmit_basic=function(){
-    alert("basic");
+  
+  	console.log(ng_serialize($scope.basic_info_form));
+    $scope.tabMsg={};
+  	if(!$scope.basic_info_form.$dirty){
+  		$scope.tabMsg={warn:true};
+  		return;
+  	}
+	$http({
+        	method  : 'POST',
+        	url     : '/kesci_backend/api/api_users/basic_info',
+        	data    : ng_serialize($scope.basic_info_form), 
+        	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    	}).success(function(data) {
+    		if(data.msg=="success"){
+    			$scope.contact_info=data.data;
+    			$scope.tabMsg={succ:true};
+    		}
+    		else{
+    			$scope.tabMsg={errors:["调试信息已输出"]};
+    			$scope.tabMsg.errors.push(data.error);
+    			console.log(data);
+    		}
+    	});
+  };
+  $scope.checkAndSubmit_contact=function(){
+  	console.log(ng_serialize($scope.contact_info_form));
+  	$scope.tabMsg={};
+  	if(!$scope.contact_info_form.$dirty){
+  		$scope.tabMsg={warn:true};
+  		return;
+  	}
+	$http({
+        	method  : 'POST',
+        	url     : '/kesci_backend/api/api_users/contact_info',
+        	data    : ng_serialize($scope.contact_info_form), 
+        	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    	}).success(function(data) {
+    		if(data.msg=="success"){
+    			$scope.contact_info=data.data;
+    			$scope.tabMsg={succ:true};
+    		}
+    		else{
+    			$scope.tabMsg={errors:["调试信息已输出"]};
+    			$scope.tabMsg.errors.push(data.error);
+    			console.log(data);
+    		}
+    	});
   };
   $scope.checkAndSubmit_detail=function(){
     alert("detail");
   };
-  $scope.currentTab=0;
 
-  $scope.tmp_universityList=[];
-	$scope.updateUniversityList=function(){
-		if($scope.myprofile && $scope.myprofile.university_district){
-			$http({
-				method  : 'GET',
-				url     : '../shared/data/college/'+$scope.myprofile.university_district+'.json',
+  $scope.updateUniversityList=function(){
+	if($scope.basic_info && $scope.basic_info.university_district){
+		$http({
+			method  : 'GET',
+			url     : '../shared/data/college/'+ $scope.basic_info.university_district+'.json',
 
-    		}).success(function(data) {   
-    			for(var c in data){
-    				if(data.hasOwnProperty(c)){
-    					$scope.tmp_universityList=data[c];    					
-    					$scope.tmp_university=$scope.myprofile.university;
-    				}
-    			}
-    });
-
-		}
-	}
-	$scope.selectSource=selectSource;	
-	$scope.myprofile={
-            "user_id":"1111",
-            "name":"周小胖",
-            "district":"上海",
-            "university_district":"上海",
-            "university":"上海交通大学",
-            "skills":["主成分分析","Python","Spark"],
-            "interests":["数据分析","数据挖掘","推荐算法"],
-            "bref_intro":"Without a sense of identity, there can be no real struggle.",
-            "current_competition":"Avazu编程大赛",
-            "last_online":"一天前",
-            "reply_rate":"90%",
-            "avg_reply_time":"24小时",
-            "img":"images/de.png",    
-            "competitions_exps":[{
-				    "start_date":"2014-01-02",
-				    "end_date":"2014-02-04",
-					"competition_name":"美国数学建模大赛",
-					"award":"一等奖",
-				    "project_url":"www.baidu.com",
-				    "kesci_competition":"True",
-				},{
-				    "start_date":"2014-01-02",
-				    "end_date":"2014-02-04",
-					"competition_name":"美国数学建模大赛",
-					"award":"二等奖",
-				    "project_url":"www.baidu.com",
-				    "kesci_competition":"True",
-				},{
-				    "start_date":"2014-01-02",
-				    "end_date":"2014-02-04",
-					"competition_name":"美国数学建模大赛",
-					"award":"三等奖",
-				    "project_url":"www.baidu.com",
-				    "kesci_competition":"True",
-				}],
-			"edu_exps":[{
-			    "start_date":"2014-01-02",
-			    "end_date":"2014-02-04",
-			    "university":"上海交通大学",
-			    "department":"数学系",
-			    "major":"应用统计",
-			    "level":"研究生"    
-				},
-				{
-			    "start_date":"2014-01-02",
-			    "end_date":"2014-02-04",
-			    "university":"上海交通大学",
-			    "department":"数学系",
-			    "major":"应用统计",
-			    "level":"研究生"    
-			}],
-			"practice_exps":[{
-	            "id":"111",
-	            "start_date":"2014-01-02",
-	            "end_date":"2014-02-04",
-	            "organzition":"中国银联信用卡中心",
-	            "job":"数据分析实习生",
-	            "description":"数据分析和建模"
-            },
-            {
-	            "id":"111",
-	            "start_date":"2014-01-02",
-	            "end_date":"2014-02-04",
-	            "organzition":"中国银联信用卡中心",
-	            "job":"数据分析实习生",
-	            "description":"数据分析和建模"
-            }]                   
-};
-$scope.updateUniversityList();
+		}).success(function(data) {   
+			for(var c in data){
+				if(data.hasOwnProperty(c)){
+					$scope.tmp_universityList=data[c];    					
+					$scope.tmp_university=$scope.basic_info.university;
+				}
+			}
+		});	
+	}	
+  }
 });
 
 myAppModule.controller('usercenter_profile',
 function($scope,$http,userStatus) {
     $scope.userStatus=userStatus;
-    $http({
-        method  : 'GET',
-        url     : '/kesci_backend/api/api_users/basic_info'
-        }).success(function(data) {   
-          $scope.basic_info=data;
-    });
 
-    $http({
-        method  : 'GET',
-        url     : '/kesci_backend/api/api_users/detail_info'
-        }).success(function(data) {   
-          $scope.detail_info=data;
-    });
-	          
+	$scope.modelLoader=function(idx,force){
+	  	var modelname=["basic_info","contact_info","detail_info"];
+	  	if(!(idx<3 && idx>-1))
+	  		return;
+	  	if(!force && $scope[modelname[idx]])
+	  		return;  	
+	  	$http({
+	        method  : 'GET',
+	        url     : '/kesci_backend/api/api_users/'+[modelname[idx]]
+	        }).success(function(data) {   
+	          $scope[modelname[idx]]=data;
+	    });
+	  }     
+	  $scope.modelLoader(0);
+	  $scope.modelLoader(1);
+	  $scope.modelLoader(2);
 
 });
 myAppModule.controller('usercenter_account',
@@ -477,7 +492,7 @@ myAppModule.controller('usercenter_account',
 		$scope.change_email_errors={};
 	$scope.doChangePassword=function(){
 		$scope.change_password_errors={};
-				$http({
+		$http({
         	method  : 'POST',
         	url     : '/kesci_backend/api/auth/change_password',
         	data    : $("#change-password-form").serialize(), 

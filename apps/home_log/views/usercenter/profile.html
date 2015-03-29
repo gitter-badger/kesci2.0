@@ -13,8 +13,8 @@
 		</div>
 		<div class="col-md-9">
 		<div class="content-box profile-content">
-			 <div class="item-table-title profile-subtile">基本信息</div>				  	  
-				  	  <div class="profile-well-container">
+			 <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 基本信息</div>				  	  
+			 <div class="profile-well-container">
 					<table class="table profile-table table-striped">						  		
 				  		<tr>
 					  		<td style="width:8em" class="item-table-title">地区</td>
@@ -38,14 +38,55 @@
 				  		<tr>
 					  		<td class="item-table-title">技能</td>
 					  		<td>	  		
-				  				<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in basic_info.skills">{{rs}}</span></div>  
+				  				<div class="profile-label-container"><span class="label label-success item-table-listItem profile-label" ng-repeat="rs in basic_info.skills">{{rs}}</span></div>  
 				  				<span ng-show="!basic_info.skills">暂无</span>
 				  			</td>
 			  			</tr>
 			  		
 			  			</table>
 			  		</div>
-				  	  <div class="item-table-title profile-subtile">教育经历</div>				  	  
+			  		<div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> 联系方式</div>				  	  
+					 <div class="profile-well-container">
+					<table class="table profile-table table-striped">						  		
+				  		<tr>
+					  		<td style="width:10em" class="item-table-title">手机号码</td>
+					  		<td> 
+					  			<span>{{contact_info.modile||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td style="width:10em" class="item-table-title">微信账号</td>
+					  		<td> 
+					  			<span>{{contact_info.wechat||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td style="width:10em" class="item-table-title">QQ号码</td>
+					  		<td> 
+					  			<span>{{contact_info.qq||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+						<tr>
+					  		<td style="width:10em" class="item-table-title">人人网 主页</td>
+					  		<td> 
+					  			<span>{{contact_info.renren||"暂无"}}</span>					  		
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td style="width:10em" class="item-table-title">Github 主页</td>
+					  		<td> 
+					  			<span>{{contact_info.github||"暂无"}}</span>
+					  		</td>
+				  		</tr>	
+				  		<tr>
+					  		<td style="width:10em" class="item-table-title">LinkedIn 主页</td>
+					  		<td> 
+					  			<span>{{contact_info.linkedin||"暂无"}}</span>
+					  		</td>
+				  		</tr>	
+			  			</table>
+			  		</div>
+				  	  <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 教育经历</div>				  	  
 				  	  <div class="profile-well-container">
 				  	  	  <div class="alert alert-warning" role="alert" ng-show="detail_info.edu_exp.length==0">当前还没有教育经历...</div>
 					  	  <div  ng-repeat="item in detail_info.edu_exp">			  			
@@ -76,7 +117,7 @@
 					  		
 				  		</div>			  			
 						
-			  			<div class="item-table-title profile-subtile">比赛经历</div>
+			  			<div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 比赛经历</div>
 			  			<div class="profile-well-container">
 			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.competition_exp.length==0">当前还没有比赛经历...</div>
 				  			<div ng-repeat="item in detail_info.competition_exp">	
@@ -101,7 +142,7 @@
 				  				</table>				  				
 				  			</div>
 			  			</div>
-						<div class="item-table-title profile-subtile">实践经历</div>
+						<div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 实践经历</div>
 			  			<div class="profile-well-container">
 			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.practice_exp.length==0">当前还没有实践经历...</div>
 				  			<div ng-repeat="item in detail_info.practice_exp">	

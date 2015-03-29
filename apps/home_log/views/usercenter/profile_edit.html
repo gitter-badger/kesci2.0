@@ -1,30 +1,28 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div class="content-box">
-				<img class="img-thumbnail img-circle profile-img" ng-src="{{myprofile.img}}"/>
-				<p class="profile-name">{{myprofile.name}}</p>
+				<img class="img-thumbnail img-circle profile-img" ng-src="{{userStatus.img}}"/>
+				<p class="profile-name">{{userStatus.username}}</p>
 				<table class="table profile-table">
-				<tr><td class="item-table-title">用户ID</td><td>{{myprofile.user_id}}</td></tr>	
-				<tr><td class="item-table-title">当前竞赛</td><td>{{myprofile.current_competition}}</td></tr>
-				<tr><td class="item-table-title">回复率</td><td>{{myprofile.reply_rate}}</td></tr>
-				<tr><td class="item-table-title">回复时间</td><td>{{myprofile.avg_reply_time}}</td></tr>
-				
+				<tr><td class="item-table-title">用户ID</td><td>{{userStatus.user_id}}</td></tr>	
+				<tr><td class="item-table-title">当前竞赛</td><td>{{basic_info.active_competitions[0].cptn_name||"暂无"}}</td></tr>	
 				</table>
 			</div>
 		</div>
 		<div class="col-md-9">
 		<ul class="nav nav-tabs">
-			  <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0"><a><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> 基本信息</a></li> 
-			  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1"><a><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 联系方式</a></li>   
-			  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2"><a><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 我的经历</a></li>
+			  <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0;modelLoader(0);"><a><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 基本信息</a></li> 
+			  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1;modelLoader(1);"><a><span class="glyphicon glyphicon-phone" aria-hidden="true"></span> 联系方式</a></li>   
+			  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2;;modelLoader(2);"><a><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 我的经历</a></li>
 		</ul>
 		<div class="no_margintop content-box profile-content">
-			<form ng-show="currentTab==0" ng-submit="checkAndSubmit_basic();">			
+			<form id="basic_info-form" name="basic_info_form" ng-show="currentTab==0" ng-submit="checkAndSubmit_basic();">	
+			 		<p class="text-muted">以下信息对所有用户可见</p>		
 					<table class="table profile-table">						  		
 				  		<tr>
 					  		<td style="width:8em" class="item-table-title">地区</td>
 					  		<td> 
-					  		<select class="form-control" ng-model="myprofile.district" ng-change="setDirtyFlag('basic_info',0);" ng-options="m for m in selectSource.districtList"> </select>	
+					  		<select name="province" class="form-control" ng-model="basic_info.province" ng-options="m for m in selectSource.districtList"> </select>	
 					  		</td>
 				  		</tr>
 				  		<tr>
@@ -32,12 +30,12 @@
 					  		<td>
 					  			<div class="row">
 					  				<div class="col-sm-4">
-					  						<select class="form-control"  ng-model="myprofile.university_district" ng-change="updateUniversityList();" ng-options="m for m in selectSource.districtList"> 
+					  						<select name="university_district" class="form-control"  ng-model="basic_info.university_district" ng-change="updateUniversityList();" ng-options="m for m in selectSource.districtList"> 
 
 					  						</select>
 					  				</div>
 					  				<div class="col-sm-8">
-					  						<select class="form-control" ng-model="tmp_university" ng-change="setDirtyFlag('basic_info',0);" ng-options="m for m in tmp_universityList">
+					  						<select class="form-control" name="university" ng-model="tmp_university"  ng-options="m for m in tmp_universityList">
 					  						</select>
 					  				</div>
 					  		</div>
@@ -45,26 +43,77 @@
 				  		</tr>
 				  		<tr>
 					  		<td class="item-table-title">个人简介</td>
-					  		<td><input type="text" ng-model="myprofile.bref_intro" ng-change="setDirtyFlag('basic_info',0);" class="form-control">
+					  		<td><input type="text" ng-model="basic_info.bref_intro" name="bref_intro" class="form-control" placeholder="用一句话介绍一下自己吧">
 					  		</td>
 				  		</tr>
 				  		
 				  		<tr>
 					  		<td class="item-table-title">技能</td>
-					  		<td><select  multiple class="form-control" ng-model="myprofile.skills" ng-options="m for m in selectSource.skillList" ng-change="setDirtyFlag('basic_info',0);"> </select><br>	  		
-				  			<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in myprofile.skills">{{rs}}</span></div>  
+					  		<td><select name="skills"  multiple class="form-control" ng-model="basic_info.skills" ng-options="m for m in selectSource.skillList"> </select><br>	  		
+				  			<div class="profile-label-container"><span class="label label-success item-table-listItem profile-label" ng-repeat="rs in basic_info.skills">{{rs}}</span></div>  
 				  			</td>
 			  			</tr>
-
-
 			  			</table>
-							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"> </span> 保存修改</button>
+			  			<p class="text-muted" style="text-align:right">技能标签使用Ctrl键可以多选</p>
 
+							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-save" aria-hidden="true"> </span> 保存修改</button>
+
+			  		</form>
+
+			  		<form name="contact_info_form" id="contact_info-form" ng-show="currentTab==1" ng-submit="checkAndSubmit_contact();">
+			  			<p class="text-muted">以下信息为选填, 将用于参赛报名</p>
+			  			<table class="table profile-table">						  		
+				  		<tr>
+					  		<td  class="item-table-title">手机</td>
+					  		<td> 
+					  		<input type="text" name="mobile" ng-model="contact_info.mobile" class="form-control" placeholder="手机号码">
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">微信</td>
+					  		<td> 
+					  		<input type="text" name="wechat" ng-model="contact_info.wechat" class="form-control" placeholder="微信账号">
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td style="width:10em" class="item-table-title">QQ</td>
+					  		<td> 
+					  		<input type="text"  name="qq" ng-model="contact_info.qq"  class="form-control" placeholder="QQ号码">
+					  		</td>
+				  		</tr>
+						<tr>
+					  		<td class="item-table-title">人人</td>
+					  		<td> 
+					  		<input type="url" name="renren" ng-model="contact_info.renren" class="form-control" placeholder="人人网主页">
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">微博</td>
+					  		<td> 
+					  		<input type="url" name="weibo" ng-model="contact_info.weibo" class="form-control" placeholder="微博主页">
+					  		</td>
+				  		</tr>
+				  		<tr>
+					  		<td class="item-table-title">Github</td>
+					  		<td> 
+					  		<input type="url" name="github" ng-model="contact_info.github" class="form-control"  placeholder="Github主页">
+					  		</td>
+				  		</tr>	
+				  		<tr>
+					  		<td class="item-table-title">LinkedIn</td>
+					  		<td> 
+					  		<input type="url" name="linkedin" ng-model="contact_info.linkedin" class="form-control" placeholder="LinkedIn主页">
+					  		</td>
+				  		</tr>	
+			  			</table>	
+
+			  			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-save" aria-hidden="true"> </span> 保存修改</button>
 			  		</form>
 			  		<form ng-show="currentTab==2" ng-submit="checkAndSubmit_detail();">
 				  	  <div class="item-table-title profile-subtile">教育经历</div>				  	  
 				  	  <div class="profile-well-container">
-					  	  <div class="well" ng-repeat="item in myprofile.edu_exps">			  			
+
+					  	  <div class="well" ng-repeat="item in detail_info.edu_exp">			  			
 					  			<span class="label label-info">{{$index+1}}</span>
 					  				<table class="table" style="background:#f5f5f5">
 					  					<tr>
@@ -91,7 +140,7 @@
 						
 			  			<div class="item-table-title profile-subtile">比赛经历</div>
 			  			<div class="profile-well-container">
-				  			<div class="well" ng-repeat="item in myprofile.competitions_exps">	
+				  			<div class="well" ng-repeat="item in detail_info.competition_exp">	
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table" style="background:#f5f5f5">
 				  					<tr>
@@ -105,7 +154,7 @@
 				  						<td>奖项</td><td colspan="3"><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.award" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>项目地址</td><td colspan="3"><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.project_url" class="form-control"></td>
+				  						<td>项目地址</td><td colspan="3"><input ng-change="setDirtyFlag('competition_exp',$index);" type="url" ng-model="item.project_url" class="form-control"></td>
 				  					</tr>
 				  				</table>
 				  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord('competition_exp',$index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
@@ -114,7 +163,7 @@
 			  			</div>
 						<div class="item-table-title profile-subtile">实践经历</div>
 			  			<div class="profile-well-container">
-				  			<div class="well" ng-repeat="item in myprofile.practice_exps">	
+				  			<div class="well" ng-repeat="item in detail_info.practice_exp">	
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table" style="background:#f5f5f5">
 				  					<tr>
@@ -139,6 +188,12 @@
 				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"> </span> 保存修改</button>
 				<br>
 			</form>
+			<div style="margin-top:2em">
+				<div ng-show="tabMsg.succ" class="alert alert-info" role="alert">保存成功.</div>
+				<div ng-repeat="item in tabMsg.errors" class="alert alert-danger" role="alert">保存出错 : {{item}}</div>
+				<div ng-show="tabMsg.warn" class="alert alert-warning" role="alert">没有更改需要被保存.</div>
+
+			</div>
 			</div>
 		</div>
 	
