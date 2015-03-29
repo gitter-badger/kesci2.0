@@ -17,15 +17,39 @@
 			 <div class="profile-well-container">
 					<table class="table profile-table table-striped">						  		
 				  		<tr>
-					  		<td style="width:8em" class="item-table-title">地区</td>
+					  		<td style="width:8em" class="item-table-title">居住地区</td>
 					  		<td> 
 					  			<span>{{basic_info.province||"暂无"}}</span>	
 					  		</td>
 				  		</tr>
 				  		<tr>
-				  			<td class="item-table-title">大学</td>
+				  			<td class="item-table-title">在读学校</td>
 					  		<td>
 								<span>{{basic_info.university||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="item-table-title">入学时间</td>
+					  		<td>
+								<span>{{basic_info.start_time||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="item-table-title">在读院系</td>
+					  		<td>
+								<span>{{basic_info.department||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="item-table-title">在读专业</td>
+					  		<td>
+								<span>{{basic_info.major||"暂无"}}</span>	
+					  		</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="item-table-title">在读学位</td>
+					  		<td>
+								<span>{{basic_info.level||"暂无"}}</span>	
 					  		</td>
 				  		</tr>
 				  		<tr>
@@ -72,6 +96,12 @@
 					  			<span>{{contact_info.renren||"暂无"}}</span>					  		
 					  		</td>
 				  		</tr>
+				  	 <tr>
+					  		<td style="width:10em" class="item-table-title">微博 主页</td>
+					  		<td> 
+					  			<span>{{contact_info.weibo||"暂无"}}</span>					  		
+					  		</td>
+				  		</tr>
 				  		<tr>
 					  		<td style="width:10em" class="item-table-title">Github 主页</td>
 					  		<td> 
@@ -86,7 +116,7 @@
 				  		</tr>	
 			  			</table>
 			  		</div>
-				  	  <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 教育经历</div>				  	  
+				  	  <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 过往教育经历</div>				  	  
 				  	  <div class="profile-well-container">
 				  	  	  <div class="alert alert-warning" role="alert" ng-show="detail_info.edu_exp.length==0">当前还没有教育经历...</div>
 					  	  <div  ng-repeat="item in detail_info.edu_exp">			  			
@@ -98,7 +128,7 @@
 					  					</tr>
 					  					<tr>
 					  						<td class="item-table-title">时间</td>
-					  						<td><span>{{item.start_date}} ~ {{item.end_date}}</span></td>
+					  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
 					  					</tr>
 					  					<tr>
 					  						<td class="item-table-title">院系</td>
@@ -129,7 +159,7 @@
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">比赛时间</td>
-				  						<td><span>{{item.start_date}} ~ {{item.end_date}}</span></td>
+				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">奖项</td>
@@ -154,7 +184,7 @@
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">时间</td>
-				  						<td><span>{{item.start_date}} ~ {{item.end_date}}</span></td>
+				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">职位</td>

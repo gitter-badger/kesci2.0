@@ -335,37 +335,44 @@ function($scope,selectSource) {
 myAppModule.controller('usercenter_profile_edit',
 function($scope,$http,selectSource,userStatus) {
   $scope.userStatus=userStatus;
-  $scope.currentTab=0;
-  $scope.dirtyFlag={};
+  $scope.currentTab=0; 
   $scope.tabMsg={};
   $scope.tabLoadFlag=[false,false,false];
   $scope.selectSource=selectSource;
 
-  $scope.setDirtyFlag=function(type,index){
-    $scope.dirtyFlag[type+"_"+index]=true;
-    console.log("setDirtyFlag:",type,index);
-  }
-	
   $scope.removePfRecord=function(type,index){
-    //confirm("删除此记录?")?model.splice(index,1):0
-    switch(type){
-      case "edu_exp":
-        break;
-      case "competition_exp":
-        break;
-      case "practice_exp":
-        break;
-      default:
-        console.log("removePfRecorError:",type);
-      }
+    if(!confirm("删除此记录?")){
+      return;
+    }        
+    if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp"){
+      console.log("removePfRecorError:",type,index);
+      return;
+    }
+    if(typeof($scope.detail_info[type][index][type+"_id"])=="undefined"){
+      $scope.detail_info[type].splice(index,1);
+    }
+    else{
+     /* $http({
+                  method  : 'DELETE',
+                  url     : ' /kesci_backend/api/api_users/edu_exps/:edu_exp_id'
+              }).success(function(data) {       
+              console.log(data);
+            });*/
+    console.log("DE");
+
+    }
+   
   };
   $scope.addPfRecord=function(type){
     switch(type){
       case "edu_exp":
+        $scope.detail_info.edu_exp.push({university:"",start_time:"",end_time:"",major:"",department:"",level:"",university_district:""});
         break;
       case "competition_exp":
+        $scope.detail_info.competition_exp.push({competition_name:"",start_time:"",end_time:"",awards:"",project_url:"",competition_id:0,verified:0});
         break;
       case "practice_exp":
+        $scope.detail_info.practice_exp.push({organzition:"",start_time:"",end_time:"",job:"",description:""});
         break;
       default:
         console.log("addPfRecorError:",type);
@@ -385,14 +392,13 @@ function($scope,$http,selectSource,userStatus) {
         }).success(function(data) {   
           $scope.tabLoadFlag[idx]=true;
           $scope[modelname[idx]]=data;
-          if(idx===0)
-          	$scope.updateUniversityList();
+          if(idx==0)
+          	$scope.updateUniversityList();  
     });
   }
-
+  $scope.modelLoader(0);
 
   $scope.checkAndSubmit_basic=function(){
-  
   	console.log(ng_serialize($scope.basic_info_form));
     $scope.tabMsg={};
   	if(!$scope.basic_info_form.$dirty){
@@ -405,7 +411,7 @@ function($scope,$http,selectSource,userStatus) {
         	data    : ng_serialize($scope.basic_info_form), 
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
-    		if(data.msg=="success"){
+    		if(data.university){
     			$scope.contact_info=data.data;
     			$scope.tabMsg={succ:true};
     		}
@@ -417,8 +423,7 @@ function($scope,$http,selectSource,userStatus) {
     	});
   };
   $scope.checkAndSubmit_contact=function(){
-  	console.log(ng_serialize($scope.contact_info_form));
-  	$scope.tabMsg={};
+    $scope.tabMsg={};
   	if(!$scope.contact_info_form.$dirty){
   		$scope.tabMsg={warn:true};
   		return;
@@ -441,7 +446,52 @@ function($scope,$http,selectSource,userStatus) {
     	});
   };
   $scope.checkAndSubmit_detail=function(){
-    alert("detail");
+    $scope.tabMsg={};
+    var jsonData={};   
+    var isDirty=false;
+    for(var k in $scope.detail_info.edu_exp){
+      var obj=document.getElementById("form_edu_exp_"+k);
+      if(obj&&obj.className.indexOf("ng-dirty")>-1){      
+        console.log("dirty","form_edu_exp_"+k);
+        isDirty=true;
+        if(typeof(jsonData["edu_exp"])=="undefined")
+          jsonData["edu_exp"]=[];
+        jsonData["edu_exp"].push($scope.detail_info.edu_exp[k]); 
+      }
+    }
+    for(var k in $scope.detail_info.competition_exp){
+      var obj=document.getElementById("form_competition_exp_"+k);      
+      if(obj&&obj.className.indexOf("ng-dirty")>-1){             
+        console.log("dirty","competition_exp"+k);
+        isDirty=true;
+        if(typeof(jsonData["competition_exp"])=="undefined")
+          jsonData["competition_exp"]=[];
+        jsonData["competition_exp"].push($scope.detail_info.competition_exp[k]); 
+      }
+    }
+
+    for(var k in $scope.detail_info.practice_exp){
+      var obj=document.getElementById("form_practice_exp_"+k);
+      if(obj&&obj.className.indexOf("ng-dirty")>-1){        
+        console.log("dirty","form_practice_exp_"+k);
+        isDirty=true;
+        if(typeof(jsonData["competition_exp"])=="undefined")
+          jsonData["practice_exp"]=[];
+        jsonData["practice_exp"].push($scope.detail_info.practice_exp[k]); 
+      }
+    }
+  if(isDirty){
+      var jsonStr=angular.toJson(jsonData);
+      console.log("json:",jsonStr);
+      $http({
+            method  : 'POST',
+            url     : '/kesci_backend/api/api_users/detail_info',
+            data    : "json_data="+encodeURIComponent(jsonStr), 
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).success(function(data) {
+          console.log("resp:",data);
+        });
+  }
   };
 
   $scope.updateUniversityList=function(){
@@ -464,7 +514,7 @@ function($scope,$http,selectSource,userStatus) {
 
 myAppModule.controller('usercenter_profile',
 function($scope,$http,userStatus) {
-    $scope.userStatus=userStatus;
+  $scope.userStatus=userStatus;
 
 	$scope.modelLoader=function(idx,force){
 	  	var modelname=["basic_info","contact_info","detail_info"];
@@ -514,8 +564,7 @@ myAppModule.controller('usercenter_account',
         	url     : '/kesci_backend/api/auth/change_email',
         	data    : $("#change-email-form").serialize(), 
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-    	}).success(function(data) {
-    			console.log(data);
+    	}).success(function(data) {    			
     			if(data.msg&&data.msg.indexOf("confirmation")>-1){
     				alert(data.msg);
     				$location.path("/");
