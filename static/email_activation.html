@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">    
+  <title>Kesci</title> 
+  <style>
+      body{
+        color: #555;
+        font-size: 16px;          
+      }
+      .box{
+        padding: 3em 4em;
+        max-width: 40em;
+        box-shadow: #777 1px 1px 8px;
+        text-align: center;
+        margin: 12em auto 0 auto; 
+      }
+      a{ 
+        color: #333;
+        text-decoration: none;
+      }
+      a:hover{    
+        text-decoration: none;
+      }
+      a:visited{
+        text-decoration: none;
+      }
+  </style>
+</head>
+<body>
+<div class="box">
+  <span>您的邮箱<b><span id="email-span"></span></b>已成功激活 , <span id="timer-span">5</span> 秒后将转向 <a href="/kesci_frontend/apps/home_def/">登录页面 </a></span>
+</div>
+<script>  
+  (function(){
+  var email="";
+  if(window.location&&window.location.hash)
+    email=window.location.hash.replace("#","");
+  if(email.length>3) 
+    document.getElementById("email-span").innerText=" "+email+" ";
+  })();
+
+  var timer_count=5;
+  window.setInterval(function () {
+    if(timer_count>1){
+      timer_count--;
+      document.getElementById("timer-span").innerText=""+timer_count;
+    }
+    else{
+      window.location.href="/kesci_frontend/apps/home_def/";
+    }
+  },1000);
+</script>
+</body>
+</html>

@@ -16,7 +16,7 @@
 			</ul>
 			<div class="content-box no_margintop">
 				<div class="discover-form-container" ng-show="currentTab==0">
-						<form>
+						<form ng-submit="doChangePassword();" id="change-password-form">
 						  <div class="form-group">
 						  	<label>当前密码</label>			  
 						    <input type="password" class="form-control" name="old_password" placeholder="请输入当前密码" required>
@@ -28,12 +28,13 @@
 						  <div class="form-group">
 						  	<label>确认新密码</label>			  
 						    <input type="password" class="form-control" name="confirm_new_password" placeholder="请输入确认新密码" required>
-						  </div>				
+						  </div>			
+						  <div class="alert alert-danger" role="alert" ng-repeat="item in change_password_errors">{{item}}</div>		
 						  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 提交</button>
 					</form>
 				</div>
 				<div class="discover-form-container" ng-show="currentTab==1">
-						<form>
+						<form ng-submit="doChangeEmail();" id="change-email-form">
 						  <div class="form-group">
 						  	<label>账户密码</label>			  
 						    <input type="password" class="form-control" name="password" placeholder="请输入账户密码"  required>
@@ -42,6 +43,7 @@
 						  	<label>新绑定邮箱地址</label>			  
 						    <input type="email" class="form-control" name="email" placeholder="请输入新绑定邮箱地址"  required>
 						  </div>				
+						  <div class="alert alert-danger" role="alert" ng-repeat="item in change_email_errors">{{item}}</div>	
 						  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-send" aria-hidden="true"></span> 提交</button>
 					</form>
 				</div>

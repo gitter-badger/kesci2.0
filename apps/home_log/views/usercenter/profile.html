@@ -1,13 +1,12 @@
 	<div class="row">
 		<div class="col-md-3">
 			<div class="content-box">
-				<img class="img-thumbnail img-circle profile-img" ng-src="{{myprofile.img}}"/>
-				<p class="profile-name">{{myprofile.name}}</p>
+				<img class="img-thumbnail img-circle profile-img" ng-src="{{userStatus.img}}"/>
+				<p class="profile-name">{{userStatus.username}}</p>
 				<table class="table profile-table">
-				<tr><td class="item-table-title">用户ID</td><td>{{myprofile.user_id}}</td></tr>	
-				<tr><td class="item-table-title">当前竞赛</td><td>{{myprofile.current_competition}}</td></tr>
-				<tr><td class="item-table-title">回复率</td><td>{{myprofile.reply_rate}}</td></tr>
-				<tr><td class="item-table-title">回复时间</td><td>{{myprofile.avg_reply_time}}</td></tr>
+				<tr><td class="item-table-title">用户ID</td><td>{{userStatus.user_id}}</td></tr>	
+				<tr><td class="item-table-title">当前竞赛</td><td>{{basic_info.active_competitions[0].cptn_name||"暂无"}}</td></tr>
+			
 				
 				</table>
 			</div>
@@ -20,41 +19,36 @@
 				  		<tr>
 					  		<td style="width:8em" class="item-table-title">地区</td>
 					  		<td> 
-					  			<span>{{myprofile.district}}</span>	
+					  			<span>{{basic_info.province||"暂无"}}</span>	
 					  		</td>
 				  		</tr>
 				  		<tr>
 				  			<td class="item-table-title">大学</td>
 					  		<td>
-								<span>{{myprofile.university}}</span>	
+								<span>{{basic_info.university||"暂无"}}</span>	
 					  		</td>
 				  		</tr>
 				  		<tr>
 					  		<td class="item-table-title">个人简介</td>
 					  		<td>
-					  			<span>{{myprofile.bref_intro}}</span>
+					  			<span>{{basic_info.bref_intro||"暂无"}}</span>
 					  		</td>
 				  		</tr>
 				  		
 				  		<tr>
 					  		<td class="item-table-title">技能</td>
 					  		<td>	  		
-				  				<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in myprofile.skills">{{rs}}</span></div>  
+				  				<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in basic_info.skills">{{rs}}</span></div>  
+				  				<span ng-show="!basic_info.skills">暂无</span>
 				  			</td>
 			  			</tr>
-
-			  			<tr>
-				  			<td class="item-table-title">兴趣</td>
-				  			<td>
-				  				<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in myprofile.interests">{{rs}}</span></div>  
-				  			</td>
-			  			</tr>
+			  		
 			  			</table>
 			  		</div>
 				  	  <div class="item-table-title profile-subtile">教育经历</div>				  	  
 				  	  <div class="profile-well-container">
-				  	  	  <div class="alert alert-warning" role="alert" ng-show="myprofile.edu_exps.length===0">当前还没有实践经历...</div>
-					  	  <div  ng-repeat="item in myprofile.edu_exps">			  			
+				  	  	  <div class="alert alert-warning" role="alert" ng-show="detail_info.edu_exp.length==0">当前还没有教育经历...</div>
+					  	  <div  ng-repeat="item in detail_info.edu_exp">			  			
 					  			<span class="label label-info">{{$index+1}}</span>
 					  				<table class="table table-striped profile-table">
 					  					<tr>
@@ -84,8 +78,8 @@
 						
 			  			<div class="item-table-title profile-subtile">比赛经历</div>
 			  			<div class="profile-well-container">
-			  				<div class="alert alert-warning" role="alert" ng-show="myprofile.competitions_exps.length===0">当前还没有比赛经历...</div>
-				  			<div ng-repeat="item in myprofile.competitions_exps">	
+			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.competition_exp.length==0">当前还没有比赛经历...</div>
+				  			<div ng-repeat="item in detail_info.competition_exp">	
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table table-striped profile-table">
 				  					<tr>
@@ -98,19 +92,19 @@
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">奖项</td>
-				  						<td><span>{{item.award}}</span></td>
+				  						<td><span>{{item.awards}}</span></td>
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">项目地址</td>
-				  						<td><span>{{item.item.project_url}}</span></td>
+				  						<td><span>{{item.project_url}}</span></td>
 				  					</tr>
 				  				</table>				  				
 				  			</div>
 			  			</div>
 						<div class="item-table-title profile-subtile">实践经历</div>
 			  			<div class="profile-well-container">
-			  				<div class="alert alert-warning" role="alert" ng-show="myprofile.practice_exps.length===0">当前还没有实践经历...</div>
-				  			<div ng-repeat="item in myprofile.practice_exps">	
+			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.practice_exp.length==0">当前还没有实践经历...</div>
+				  			<div ng-repeat="item in detail_info.practice_exp">	
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table table-striped profile-table">
 				  					<tr>

@@ -187,7 +187,7 @@ function($scope,$http) {
     		 for(var k in data.data){
     		 	$scope.emc_data.is_reg["asso_"+data.data[k].association_id]=data.data[k].flag;
     		 	}
-    		 	console.log($scope.emc_data);
+    		 
     	});
     /*	$http({
 						method  : 'GET',
@@ -204,7 +204,7 @@ function($scope,$http) {
     		 for(var k in data.data){
     		 	$scope.emc_data.is_reg["comp_"+data.data[k].competition_id]=data.data[k].flag;
     		 	}
-    		 		console.log($scope.emc_data);
+    		 		
     	});
     
     	/*$http({
@@ -317,8 +317,49 @@ function($scope,selectSource) {
 });
 myAppModule.controller('usercenter_profile_edit',
 function($scope,$http,selectSource) {
-	$scope.tmp_universityList=[];
-	$scope.removePfRecord=function(model,index){confirm("删除此记录?")?model.splice(index,1):0};
+  $scope.dirtyFlag={};
+  $scope.setDirtyFlag=function(type,index){
+   
+    $scope.dirtyFlag[type+","+index]=true;
+    console.log("setDirtyFlag:",type,index);
+  }
+	
+	$scope.removePfRecord=function(type,index){
+    //confirm("删除此记录?")?model.splice(index,1):0
+    switch(type){
+      case "edu_exp":
+        break;
+      case "competition_exp":
+        break;
+      case "practice_exp":
+        break;
+      default:
+        console.log("removePfRecorError:",type);
+      }
+
+  };
+  $scope.addPfRecord=function(type){
+    switch(type){
+      case "edu_exp":
+        break;
+      case "competition_exp":
+        break;
+      case "practice_exp":
+        break;
+      default:
+        console.log("addPfRecorError:",type);
+      }
+  }
+
+  $scope.checkAndSubmit_basic=function(){
+    alert("basic");
+  };
+  $scope.checkAndSubmit_detail=function(){
+    alert("detail");
+  };
+  $scope.currentTab=0;
+
+  $scope.tmp_universityList=[];
 	$scope.updateUniversityList=function(){
 		if($scope.myprofile && $scope.myprofile.university_district){
 			$http({
@@ -328,9 +369,8 @@ function($scope,$http,selectSource) {
     		}).success(function(data) {   
     			for(var c in data){
     				if(data.hasOwnProperty(c)){
-    					$scope.tmp_universityList=data[c];
-    					if(!$scope.tmp_university)
-    						$scope.tmp_university=$scope.myprofile.university;
+    					$scope.tmp_universityList=data[c];    					
+    					$scope.tmp_university=$scope.myprofile.university;
     				}
     			}
     });
@@ -411,90 +451,74 @@ $scope.updateUniversityList();
 });
 
 myAppModule.controller('usercenter_profile',
-function($scope,$http) {
-	$scope.myprofile={
-            "user_id":"1111",
-            "name":"周小胖",
-            "district":"上海",
-            "university_district":"上海",
-            "university":"上海交通大学",
-            "skills":["主成分分析","Python","Spark"],
-            "interests":["数据分析","数据挖掘","推荐算法"],
-            "bref_intro":"Without a sense of identity, there can be no real struggle.",
-            "current_competition":"Avazu编程大赛",
-            "last_online":"一天前",
-            "reply_rate":"90%",
-            "avg_reply_time":"24小时",
-            "img":"images/de.png",    
-            "competitions_exps":[{
-				    "start_date":"2014-01-02",
-				    "end_date":"2014-02-04",
-					"competition_name":"美国数学建模大赛",
-					"award":"一等奖",
-				    "project_url":"www.baidu.com",
-				    "kesci_competition":"True",
-				},{
-				    "start_date":"2014-01-02",
-				    "end_date":"2014-02-04",
-					"competition_name":"美国数学建模大赛",
-					"award":"二等奖",
-				    "project_url":"www.baidu.com",
-				    "kesci_competition":"True",
-				},{
-				    "start_date":"2014-01-02",
-				    "end_date":"2014-02-04",
-					"competition_name":"美国数学建模大赛",
-					"award":"三等奖",
-				    "project_url":"www.baidu.com",
-				    "kesci_competition":"True",
-				}],
-			"edu_exps":[{
-			    "start_date":"2014-01-02",
-			    "end_date":"2014-02-04",
-			    "university":"上海交通大学",
-			    "department":"数学系",
-			    "major":"应用统计",
-			    "level":"研究生"    
-				},
-				{
-			    "start_date":"2014-01-02",
-			    "end_date":"2014-02-04",
-			    "university":"上海交通大学",
-			    "department":"数学系",
-			    "major":"应用统计",
-			    "level":"研究生"    
-			}],
-			"practice_exps":[{
-	            "id":"111",
-	            "start_date":"2014-01-02",
-	            "end_date":"2014-02-04",
-	            "organzition":"中国银联信用卡中心",
-	            "job":"数据分析实习生",
-	            "description":"数据分析和建模"
-            },
-            {
-	            "id":"111",
-	            "start_date":"2014-01-02",
-	            "end_date":"2014-02-04",
-	            "organzition":"中国银联信用卡中心",
-	            "job":"数据分析实习生",
-	            "description":"数据分析和建模"
-            }]                   
-};
+function($scope,$http,userStatus) {
+    $scope.userStatus=userStatus;
+    $http({
+        method  : 'GET',
+        url     : '/kesci_backend/api/api_users/basic_info'
+        }).success(function(data) {   
+          $scope.basic_info=data;
+    });
+
+    $http({
+        method  : 'GET',
+        url     : '/kesci_backend/api/api_users/detail_info'
+        }).success(function(data) {   
+          $scope.detail_info=data;
+    });
+	          
+
 });
 myAppModule.controller('usercenter_account',
-	function($scope,$http,userStatus){
-		$scope.default_values={
-			email:userStatus.email,
-			username:userStatus.username
-		}
+	function($scope,$http,$location,userStatus){
+		$scope.userStatus=userStatus;
 		$scope.currentTab=0;
-
+		$scope.change_password_errors={};
+		$scope.change_email_errors={};
+	$scope.doChangePassword=function(){
+		$scope.change_password_errors={};
+				$http({
+        	method  : 'POST',
+        	url     : '/kesci_backend/api/auth/change_password',
+        	data    : $("#change-password-form").serialize(), 
+        	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    	}).success(function(data) {
+    			if(data.msg&&data.msg.indexOf("successfully")>-1){
+    				alert("密码已成功更改.");
+    				$location.path("/");
+    			}
+    			else if(data.errors){
+    				$scope.change_password_errors=data.errors;
+    			}
+    	});
+	};
+	$scope.doChangeEmail=function(){
+			$scope.change_email_errors={};
+			$http({
+        	method  : 'POST',
+        	url     : '/kesci_backend/api/auth/change_email',
+        	data    : $("#change-email-form").serialize(), 
+        	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    	}).success(function(data) {
+    			console.log(data);
+    			if(data.msg&&data.msg.indexOf("confirmation")>-1){
+    				alert(data.msg);
+    				$location.path("/");
+    			}
+    			else if(data.errors){
+    				$scope.change_email_errors=data.errors;
+    			}
+    	});
+	};
 	});
 
 myAppModule.controller('action_competition_register',
 	function($scope,$http,$routeParams,userStatus){	
 		console.log($routeParams);
+		$scope.default_values={
+			email:userStatus.email,
+			username:userStatus.username
+		}
 		$scope.userStatus=userStatus;
 		$scope.form_id=$routeParams.id;
 

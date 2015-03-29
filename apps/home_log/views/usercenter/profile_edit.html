@@ -13,13 +13,18 @@
 			</div>
 		</div>
 		<div class="col-md-9">
-		<div class="content-box profile-content">
-			<form>			
+		<ul class="nav nav-tabs">
+			  <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0"><a><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> 基本信息</a></li> 
+			  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1"><a><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 联系方式</a></li>   
+			  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2"><a><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> 我的经历</a></li>
+		</ul>
+		<div class="no_margintop content-box profile-content">
+			<form ng-show="currentTab==0" ng-submit="checkAndSubmit_basic();">			
 					<table class="table profile-table">						  		
 				  		<tr>
 					  		<td style="width:8em" class="item-table-title">地区</td>
 					  		<td> 
-					  		<select class="form-control" ng-model="myprofile.district" ng-options="m for m in selectSource.districtList"> </select>	
+					  		<select class="form-control" ng-model="myprofile.district" ng-change="setDirtyFlag('basic_info',0);" ng-options="m for m in selectSource.districtList"> </select>	
 					  		</td>
 				  		</tr>
 				  		<tr>
@@ -32,7 +37,7 @@
 					  						</select>
 					  				</div>
 					  				<div class="col-sm-8">
-					  						<select class="form-control" ng-model="tmp_university" ng-options="m for m in tmp_universityList">
+					  						<select class="form-control" ng-model="tmp_university" ng-change="setDirtyFlag('basic_info',0);" ng-options="m for m in tmp_universityList">
 					  						</select>
 					  				</div>
 					  		</div>
@@ -40,50 +45,48 @@
 				  		</tr>
 				  		<tr>
 					  		<td class="item-table-title">个人简介</td>
-					  		<td><input type="text" ng-model="myprofile.bref_intro" class="form-control">
+					  		<td><input type="text" ng-model="myprofile.bref_intro" ng-change="setDirtyFlag('basic_info',0);" class="form-control">
 					  		</td>
 				  		</tr>
 				  		
 				  		<tr>
 					  		<td class="item-table-title">技能</td>
-					  		<td><select  multiple class="form-control" ng-model="myprofile.skills" ng-options="m for m in selectSource.skillList"> </select><br>	  		
+					  		<td><select  multiple class="form-control" ng-model="myprofile.skills" ng-options="m for m in selectSource.skillList" ng-change="setDirtyFlag('basic_info',0);"> </select><br>	  		
 				  			<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in myprofile.skills">{{rs}}</span></div>  
 				  			</td>
 			  			</tr>
 
-			  			<tr>
-				  			<td class="item-table-title">兴趣</td>
-				  			<td><select  multiple class="form-control" ng-model="myprofile.interests" ng-options="m for m in selectSource.competitionTypeList"> </select><br>	  		
-				  			<div class="profile-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in myprofile.interests">{{rs}}</span></div>  
-				  			</td>
-			  			</tr>
+
 			  			</table>
-			  		
+							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"> </span> 保存修改</button>
+
+			  		</form>
+			  		<form ng-show="currentTab==2" ng-submit="checkAndSubmit_detail();">
 				  	  <div class="item-table-title profile-subtile">教育经历</div>				  	  
 				  	  <div class="profile-well-container">
 					  	  <div class="well" ng-repeat="item in myprofile.edu_exps">			  			
 					  			<span class="label label-info">{{$index+1}}</span>
 					  				<table class="table" style="background:#f5f5f5">
 					  					<tr>
-					  						<td>学校</td><td colspan="3"><input type="text" ng-model="item.university" class="form-control"></td>
+					  						<td>学校</td><td colspan="3"><input ng-change="setDirtyFlag('edu_exp',$index);" type="text" ng-model="item.university" class="form-control"></td>
 					  					</tr>
 					  					<tr>
-					  						<td>时间</td><td><input type="text" ng-model="item.start_date" class="form-control"></td>
-					  						<td>~</td><td><input type="text" ng-model="item.end_date" class="form-control"></td>
+					  						<td>时间</td><td><input ng-change="setDirtyFlag('edu_exp',$index);" type="text" ng-model="item.start_date" class="form-control"></td>
+					  						<td>~</td><td><input ng-change="setDirtyFlag('edu_exp',$index);" type="text" ng-model="item.end_date" class="form-control"></td>
 					  					</tr>
 					  					<tr>
-					  						<td>院系</td><td colspan="3"><input type="text" ng-model="item.department" class="form-control"></td>
+					  						<td>院系</td><td colspan="3"><input type="text" ng-change="setDirtyFlag('edu_exp',$index);" ng-model="item.department" class="form-control"></td>
 					  					</tr>
 					  					<tr>
-					  						<td>专业</td><td colspan="3"><input type="text" ng-model="item.major" class="form-control"></td>
+					  						<td>专业</td><td colspan="3"><input type="text" ng-change="setDirtyFlag('edu_exp',$index);" ng-model="item.major" class="form-control"></td>
 					  					</tr>
 					  					<tr>
-					  						<td>学位</td><td colspan="3"><input type="text" ng-model="item.level" class="form-control"></td>
+					  						<td>学位</td><td colspan="3"><input type="text" ng-change="setDirtyFlag('edu_exp',$index);" ng-model="item.level" class="form-control"></td>
 					  					</tr>
 					  				</table>
-					  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord(myprofile.edu_exps,$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
+					  				<button type="button" class="btn btn-danger btn-sm"  ng-click="removePfRecord('edu_exp',$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
 					  			</div>
-					  			<button type="button" class="btn btn-success" ng-click="myprofile.edu_exps.push({});"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加教育经历</button>
+					  			<button type="button" class="btn btn-success" ng-click="addPfRecord('edu_exp');"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加教育经历</button>
 				  		</div>			  			
 						
 			  			<div class="item-table-title profile-subtile">比赛经历</div>
@@ -92,22 +95,22 @@
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table" style="background:#f5f5f5">
 				  					<tr>
-				  						<td>比赛名称</td><td colspan="3"><input type="text" ng-model="item.competition_name" class="form-control"></td>
+				  						<td>比赛名称</td><td colspan="3"><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.competition_name" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>比赛时间</td><td><input type="text" ng-model="item.start_date" class="form-control"></td>
-				  						<td>~</td><td><input type="text" ng-model="item.end_date" class="form-control"></td>
+				  						<td>比赛时间</td><td><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.start_date" class="form-control"></td>
+				  						<td>~</td><td><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.end_date" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>奖项</td><td colspan="3"><input type="text" ng-model="item.award" class="form-control"></td>
+				  						<td>奖项</td><td colspan="3"><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.award" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>项目地址</td><td colspan="3"><input type="text" ng-model="item.project_url" class="form-control"></td>
+				  						<td>项目地址</td><td colspan="3"><input ng-change="setDirtyFlag('competition_exp',$index);" type="text" ng-model="item.project_url" class="form-control"></td>
 				  					</tr>
 				  				</table>
-				  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord(myprofile.competitions_exps,$index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
+				  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord('competition_exp',$index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
 				  			</div>
-				  			<button type="button" class="btn btn-success" ng-click="myprofile.competitions_exps.push({});"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加比赛经历</button>
+				  			<button type="button" class="btn btn-success" ng-click="addPfRecord('competition_exp');"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加比赛经历</button>
 			  			</div>
 						<div class="item-table-title profile-subtile">实践经历</div>
 			  			<div class="profile-well-container">
@@ -115,25 +118,25 @@
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table" style="background:#f5f5f5">
 				  					<tr>
-				  						<td>组织</td><td colspan="3"><input type="text" ng-model="item.organzition" class="form-control"></td>
+				  						<td>组织</td><td colspan="3"><input ng-change="setDirtyFlag('practice_exp',$index);" type="text" ng-model="item.organzition" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>时间</td><td><input type="text" ng-model="item.start_date" class="form-control"></td>
-				  						<td>~</td><td><input type="text" ng-model="item.end_date" class="form-control"></td>
+				  						<td>时间</td><td><input type="text" ng-change="setDirtyFlag('practice_exp',$index);" ng-model="item.start_date" class="form-control"></td>
+				  						<td>~</td><td><input type="text" ng-change="setDirtyFlag('practice_exp',$index);" ng-model="item.end_date" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>职位</td><td colspan="3"><input type="text" ng-model="item.job" class="form-control"></td>
+				  						<td>职位</td><td colspan="3"><input ng-change="setDirtyFlag('practice_exp',$index);" type="text" ng-model="item.job" class="form-control"></td>
 				  					</tr>
 				  					<tr>
-				  						<td>描述</td><td colspan="3"><input type="text" ng-model="item.description" class="form-control"></td>
+				  						<td>描述</td><td colspan="3"><input ng-change="setDirtyFlag('practice_exp',$index);" type="text" ng-model="item.description" class="form-control"></td>
 				  					</tr>
 				  				</table>
-				  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord(myprofile.practice_exps,$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
+				  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord('practice_exp',$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
 				  			</div>
-				  			<button type="button" class="btn btn-success" ng-click="myprofile.practice_exps.push({});"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加实践经历</button>
+				  			<button type="button" class="btn btn-success" ng-click="addPfRecord('practice_exp');"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加实践经历</button>
 			  			</div>			  			
 				<br>
-				<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"> </span> 保存修改</button>
+				<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"> </span> 保存修改</button>
 				<br>
 			</form>
 			</div>
