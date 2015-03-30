@@ -80,6 +80,7 @@ function($scope) {
 myAppModule.controller('mineCtr',
 function($scope,$http) {
 		$scope.emc_data={is_reg:{},reg_num:{}};
+    //$scope.noticeMsg=[{title:"Hello",msg:"Welcome to Kesci!"}];
 		$http({
 						method  : 'GET',
 						url     : ' /kesci_backend/api/associations/is_registered?association_id=1,2'
@@ -416,6 +417,7 @@ myAppModule.controller('action_competition_register',
       arr.push(["mobile", $scope.default_values.mobile]);
       arr.push(["fullname", $scope.default_values.username]);
       arr.push(["university", $scope.tmp_university]);
+      arr.push(["university_district", $scope.default_values.university_district]);
       arr.push(["major", $scope.default_values.major]);
       if($scope.default_values.student_flag=="1"){ 
         arr.push(["grade", $scope.default_values.grade]);
@@ -525,6 +527,7 @@ myAppModule.controller('action_association_register',
       arr.push(["mobile", $scope.default_values.mobile]);
       arr.push(["fullname", $scope.default_values.username]);
       arr.push(["university", $scope.tmp_university]);
+      arr.push(["university_district", $scope.default_values.university_district]);
       arr.push(["major", $scope.default_values.major]);
       arr.push(["wechat", $scope.default_values.wechat]);
       arr.push(["self_intro", $scope.default_values.self_intro]);
@@ -597,12 +600,16 @@ $scope.teachers=[{
    "img": "../home_def/images/emc/zhangpengzhu.jpg"
 },{
    "name":"韩东",
-   "desc":["交大数学系，系主任","博士生导师"],
+   "desc":["交大数学系，副系主任","博士生导师"],
    "img": "../home_def/images/emc/handong.jpg"
 },{
    "name":"韩挺",
    "desc":["交大媒体与设计学院，副院长","工业设计专业主任"],
    "img": "../home_def/images/emc/hanting.jpg"
+},{
+   "name":"郑磊",
+   "desc":["复旦大学数字与移动治理实验室主任","国际关系与公共事务学院院长助理","副教授"],
+   "img": "../home_def/images/emc/zhenglei.jpg"
 },{
    "name":"张娅",
    "desc":["交大电子学院，副教授","博士生导师"],

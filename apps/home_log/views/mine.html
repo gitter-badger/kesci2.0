@@ -37,11 +37,15 @@
 </div>
 
 -->
-
+<div ng-repeat="item in noticeMsg" class="alert alert-info alert-dismissible" role="alert">
+  <button type="button" class="close" aria-label="Close" ng-click="noticeMsg.splice($index,1)"><span aria-hidden="true">&times;</span></button>
+  <strong>{{item.title}}</strong> {{item.msg}}
+</div>
 
 
 	<div class="content-box ">
 		<span ng-show="emc_data.is_reg.comp_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+		<span ng-show="emc_data.is_reg.comp_1===true" class="label label-info" style="font-size:1em"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 审核中</span>
 		<span class="label label-warning" style="font-size:1em" ng-show="emc_data.is_reg.comp_1===false" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
 		
 		<div class="content-box-item" >
@@ -59,13 +63,26 @@
 				  			<td class="item-table-title">宣讲会</td><td>4月9日19：00,网络中心8楼</td>
 				  		</tr>
 				  		<tr>
-					  		<td class="item-table-title">作品截止</td><td>2015.5.20</td>					  		  	
+					  		<td class="item-table-title">数据发布时间</td><td>2015-4-10</td>  		  	
 				  		</tr>
 				  	</table>							  		
 	  			</div>
-	  			<div class="col-sm-2"><!--<img class="content-box-item-img img-thumbnail img-circle"  src="../shared/images/undefined.png">--></div>
-	  			<div class="col-sm-4 content-box-item-detail">
-		  				<!--<div style="padding-top:4em;">暂无组队信息</div>-->
+	  			<div class="col-sm-1"><!--<img class="content-box-item-img img-thumbnail img-circle"  src="../shared/images/undefined.png">--></div>
+	  			<div class="col-sm-5 content-box-item-detail">
+	  				<div class="item-title text-center">　</div>
+		  				<table class="table table-striped">						  		
+				  		<tr>			
+				  		<td class="item-table-title">作品截止时间</td><td>2015-5-13</td>							  			
+				  			
+				  		</tr>							  		
+				  		<tr>
+				  			<td class="item-table-title">决赛时间</td><td>2015-5-20</td>
+				  		</tr>
+				  		<tr>
+				  			<td class="item-table-title">咨询邮箱</td><td>admin@kesci.com</td>
+					  		  	
+				  		</tr>
+				  	</table>				
 			  	</div>
 	  		</div>
 		</div>
@@ -74,6 +91,7 @@
 
 	<div class="content-box ">
 		<span ng-show="emc_data.is_reg.asso_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+		<span ng-show="emc_data.is_reg.asso_1===true" class="label label-info" style="font-size:1em"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 审核中</span>
 		<span ng-show="emc_data.is_reg.asso_1===false" class="label label-warning" style="font-size:1em"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
 		<div class="content-box-item" >
 
@@ -117,6 +135,7 @@
 
 	<div class="content-box ">
 		<span ng-show="emc_data.is_reg.asso_2===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+		<span ng-show="emc_data.is_reg.asso_2===true" class="label label-info" style="font-size:1em"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 审核中</span>
 		<span ng-show="emc_data.is_reg.asso_2===false" class="label label-warning" style="font-size:1em"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
 		<div class="content-box-item" >
 	  		<div class="row">		

@@ -16,10 +16,11 @@
 	<div id="page-header" ng-controller="headerCtr">
 
 	<div class="container">
-		<div class="row">
+		<div class="row">			
 		  <div id="header-logo" class="col-md-6">
-		  <h1>Kesci</h1>
+			<h1>Kesci</h1>	
 		  <h2>国内最好的校园竞赛平台</h2>
+		  <div style="position:relative;left:7.5em;bottom:10.5em">Beta</div>
 		  </div>
 		  <div class="col-md-6" >
 		   <div id="header-form">
@@ -86,9 +87,9 @@
 		</div>
 	</div>
 </div>
-<div class="container" ng-controller="emcCtr">
+<div class="container" style="color:#555;letter-spacing: 1px;" ng-controller="emcCtr">
 	<div class="content-box" style="background:url(./images/emc/heading.jpg) no-repeat center;background-size:cover;color:#eee;border-radius:10px;">
-		<div style="text-align:center;margin-top:100px;letter-spacing: 2px;">
+		<div style="text-align:center;margin-top:100px;">
 			<h1>EMC杯开放数据智慧校园分析大赛</h1>
 			<br>			
 			<p style="font-size:1.5em;">宣讲会：4月9日19：00,网络中心8楼</p>
@@ -104,7 +105,7 @@
 		</div>
 
 	</div>
-	<div class="center-block" style="width:80%;color:#555;max-width:600px;font-size:1.2em;line-height:1.8em;letter-spacing: 1px;">
+	<div class="center-block" style="width:80%;max-width:600px;font-size:1.2em;line-height:1.8em;">
 		<h2 style="text-align:center">—— 活动概述 ——</h2>
 		<br>
 		<ul>
@@ -116,14 +117,18 @@
 		</ul>
 		<br><br>
 		<h2 style="text-align:center">—— 赛事评委 ——</h2>
+	</div>
+	<div class="center-block" style="width:85%;max-width:880px;font-size:1.2em;line-height:1.8em;">
 		<div class="row" style="text-align:center;">
-			<div class="col-sm-6" ng-repeat="item in teachers">
-				<img class="img-circle img-thumbnail" style="height:180px;width:auto;margin-top:50px" ng-src="{{item.img}}">
+			<div class="col-sm-4" ng-repeat="item in teachers" style="height:400px;padding-top:50px">
+				<img class="img-circle img-thumbnail" style="height:180px;width:auto;" ng-src="{{item.img}}">
 				<h3>{{item.name}}</h3>
 				<p><span ng-repeat="s in item.desc">{{s}}<br/></span></p>
 			</div>
 		</div>
-		<br><br>
+		</div>
+		<div class="center-block" style="width:80%;max-width:600px;font-size:1.2em;line-height:1.8em;">
+		
 		<h2 style="text-align:center">—— 比赛内容 ——</h2>
 		<br>
 		<b>赛题一：校园餐饮消费分析</b>
@@ -163,7 +168,6 @@
 	<h2 style="text-align:center">—— 合作媒体 ——</h2>
 	</div>
 	<img  src="./images/emc/footer.png" style="display:block;max-width:90%;height:auto;width:auto;margin:3em auto;">
-
 
 </div>
 <div ng-include src="'../shared/views/footer.html'"></div>

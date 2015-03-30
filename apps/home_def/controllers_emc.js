@@ -89,12 +89,16 @@ $scope.teachers=[{
    "img": "./images/emc/zhangpengzhu.jpg"
 },{
    "name":"韩东",
-   "desc":["交大数学系，系主任","博士生导师"],
+   "desc":["交大数学系，副系主任","博士生导师"],
    "img": "./images/emc/handong.jpg"
 },{
    "name":"韩挺",
    "desc":["交大媒体与设计学院，副院长","工业设计专业主任"],
    "img": "./images/emc/hanting.jpg"
+},{
+   "name":"郑磊",
+   "desc":["复旦大学数字与移动治理实验室主任","国际关系与公共事务学院院长助理","副教授"],
+   "img": "./images/emc/zhenglei.jpg"
 },{
    "name":"张娅",
    "desc":["交大电子学院，副教授","博士生导师"],
