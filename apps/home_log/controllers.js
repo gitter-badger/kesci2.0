@@ -341,6 +341,7 @@ function($scope,$http,selectSource,userStatus) {
   $scope.selectSource=selectSource;
 
   $scope.removePfRecord=function(type,index){
+
     if(!confirm("删除此记录?")){
       return;
     }        
@@ -348,20 +349,24 @@ function($scope,$http,selectSource,userStatus) {
       console.log("removePfRecorError:",type,index);
       return;
     }
+    $scope.tabMsg={};
     if(typeof($scope.detail_info[type][index][type+"_id"])=="undefined"){
       $scope.detail_info[type].splice(index,1);
     }
     else{
-     /* $http({
+      $http({
                   method  : 'DELETE',
-                  url     : ' /kesci_backend/api/api_users/edu_exps/:edu_exp_id'
+                  url     : ' /kesci_backend/api/api_users/'+type+'s/'+$scope.detail_info[type][index][type+"_id"]
               }).success(function(data) {       
-              console.log(data);
-            });*/
-    console.log("DE");
+              if(data.msg=="delete success"){
+                $scope.detail_info[type].splice(index,1);
+              }
+              else{
+                console.log("delete Error ",type,index,data);
+              }
 
-    }
-   
+            });
+   }   
   };
   $scope.addPfRecord=function(type){
     switch(type){
@@ -372,7 +377,7 @@ function($scope,$http,selectSource,userStatus) {
         $scope.detail_info.competition_exp.push({competition_name:"",start_time:"",end_time:"",awards:"",project_url:"",competition_id:0,verified:0});
         break;
       case "practice_exp":
-        $scope.detail_info.practice_exp.push({organzition:"",start_time:"",end_time:"",job:"",description:""});
+        $scope.detail_info.practice_exp.push({practice_name:"",start_time:"",end_time:"",detail:"",practice_type:3});
         break;
       default:
         console.log("addPfRecorError:",type);
@@ -475,7 +480,7 @@ function($scope,$http,selectSource,userStatus) {
       if(obj&&obj.className.indexOf("ng-dirty")>-1){        
         console.log("dirty","form_practice_exp_"+k);
         isDirty=true;
-        if(typeof(jsonData["competition_exp"])=="undefined")
+        if(typeof(jsonData["practice_exp"])=="undefined")
           jsonData["practice_exp"]=[];
         jsonData["practice_exp"].push($scope.detail_info.practice_exp[k]); 
       }
@@ -489,8 +494,18 @@ function($scope,$http,selectSource,userStatus) {
             data    : "json_data="+encodeURIComponent(jsonStr), 
             headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).success(function(data) {
-          console.log("resp:",data);
+          if(typeof(data.edu_exp)!="undefined"){
+            $scope.tabMsg={succ:true};
+            $scope.detail_info=data;
+          }
+          else{
+            $scope.tabMsg={errors:["保存时出错."]};
+            console.log(data);
+          }
         });
+  }
+  else{
+    $scope.tabMsg={warn:true};
   }
   };
 
@@ -515,7 +530,7 @@ function($scope,$http,selectSource,userStatus) {
 myAppModule.controller('usercenter_profile',
 function($scope,$http,userStatus) {
   $scope.userStatus=userStatus;
-
+  $scope.practice_type_map=["校内","实习","其它"];
 	$scope.modelLoader=function(idx,force){
 	  	var modelname=["basic_info","contact_info","detail_info"];
 	  	if(!(idx<3 && idx>-1))
@@ -577,20 +592,144 @@ myAppModule.controller('usercenter_account',
 	});
 
 myAppModule.controller('action_competition_register',
-	function($scope,$http,$routeParams,userStatus){	
-		console.log($routeParams);
-		$scope.default_values={
-			email:userStatus.email,
-			username:userStatus.username
-		}
-		$scope.userStatus=userStatus;
-		$scope.form_id=$routeParams.id;
+	function($scope,$http,$routeParams,userStatus,selectSource){	
+    $scope.selectSource=selectSource;
+    $scope.comp_map=["EMC杯交大智慧校园数据分析大赛"];
+    $scope.form_id=$routeParams.id;
+    $scope.default_values={student_flag:"1"};
+    $scope.updateUniversityList=function(){
+        
+            if($scope.default_values.university_district){
+            $http({
+              method  : 'GET',
+              url     : '../shared/data/college/'+ $scope.default_values.university_district+'.json',
+
+            }).success(function(data) {   
+              for(var c in data){
+                if(data.hasOwnProperty(c)){
+                  $scope.tmp_universityList=data[c];                   
+                  $scope.tmp_university=$scope.default_values.university;
+                }
+              }
+            }); 
+          } 
+    }
+    $scope.submitForm=function(){
+      var oMyForm = new FormData();
+
+      oMyForm.append("competition_id", $scope.form_id);
+      oMyForm.append("student_flag",$scope.student_flag=="1"?1:0);
+      oMyForm.append("email", $scope.default_values.email);
+      oMyForm.append("mobile", $scope.default_values.mobile);
+      oMyForm.append("fullname", $scope.default_values.username);
+      oMyForm.append("university", $scope.tmp_university);
+      oMyForm.append("major", $scope.default_values.major);
+      if($scope.student_flag=="1"){ 
+        oMyForm.append("grade", $scope.default_values.grade);
+      }
+      else{
+         oMyForm.append("company", $scope.default_values.company);
+         oMyForm.append("attend_reason", $scope.default_values.attend_reason);
+      }
+     // oMyForm.append("userfile", fileInputElement.files[0]);
+      console.log($scope.default_values);
+
+      /*$http.post({'/kesci_backend/api/auth/change_email',oMyForm, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+            }).success(function(data) {});*/
+       
+    }
+    $http({
+          method  : 'GET',
+          url     : '/kesci_backend/api/api_users/basic_info'
+          }).success(function(data) {   
+           $scope.default_values.university=data.university;
+           $scope.default_values.university_district=data.university_district;
+           $scope.default_values.major=data.major;
+           $scope.default_values.username=data.username;
+           $scope.default_values.email=userStatus.email;
+           $scope.default_values.self_intro=data.brief_intro;
+           $scope.updateUniversityList();
+      });
+    $http({
+          method  : 'GET',
+          url     : '/kesci_backend/api/api_users/contact_info'
+          }).success(function(data) {   
+           $scope.default_values.mobile=data.mobile;          
+      });	
+		
 
 	});
 myAppModule.controller('action_association_register',
-	function($scope,$http,$routeParams,userStatus){
-		$scope.userStatus=userStatus;
-		$scope.form_id=$routeParams.id;
+	function($scope,$http,$routeParams,userStatus,selectSource){
+    $scope.selectSource=selectSource;
+    $scope.asso_map=["数据科学训练营","数据分析训练营"];
+    $scope.form_id=$routeParams.id;
+    $scope.default_values={student_flag:"1"};
+    $scope.updateUniversityList=function(){
+        
+            if($scope.default_values.university_district){
+            $http({
+              method  : 'GET',
+              url     : '../shared/data/college/'+ $scope.default_values.university_district+'.json',
+
+            }).success(function(data) {   
+              for(var c in data){
+                if(data.hasOwnProperty(c)){
+                  $scope.tmp_universityList=data[c];                   
+                  $scope.tmp_university=$scope.default_values.university;
+                }
+              }
+            }); 
+          } 
+    }
+    $scope.submitForm=function(){
+      var oMyForm = new FormData();
+      oMyForm.append("competition_id", $scope.form_id);
+      oMyForm.append("student_flag",$scope.student_flag=="1"?1:0);
+      oMyForm.append("email", $scope.default_values.email);
+      oMyForm.append("mobile", $scope.default_values.mobile);
+      oMyForm.append("fullname", $scope.default_values.username);
+      oMyForm.append("university", $scope.tmp_university);
+      oMyForm.append("major", $scope.default_values.major);
+      if($scope.student_flag=="1"){ 
+        oMyForm.append("grade", $scope.default_values.grade);
+      }
+      else{
+         oMyForm.append("company", $scope.default_values.company);
+         oMyForm.append("attend_reason", $scope.default_values.attend_reason);
+      }
+     // oMyForm.append("userfile", fileInputElement.files[0]);
+      console.log($scope.default_values);
+
+      /*$http.post({'/kesci_backend/api/auth/change_email',oMyForm, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+            }).success(function(data) {});*/
+       
+    }
+    $http({
+          method  : 'GET',
+          url     : '/kesci_backend/api/api_users/basic_info'
+          }).success(function(data) {   
+           $scope.default_values.university=data.university;
+           $scope.default_values.university_district=data.university_district;
+           $scope.default_values.major=data.major;
+           $scope.default_values.username=data.username;
+           $scope.default_values.email=userStatus.email;
+           $scope.updateUniversityList();
+      });
+    $http({
+          method  : 'GET',
+          url     : '/kesci_backend/api/api_users/contact_info'
+          }).success(function(data) {   
+           $scope.default_values.mobile=data.mobile;  
+           $scope.default_values.wechat=data.wechat;  
+                           
+      }); 
+    
+    
 
 	});
 myAppModule.config(['$routeProvider',function ($routeProvider) {

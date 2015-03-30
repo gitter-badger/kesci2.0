@@ -1,1 +1,68 @@
-comreg
+<div class="content-box">  
+  <div class="discover-form-container">
+  <p class="item-title">比赛报名: {{comp_map[form_id-1]}} </p>
+  <form ng-submit="submitForm();">
+        <div class="form-group">
+              <label>参赛身份</label> 
+              <br>
+              <label class="radio-inline">
+                <input type="radio" name="student_flag" ng-model="default_values.student_flag" value="1" checked="checked"> 学生
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="student_flag" ng-model="default_values.student_flag" value=""> 非学生
+              </label>
+        </div>
+        <div class="form-group">
+          <label>真实姓名</label>       
+          <input type="text" ng-model="default_values.username" class="form-control" required placeholder="真实姓名">
+        </div>
+        <div class="form-group">
+          <label>联系邮箱</label>       
+          <input type="email" ng-model="default_values.email" class="form-control" required placeholder="联系邮箱">
+        </div>
+       <div class="form-group">
+          <label>手机号码</label>       
+          <input type="number" class="form-control" ng-model="default_values.mobile" required placeholder="手机号码">
+        </div>       
+         <div class="form-group">
+          <label ng-show="default_values.student_flag">在读学校</label>  
+          <label ng-show="!default_values.student_flag">毕业院校</label>       
+          <div class="row">
+                    <div class="col-sm-4">
+                        <select class="form-control"  ng-model="default_values.university_district" ng-change="updateUniversityList();" ng-options="m for m in selectSource.districtList" required> 
+                          <option value="" selected="selected" label=" - 未选择 - "> - 未选择 - </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-8">
+                        <select class="form-control" ng-model="tmp_university"  ng-options="m for m in tmp_universityList" required>
+                          <option value="" selected="selected" label=" - 未选择 - "> - 未选择 - </option>
+                        </select>
+                    </div>
+           </div>
+        </div>
+         <div class="form-group">
+          <label>专业</label>       
+          <input type="text" class="form-control" ng-model="default_values.major" required placeholder="专业">
+        </div>
+      <div class="form-group" ng-show="default_values.student_flag">
+          <label>年级</label>       
+          <input type="text" class="form-control" ng-model="default_values.grade" placeholder="年级">
+        </div>
+        <div class="form-group" ng-show="!default_values.student_flag">
+          <label>公司</label>       
+          <input type="text" class="form-control" ng-model="default_values.company"  placeholder="公司">
+        </div>
+        <div class="form-group" ng-show="!default_values.student_flag">
+          <label>参赛原因</label>       
+          <input type="text" class="form-control" ng-model="default_values.attend_reason"  placeholder="参赛原因"> 
+        </div>
+         <div class="form-group">
+            <label>简历上传</label>
+            <input type="file" id="competition-resume-upload">
+            <p class="help-block">选择要上传的简历</p>
+          </div>
+        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 报名</button>
+        <a href="#/" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 取消</a>
+      </form>
+  </div>
+</div>

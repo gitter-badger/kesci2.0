@@ -55,7 +55,7 @@
 				  		<tr>
 					  		<td class="item-table-title">个人简介</td>
 					  		<td>
-					  			<span>{{basic_info.bref_intro||"暂无"}}</span>
+					  			<span>{{basic_info.brief_intro||"暂无"}}</span>
 					  		</td>
 				  		</tr>
 				  		
@@ -179,20 +179,20 @@
 				  			<span class="label label-info">{{$index+1}}</span>
 				  				<table class="table table-striped profile-table">
 				  					<tr>
-				  						<td class="item-table-title">组织</td>
-				  						<td><span>{{item.organzition}}</span></td>
+				  						<td class="item-table-title">实践名称</td>
+				  						<td><span>{{item.practice_name}}</span></td>
+				  					</tr>
+				  					<tr>
+				  						<td class="item-table-title">实践类型</td>
+				  						<td><span>{{practice_type_map[item.practice_type]}}</span></td>
 				  					</tr>
 				  					<tr>
 				  						<td class="item-table-title">时间</td>
 				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
-				  					</tr>
-				  					<tr>
-				  						<td class="item-table-title">职位</td>
-				  						<td><span>{{item.job}}</span></td>
-				  					</tr>
+				  					</tr>			
 				  					<tr>
 				  						<td class="item-table-title">描述</td>
-				  						<td><span>{{item.description}}</span></td>
+				  						<td><span>{{item.detail}}</span></td>
 				  					</tr>
 				  				</table>				  			
 				  			</div>				  		
