@@ -75,123 +75,6 @@ function($scope,$rootScope,$http,userStatus) {
 });
 myAppModule.controller('newsCtr',
 function($scope) {
-/*
-	$scope.competition_stage_map={"not_start":"报名中","ongoing":"进行中","finished":"作品评选中","result":"结果揭晓"}
-	
-	$scope.followed_competition=[{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		stage:"not_start",
-		host:"Avazu",
-		type:"程序开发",
-		district:"不限",
-		reward:"iPhone6，实习机会",
-		sign_due:"12月12日",	
-		submit_due:"1月20日",
-		img:"images/d.jpg",
-		team_num:12
-	},
-	{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		host:"Avazu",
-		type:"程序开发",		
-		stage:"ongoing",		
-		img:"images/d.jpg",
-		submit_due:"1月20日",
-		team_num:12
-	},
-	{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		host:"Avazu",
-		type:"程序开发",		
-		stage:"finished",		
-		img:"images/d.jpg",
-		submit_due:"1月20日",
-		team_num:12
-	},
-	{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		host:"Avazu",
-		type:"程序开发",
-		win_teams:["猪八戒背媳妇","好想吃粽子","高铁侠"],
-		stage:"result",		
-		img:"images/d.jpg",
-		
-	}];
-	
-	$scope.friend_news=[
-	{
-		friend:"萝卜",
-		img:"images/d.jpg",
-		time:"2014-2-16 23:11:12",
-		type:"friend_win_prize",
-		competition:"超级码力程序设计竞赛",
-		prize:"一等奖"
-	},
-	{
-		friend:"周小胖",
-		img:"images/e.jpg",
-		time:"2014-2-16 23:11:12",
-		type:"friend_join_team",
-		team:"猪八戒背媳妇",
-		competition:"超级码力程序设计竞赛",
-	},
-	{
-		friend:"赵信",
-		img:"images/f.jpg",
-		time:"2014-2-16 23:11:12",
-		type:"friend_create_team",
-		team:"猪八戒背媳妇",
-		competition:"超级码力程序设计竞赛"
-	},
-	
-	{
-		friend:"周小胖",
-		img:"images/e.jpg",
-		time:"2014-2-16 23:11:12",
-		type:"friend_follow_competition",
-		competition:"超级码力程序设计竞赛"
-	}
-	];
-	$scope.recommed_competition=[
-	{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		host:"Avazu",
-		type:"程序开发",
-		district:"不限",
-		reward:"iPhone6，实习机会",
-		sign_due:"12月12日",
-		submit_due:"1月20日"
-	},	
-		];
-	$scope.recommed_team=[{
-		name:"梦之队",
-		competition:"AVAZU Holding 程序猿的崛起",		
-		members:["郭冬临","冯巩","周杰伦","东尼大木"],
-		skills:["PHP","JavaScript","MySql"],
-		require_skills:["Web Design","Project Manage","HTML5"],		
-		requier_members:1,
-		signature:"观众朋友们,我想死你们了!",
-		img:"images/e.jpg"
-	}];
-	$scope.recommed_friend=[
-	{
-		name:"周小胖",
-		district:"上海",
-		skills:["PHP","Dota","WoW"],
-		signature:"Without a sense of identity, there can be no real struggle.",
-		img:"images/e.jpg"
-	}
-	];
-	$scope.recommed_course=[
-		{title:"JavaScript 教程",url:"http://www.w3school.com.cn/js/"},
-		{title:"HTML 系列教程",url:"http://www.w3school.com.cn/h.asp"},
-		{title:"XML 系列教程",url:"http://www.w3school.com.cn/x.asp"},
-	]*/
 });
 
 myAppModule.controller('mineCtr',
@@ -206,14 +89,6 @@ function($scope,$http) {
     		 	}
     		 
     	});
-    /*	$http({
-						method  : 'GET',
-						url     : ' /kesci_backend/api/associations/register_num?association_id=1,2'
-    		}).success(function(data) {    		
-    		 for(var k in data.data){
-    		 	$scope.emc_data.reg_num["asso_"+data.data[k].association_id]=data.data[k].register_num;
-    		 	}
-    	});*/
     	$http({
 						method  : 'GET',
 						url     : ' /kesci_backend/api/competitions/is_registered?competition_id=1'
@@ -222,88 +97,8 @@ function($scope,$http) {
     		 	$scope.emc_data.is_reg["comp_"+data.data[k].competition_id]=data.data[k].flag;
     		 	}
     		 		
-    	});
+    	});    
     
-    	/*$http({
-						method  : 'GET',
-						url     : ' /kesci_backend/api/competitions/register_num?competition_id=1'
-    		}).success(function(data) {    		
-    		 for(var k in data.data){
-    		 	$scope.emc_data.reg_num["comp_"+data.data[k].competition_id]=data.data[k].register_num;
-    		 	}
-    	});*/
-		
-	/*$scope.competition_stage_map={"not_start":"报名中","ongoing":"进行中","finished":"作品评选中","result":"结果揭晓"};
-	$scope.my_competition=[{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		stage:"not_start",
-		host:"Avazu",
-		type:"程序开发",
-		district:"不限",
-		reward:"iPhone6，实习机会",
-		sign_due:"12月12日",	
-		submit_due:"1月20日",
-		img:"images/d.jpg",
-		team_num:12,
-		my_team:{
-			name:"梦之队",
-			competition:"超级码力程序设计竞赛",		
-			members:["郭冬临","冯巩","周杰伦","东尼大木"],
-			skills:["PHP","JavaScript","MySql"],
-			require_skills:["Web Design","Project Manage","HTML5"],		
-			requier_members:1,
-			signature:"观众朋友们,我想死你们了!",
-			img:"images/e.jpg"
-		}
-	},
-	{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		stage:"not_start",
-		host:"Avazu",
-		type:"程序开发",
-		district:"不限",
-		reward:"iPhone6，实习机会",
-		sign_due:"12月12日",	
-		submit_due:"1月20日",
-		img:"images/d.jpg",
-		team_num:12,
-		my_team:{
-			name:"梦之队",
-			competition:"AVAZU Holding 程序猿的崛起",		
-			members:["郭冬临","冯巩","周杰伦","东尼大木"],
-			skills:["PHP","JavaScript","MySql"],
-			require_skills:["Web Design","Project Manage","HTML5"],		
-			requier_members:1,
-			signature:"观众朋友们,我想死你们了!",
-			img:"images/e.jpg"
-		}
-	},
-	{
-		name:"超级码力程序设计竞赛",
-		competition_id:"123213",
-		stage:"not_start",
-		host:"Avazu",
-		type:"程序开发",
-		district:"不限",
-		reward:"iPhone6，实习机会",
-		sign_due:"12月12日",	
-		submit_due:"1月20日",
-		img:"images/d.jpg",
-		team_num:12,
-		my_team:{
-			name:"梦之队",
-			competition:"AVAZU Holding 程序猿的崛起",		
-			members:["郭冬临","冯巩","周杰伦","东尼大木"],
-			skills:["PHP","JavaScript","MySql"],
-			require_skills:["Web Design","Project Manage","HTML5"],		
-			requier_members:1,
-			signature:"观众朋友们,我想死你们了!",
-			img:"images/e.jpg"
-		}
-	}];
-*/
 });
 myAppModule.controller('discoverCtr',
 function($scope,selectSource) {
@@ -592,13 +387,12 @@ myAppModule.controller('usercenter_account',
 	});
 
 myAppModule.controller('action_competition_register',
-	function($scope,$http,$routeParams,userStatus,selectSource){	
+	function($scope,$http,$routeParams,$location,userStatus,selectSource){	
     $scope.selectSource=selectSource;
     $scope.comp_map=["EMC杯交大智慧校园数据分析大赛"];
     $scope.form_id=$routeParams.id;
     $scope.default_values={student_flag:"1"};
-    $scope.updateUniversityList=function(){
-        
+    $scope.updateUniversityList=function(){        
             if($scope.default_values.university_district){
             $http({
               method  : 'GET',
@@ -615,30 +409,47 @@ myAppModule.controller('action_competition_register',
           } 
     }
     $scope.submitForm=function(){
-      var oMyForm = new FormData();
-
-      oMyForm.append("competition_id", $scope.form_id);
-      oMyForm.append("student_flag",$scope.student_flag=="1"?1:0);
-      oMyForm.append("email", $scope.default_values.email);
-      oMyForm.append("mobile", $scope.default_values.mobile);
-      oMyForm.append("fullname", $scope.default_values.username);
-      oMyForm.append("university", $scope.tmp_university);
-      oMyForm.append("major", $scope.default_values.major);
-      if($scope.student_flag=="1"){ 
-        oMyForm.append("grade", $scope.default_values.grade);
+      var arr=[],tmp=[];
+      arr.push(["competition_id", $scope.form_id]);
+      arr.push(["student_flag",$scope.default_values.student_flag]);
+      arr.push(["email", $scope.default_values.email]);
+      arr.push(["mobile", $scope.default_values.mobile]);
+      arr.push(["fullname", $scope.default_values.username]);
+      arr.push(["university", $scope.tmp_university]);
+      arr.push(["major", $scope.default_values.major]);
+      if($scope.default_values.student_flag=="1"){ 
+        arr.push(["grade", $scope.default_values.grade]);
       }
       else{
-         oMyForm.append("company", $scope.default_values.company);
-         oMyForm.append("attend_reason", $scope.default_values.attend_reason);
+         arr.push(["company", $scope.default_values.company]);
+         arr.push(["attend_reason", $scope.default_values.attend_reason]);
       }
-     // oMyForm.append("userfile", fileInputElement.files[0]);
-      console.log($scope.default_values);
-
-      /*$http.post({'/kesci_backend/api/auth/change_email',oMyForm, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-            }).success(function(data) {});*/
-       
+      for(var k in arr){
+      	if(typeof(arr[k][1])=="undefined"||arr[k][1].length===0){
+      		alert("请完整填写表单 : "+arr[k][0]);
+      		return;
+      	}
+      	if(arr[k][0]=="mobile"&&arr[k][1]<100000){
+      		alert("请正确填写手机号");
+      		return;
+      	}
+      	tmp.push(arr[k][0]+"="+encodeURIComponent(arr[k][1]));
+      }
+      $http({
+        	method  : 'POST',
+        	url     : '/kesci_backend/api/competitions/register',
+        	data    : tmp.join("&"), 
+        	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    	}).success(function(data) {
+    		if(data.msg=="insert successful"||data.msg=="record exists"){
+    			alert("申请成功,审核结果将于近日通知您.");
+    			$location.path("/");
+    		}
+    		else{
+    			alert("报名出错.");
+    			console.log(data);
+    		}
+    	});        
     }
     $http({
           method  : 'GET',
@@ -657,19 +468,18 @@ myAppModule.controller('action_competition_register',
           url     : '/kesci_backend/api/api_users/contact_info'
           }).success(function(data) {   
            $scope.default_values.mobile=data.mobile;          
-      });	
-		
-
+      });			
 	});
+
+
 myAppModule.controller('action_association_register',
-	function($scope,$http,$routeParams,userStatus,selectSource){
+	function($scope,$http,$routeParams,$location,userStatus,selectSource){
     $scope.selectSource=selectSource;
     $scope.asso_map=["数据科学训练营","数据分析训练营"];
     $scope.form_id=$routeParams.id;
     $scope.default_values={student_flag:"1"};
-    $scope.updateUniversityList=function(){
-        
-            if($scope.default_values.university_district){
+    $scope.updateUniversityList=function(){        
+        if($scope.default_values.university_district){
             $http({
               method  : 'GET',
               url     : '../shared/data/college/'+ $scope.default_values.university_district+'.json',
@@ -684,31 +494,75 @@ myAppModule.controller('action_association_register',
             }); 
           } 
     }
-    $scope.submitForm=function(){
-      var oMyForm = new FormData();
-      oMyForm.append("competition_id", $scope.form_id);
-      oMyForm.append("student_flag",$scope.student_flag=="1"?1:0);
-      oMyForm.append("email", $scope.default_values.email);
-      oMyForm.append("mobile", $scope.default_values.mobile);
-      oMyForm.append("fullname", $scope.default_values.username);
-      oMyForm.append("university", $scope.tmp_university);
-      oMyForm.append("major", $scope.default_values.major);
-      if($scope.student_flag=="1"){ 
-        oMyForm.append("grade", $scope.default_values.grade);
-      }
-      else{
-         oMyForm.append("company", $scope.default_values.company);
-         oMyForm.append("attend_reason", $scope.default_values.attend_reason);
-      }
-     // oMyForm.append("userfile", fileInputElement.files[0]);
-      console.log($scope.default_values);
+  /*  $scope.uploadResume=function(eid){  
+      formMsg={};
+      var fileInputElement=document.getElementById(eid);
+      console.log(fileInputElement,fileInputElement.files);
+      if(!fileInputElement)
+      	return;
+      if(fileInputElement.files.length<1){
+      		alert("请选择文件");
+	  		return;
+	  	}
+	  if(fileInputElement.files[0].size<10000000){
+	  		alert("上传文件过大,请重新选择.");
+	  		return;
+	  	}
 
-      /*$http.post({'/kesci_backend/api/auth/change_email',oMyForm, {
+      	var oMyForm = new FormData();
+      	oMyForm.append("userfile", fileInputElement.files[0]);
+      	formMsg={upload_ing:true};
+      	$http.post({'/kesci_backend/api/auth/change_email',oMyForm, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
-            }).success(function(data) {});*/
+            }}).success(function(data) {});      	
+      	}*/
+    $scope.submitForm=function(){
+      var arr=[],tmp=[];
+      arr.push(["association_id", $scope.form_id]);
+      arr.push(["student_flag",$scope.default_values.student_flag]);
+      arr.push(["email", $scope.default_values.email]);
+      arr.push(["mobile", $scope.default_values.mobile]);
+      arr.push(["fullname", $scope.default_values.username]);
+      arr.push(["university", $scope.tmp_university]);
+      arr.push(["major", $scope.default_values.major]);
+      arr.push(["wechat", $scope.default_values.wechat]);
+      arr.push(["self_intro", $scope.default_values.self_intro]);
+      arr.push(["expectation", $scope.default_values.expectation]);
+      if($scope.default_values.student_flag=="1"){ 
+        arr.push(["grade", $scope.default_values.grade]);
+      }
+      else{
+        arr.push(["company", $scope.default_values.company]);
+      }
+      for(var k in arr){
+      	if(typeof(arr[k][1])=="undefined"||arr[k][1].length===0){
+      		alert("请完整填写表单 : "+arr[k][0]);
+      		return;
+      	}
+      	if(arr[k][0]=="mobile"&&arr[k][1]<100000){
+      		alert("请正确填写手机号");
+      		return;
+      	}
+      	tmp.push(arr[k][0]+"="+encodeURIComponent(arr[k][1]));
+      }
+      	$http({
+        	method  : 'POST',
+        	url     : '/kesci_backend/api/associations/register',
+        	data    : tmp.join("&"), 
+        	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+    	}).success(function(data) {
+    		if(data.msg=="insert successful"||data.msg=="record exists"){
+    			alert("申请成功,审核结果将于近日通知您.");
+    			$location.path("/");
+    		}
+    		else{
+    			alert("报名出错.");
+    			console.log(data);
+    		}});
+     }
+     
        
-    }
     $http({
           method  : 'GET',
           url     : '/kesci_backend/api/api_users/basic_info'
@@ -727,10 +581,7 @@ myAppModule.controller('action_association_register',
            $scope.default_values.mobile=data.mobile;  
            $scope.default_values.wechat=data.wechat;  
                            
-      }); 
-    
-    
-
+      });
 	});
 myAppModule.config(['$routeProvider',function ($routeProvider) {
     $routeProvider

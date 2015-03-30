@@ -3,14 +3,11 @@
   <p class="item-title">比赛报名: {{comp_map[form_id-1]}} </p>
   <form ng-submit="submitForm();">
         <div class="form-group">
-              <label>参赛身份</label> 
-              <br>
-              <label class="radio-inline">
-                <input type="radio" name="student_flag" ng-model="default_values.student_flag" value="1" checked="checked"> 学生
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="student_flag" ng-model="default_values.student_flag" value=""> 非学生
-              </label>
+              <label>报名身份</label> 
+              <select class="form-control"  ng-model="default_values.student_flag"  required> 
+                  <option value="1" label=" 学生 "> 学生 </option>
+                  <option value="0" label=" 非学生 "> 非学生 </option>
+              </select>    
         </div>
         <div class="form-group">
           <label>真实姓名</label>       
@@ -44,23 +41,31 @@
           <label>专业</label>       
           <input type="text" class="form-control" ng-model="default_values.major" required placeholder="专业">
         </div>
-      <div class="form-group" ng-show="default_values.student_flag">
+      <div class="form-group" ng-show="default_values.student_flag==1">
           <label>年级</label>       
           <input type="text" class="form-control" ng-model="default_values.grade" placeholder="年级">
         </div>
-        <div class="form-group" ng-show="!default_values.student_flag">
+        <div class="form-group" ng-show="default_values.student_flag==0">
           <label>公司</label>       
           <input type="text" class="form-control" ng-model="default_values.company"  placeholder="公司">
         </div>
-        <div class="form-group" ng-show="!default_values.student_flag">
+        <div class="form-group" ng-show="default_values.student_flag==0">
           <label>参赛原因</label>       
           <input type="text" class="form-control" ng-model="default_values.attend_reason"  placeholder="参赛原因"> 
         </div>
-         <div class="form-group">
-            <label>简历上传</label>
-            <input type="file" id="competition-resume-upload">
-            <p class="help-block">选择要上传的简历</p>
-          </div>
+          <!--<div class="form-group">	        
+	            <label>简历上传(可选)</label>
+	         <div class="well">
+	            <input type="file" id="competition-resume-upload">	   
+	            <br>         
+	            <button class="btn btn-sm btn-default" ng-click="uploadResume('competition-resume-upload');">上传简历</button>	 
+	            <br>	             
+	         </div>	
+	         <div ng-show="formMsg.upload_ing" class="alert alert-info" role="alert">简历上传中,请稍候</div>      
+	         <div ng-show="formMsg.upload_succ" class="alert alert-success" role="alert">简历上传成功</div>
+	         <div ng-show="formMsg.upload_fail" class="alert alert-danger" role="alert">简历上传失败</div>
+	         <div ng-show="formMsg.upload_already" class="alert alert-info" role="alert">你已上传过简历,再次上传将覆盖原简历.</div>
+         </div>-->
         <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 报名</button>
         <a href="#/" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 取消</a>
       </form>
