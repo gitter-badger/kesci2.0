@@ -583,6 +583,46 @@ myAppModule.controller('action_association_register',
                            
       });
 	});
+
+myAppModule.controller('emcCtr',
+function($scope) {
+
+$scope.teachers=[{
+   "name":"金耀辉",
+   "desc":["电子信息与电气工程学院，教授","网络信息中心副主任","博士生导师"],
+   "img": "../home_def/images/emc/jinyaohui.jpg"
+},{
+   "name":"张鹏翥",
+   "desc":["安泰经管学院，教授","管理信息系统专业主任","博士生导师"],
+   "img": "../home_def/images/emc/zhangpengzhu.jpg"
+},{
+   "name":"韩东",
+   "desc":["交大数学系，系主任","博士生导师"],
+   "img": "../home_def/images/emc/handong.jpg"
+},{
+   "name":"韩挺",
+   "desc":["交大媒体与设计学院，副院长","工业设计专业主任"],
+   "img": "../home_def/images/emc/hanting.jpg"
+},{
+   "name":"张娅",
+   "desc":["交大电子学院，副教授","博士生导师"],
+   "img": "../home_def/images/emc/zhangya.jpg"
+},{
+   "name":"符冰",
+   "desc":["上海交通大学网络信息中心","服务部主管"],
+   "img": "../home_def/images/emc/fubing.jpg"
+},{
+   "name":"陈春曦",
+   "desc":["EMC中国卓越研发集团","上海公司总经理"],
+   "img": "../home_def/images/emc/chenchunxi.jpg"
+},{
+   "name":"蔡远进",
+   "desc":["上海交大后勤集团","财务总监"],
+   "img": "../home_def/images/emc/caiyuanjin.jpg"
+}
+]
+
+});
 myAppModule.config(['$routeProvider',function ($routeProvider) {
     $routeProvider
         .when('/news', {
@@ -611,6 +651,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/action/association/register/:id', {
             templateUrl: 'views/action/association_register.html',
             controller: 'action_association_register'
+        }).when('/static/emc', {
+            templateUrl: 'views/static/emc.html',
+            controller: 'emcCtr'
         }).otherwise({
             redirectTo: '/mine'
         });

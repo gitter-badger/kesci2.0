@@ -109,7 +109,7 @@ $scope.teachers=[{
    "img": "./images/emc/chenchunxi.jpg"
 },{
    "name":"蔡远进",
-   "desc":["后勤集团财务总监"],
+   "desc":["上海交大后勤集团","财务总监"],
    "img": "./images/emc/caiyuanjin.jpg"
 }
 ]

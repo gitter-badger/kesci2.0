@@ -29,3 +29,17 @@
 .profile-label-containera{padding: 0.5em 0;width: 12em;}
 .profile-subtile{font-size:1.3em;padding:1em 0;}
 .profile-well-container{padding:1em 0;border-bottom:1px solid #DDDDDD;}
+
+.my-outline-big-button{
+  padding: 0.5em 2em;
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+}
+
+.my-outline-big-button:hover,.my-outline-big-button:active,.my-outline-big-button:hover{
+ 
+  color: #000;
+  background-color:rgba(255,255,255,0.7);
+  border-color: #aaa;
+}

@@ -1,0 +1,80 @@
+<div class="container" ng-controller="emcCtr">
+  <div class="content-box" style="background:url(../home_def/images/emc/heading.jpg) no-repeat center;background-size:cover;color:#eee;border-radius:10px;">
+    <div style="text-align:center;margin-top:100px;letter-spacing: 2px;">
+      <h1>EMC杯开放数据智慧校园分析大赛</h1>
+      <br>      
+      <p style="font-size:1.5em;">宣讲会：4月9日19：00,网络中心8楼</p>
+      <br>
+      <a href="#/action/competition/register/1" class="btn btn-lg my-outline-big-button">立即报名</a>
+      <br>      
+      <table style="display:block;text-align:left;float:right">
+      <tr><td>主办单位：</td><td>交大网络信息中心</td></tr>
+      <tr><td>赞助单位：</td><td>EMC卓越研发集团</td></tr>
+      <tr><td>指导单位：</td><td>交大学生工作指导委员会</td></tr>
+      <tr><td>合作机构：</td><td>上海气象局、上海交大后勤集团</td></tr>
+      <tr><td>承办单位：</td><td>Kesci校园比赛平台</td></tr>
+      <tr><td>协办单位：</td><td>电院学生会、交大数据分析俱乐部</td></tr>
+    </table>  
+    </div>
+
+  </div>
+  <div class="center-block" style="width:80%;color:#555;max-width:600px;font-size:1.2em;line-height:1.8em;letter-spacing: 1px;">
+    <h2 style="text-align:center">—— 活动概述 ——</h2>
+    <br>
+    <ul>
+    <li>面对社会、科研、企业对于大数据人才的紧迫需求，上海交大网络信息中心联合EMC卓越研究集团，于2015年4月共同举办“EMC杯上海交大智慧校园数据分析大赛”。这次数据分析大赛将开放校园数据，并启动数据训练营，鼓励同学和社会人士参与到大数据的学习和实践之中。</li>
+    <br>
+    <li>大赛将面向国内高校的大学生以及社会各界人士，上海交大将开放上万学生的校园卡消费数据和无线网路流量数据，让学生和社会人士都能够参与校园数据的分析和探索，积累数据分析的实践经验，并探究大学生的行为规律，提出校园管理的政策建议。</li><br>
+    <li>参赛选手不仅可以赢取2.5万元的大赛奖金，还能够见证自己的数据分析成果被投入实际应用，改善交大的管理和学生的生活。对于有应用潜力的数据分析项目和程序，交大和EMC将进一步投入有力的资金和技术支持，帮助本次大赛的成果走出校园，走向社会，创造更大的价值。</li><br>
+    <li>大赛于4月1日开始报名，4月9日正式启动训练营，通过28天的社群化、实践化学习，掌握数据建模与数据分析基础技能。并为训练营成员提供专业的数据分析工具和资源，从而顺利参与本次数据分析大赛。<b>(注册kesci即可报名参赛并申请参加训练营)</b></li>
+    </ul>
+    <br><br>
+    <h2 style="text-align:center">—— 赛事评委 ——</h2>
+    <div class="row" style="text-align:center;">
+      <div class="col-sm-6" ng-repeat="item in teachers">
+        <img class="img-circle img-thumbnail" style="height:180px;width:auto;margin-top:50px" ng-src="{{item.img}}">
+        <h3>{{item.name}}</h3>
+        <p><span ng-repeat="s in item.desc">{{s}}<br/></span></p>
+      </div>
+    </div>
+    <br><br>
+    <h2 style="text-align:center">—— 比赛内容 ——</h2>
+    <br>
+    <b>赛题一：校园餐饮消费分析</b>
+    <ul>
+    <li>分析交大餐饮消费的规律受到哪些外部因素的影响，如互联网外卖行业、天气、季节、食堂地理位置、学期考试安排。</li>
+    <li>使用Excel、Python、R等数据分析软件。</li>
+    <li>优化校园服务，借助数据分析的成果降低校园餐饮系统的浪费，提高师生用餐的满意度。</li>
+    <li>通过可视化或数学模型，形成12页以内PPT形式数据分析报告和数据分析程序，基于数据分析提出政策建议，从而改进食堂的经营效益，提高服务师生的水平。</li>
+    </ul>   
+    <b>赛题二：校园无线网络流量分析</b>
+    <ul>
+    <li>分析交大学生上网行为数据，进行可视化或数学建模分析，了解学生上网行为的
+总体特征、发展趋势和潜在问题。</li>
+    <li>使用Excel、Python、R等数据分析软件。</li>   
+    <li>可从上网时间、上网位置、上网站点等维度展开数据分析，通过数学模型和可视化分析，得到12页以内PPT形式数据分析报告和数据分析程序。改善校园网络管理的工作，并对学生上网行为提出建议，从而更合理地使用网络资源。</li>
+    </ul>
+    <p>团队成员由2-5人构成，参赛团队可以选择任一题目展开分析项目。</p>
+    <p><b>提交作品格式：</b>数据分析程序代码  +  12页PPT以内的数据分析报告</p>
+    <p><b>参赛流程：</b></p>
+    <ol>
+      <li>注册kesci</li>
+      <li>报名参加比赛或申请训练营</li>
+      <li>建立或加入团队</li>
+    </ol>
+    <br><br>
+  <h2 style="text-align:center">—— 奖项设置 ——</h2>
+  <br>
+  <table style="display:block;width:12em;" class="center-block">
+      <tr><td>综合分析大奖</td><td>：1万元</td></tr>
+      <tr><td>最佳可视化</td><td>：3千元</td></tr>
+      <tr><td>最佳数据工程</td><td>：3千元</td></tr>
+      <tr><td>最佳政策建议</td><td>：3千元</td></tr>
+      <tr><td>最佳Excel应用</td><td>：3千元</td></tr>
+      <tr><td>最佳R语言应用</td><td>：3千元</td></tr>
+  </table>  
+  <br><br>
+  <h2 style="text-align:center">—— 合作媒体 ——</h2>
+  </div>
+  <img  src="../home_def/images/emc/footer.png" style="display:block;max-width:90%;height:auto;width:auto;margin:3em auto;">
+</div>
