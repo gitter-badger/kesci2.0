@@ -80,7 +80,7 @@ function($scope) {
 myAppModule.controller('mineCtr',
 function($scope,$http) {
 		$scope.emc_data={is_reg:{},reg_num:{}};
-    //$scope.noticeMsg=[{title:"Hello",msg:"Welcome to Kesci!"}];
+    $scope.noticeMsg=[{title:"通知",msg:"数据获取方式会在近期公布；组队系统也即将上线。"}];
 		$http({
 						method  : 'GET',
 						url     : ' /kesci_backend/api/associations/is_registered?association_id=1,2'
@@ -608,7 +608,7 @@ $scope.teachers=[{
    "img": "../home_def/images/emc/hanting.jpg"
 },{
    "name":"郑磊",
-   "desc":["复旦大学数字与移动治理实验室主任","国际关系与公共事务学院院长助理","副教授"],
+   "desc":["复旦数字与移动治理实验室主任","国际关系与公共事务学院院长助理","副教授"],
    "img": "../home_def/images/emc/zhenglei.jpg"
 },{
    "name":"张娅",

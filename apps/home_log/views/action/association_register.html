@@ -47,7 +47,23 @@
         </div>
        <div class="form-group" ng-show="default_values.student_flag==1">
           <label>年级</label>       
-          <input type="text" class="form-control" ng-model="default_values.grade" placeholder="年级">
+           <select class="form-control"  ng-model="default_values.grade" required> 
+              <option value="" selected="selected" label=" - 请选择 - "> - 请选择 - </option>
+              <option value="大一" label="大一">大一</option>
+              <option value="大二" label="大二">大二</option>
+              <option value="大三" label="大三">大三</option>
+              <option value="大四" label="大四">大四</option>
+              <option value="研一" label="研一">研一</option>
+              <option value="研二" label="研二">研二</option>
+              <option value="研三" label="研三">研三</option>
+              <option value="博一" label="博一">博一</option>
+              <option value="博二" label="博二">博二</option>
+              <option value="博三" label="博三">博三</option>
+              <option value="博四" label="博四">博四</option>
+              <option value="博五" label="博五">博五</option>
+              <option value="博六" label="博六">博六</option>
+              <option value="博七" label="博七">博七</option>           
+           </select>         
         </div>
         <div class="form-group" ng-show="default_values.student_flag==0">
           <label>公司</label>       

@@ -43,3 +43,16 @@
   background-color:rgba(255,255,255,0.7);
   border-color: #aaa;
 }
+
+ .m-text-span{
+      padding:0 1em;
+    }
+    .m-img{
+      width:50px;
+      height: auto;
+    }
+    .t-img{
+      margin: 0 20px;
+      width:200px;
+      height: auto;
+    }
