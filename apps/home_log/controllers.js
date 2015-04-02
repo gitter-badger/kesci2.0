@@ -80,7 +80,7 @@ function($scope) {
 myAppModule.controller('mineCtr',
 function($scope,$http) {
 		$scope.emc_data={is_reg:{},reg_num:{}};
-    $scope.noticeMsg=[{title:"通知",msg:"数据获取方式会在近期公布；组队系统也即将上线。"}];
+    $scope.noticeMsg=[{title:"通知",msg:"数据获取方式会在近期公布；组队系统也即将上线。"},{title:"意见反馈",msg:"感谢各位小伙伴注册KESCI平台！由于平台刚刚上线不久，肯定还有很多做的不完善的地方，大家关于平台、比赛和训练营有什么问题，可以通过屏幕右侧的意见反馈按钮联系KESCI管理员，我们会在3小时内做出回复。"}];
 		$http({
 						method  : 'GET',
 						url     : ' /kesci_backend/api/associations/is_registered?association_id=1,2'
