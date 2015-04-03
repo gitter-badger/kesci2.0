@@ -51,6 +51,10 @@ function($scope,$rootScope,$http,userStatus) {
     			$scope.userStatus.activated=data.activated;
     		}
     });
+    $http({method:'GET',url:"./data/dynamic_config.json"}).success(
+    	function(data){
+    		$scope.userStatus.noticeMsg=data.noticeMsg;
+    });
 	$rootScope.$on('$routeChangeSuccess', function(){
         if(arguments[1]&&arguments[1].$$route&&arguments[1].$$route.controller){
        		$scope.ctrName=arguments[1].$$route.controller;
@@ -78,9 +82,9 @@ function($scope) {
 });
 
 myAppModule.controller('mineCtr',
-function($scope,$http) {
+function($scope,$http,userStatus) {
 		$scope.emc_data={is_reg:{},reg_num:{}};
-    $scope.noticeMsg=[{title:"通知",msg:"数据获取方式会在近期公布；组队系统也即将上线。"},{title:"意见反馈",msg:"感谢各位小伙伴注册KESCI平台！由于平台刚刚上线不久，肯定还有很多做的不完善的地方，大家关于平台、比赛和训练营有什么问题，可以通过屏幕右侧的意见反馈按钮联系KESCI管理员，我们会在3小时内做出回复。"}];
+    	$scope.noticeMsg=userStatus.noticeMsg;
 		$http({
 						method  : 'GET',
 						url     : ' /kesci_backend/api/associations/is_registered?association_id=1,2'
@@ -589,7 +593,6 @@ myAppModule.controller('action_association_register',
 
 myAppModule.controller('emcCtr',
 function($scope) {
-
 $scope.teachers=[{
    "name":"金耀辉",
    "desc":["电子信息与电气工程学院，教授","网络信息中心副主任","博士生导师"],
@@ -627,8 +630,11 @@ $scope.teachers=[{
    "desc":["上海交大后勤集团","财务总监"],
    "img": "../home_def/images/emc/caiyuanjin.jpg"
 }
-]
-
+];
+});
+myAppModule.controller('trainingCtr',
+function($scope,$routeParams) {
+	$scope.trainingType=$routeParams.id;
 });
 myAppModule.config(['$routeProvider',function ($routeProvider) {
     $routeProvider
@@ -658,6 +664,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/action/association/register/:id', {
             templateUrl: 'views/action/association_register.html',
             controller: 'action_association_register'
+        }).when('/static/training/:id', {
+            templateUrl: 'views/static/training.html',
+            controller: 'trainingCtr'
         }).when('/static/emc', {
             templateUrl: 'views/static/emc.html',
             controller: 'emcCtr'
