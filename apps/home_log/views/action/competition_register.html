@@ -22,8 +22,8 @@
           <input type="number" class="form-control" ng-model="default_values.mobile" required placeholder="手机号码">
         </div>       
          <div class="form-group">
-          <label ng-show="default_values.student_flag">在读学校</label>  
-          <label ng-show="!default_values.student_flag">毕业院校</label>       
+          <label ng-show="default_values.student_flag==1">在读学校</label>  
+          <label ng-show="default_values.student_flag==0">毕业院校</label>       
           <div class="row">
                     <div class="col-sm-4">
                         <select class="form-control"  ng-model="default_values.university_district" ng-change="updateUniversityList();" ng-options="m for m in selectSource.districtList" required> 

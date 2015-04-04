@@ -1,0 +1,42 @@
+<div class="row">
+	<div class="col-md-3 ">
+			<div class="content-box">
+				<img class="img-thumbnail img-circle profile-img" ng-src="{{userStatus.img}}"/>
+				<p class="profile-name">{{userStatus.username}}</p>
+				<table class="table profile-table">
+				<!--<tr><td class="item-table-title">用户ID</td><td>{{userStatus.user_id}}</td></tr>	-->
+				<tr><td class="item-table-title">邮箱</td><td>{{userStatus.email}}</td></tr>		
+				</table>
+			</div>
+		<div class="list-group content-box-nopadding">			
+			  <a ng-click="currentTab=0;" ng-class="{'active':currentTab==0}" class="list-group-item">系统公告<span class="badge">{{official_notices.length}}</span></a>
+			  <a ng-click="currentTab=1;" ng-class="{'active':currentTab==1}" class="list-group-item">组队通知<span class="badge">0</span></a>			 
+			  <a ng-click="currentTab=2;" ng-class="{'active':currentTab==2}" class="list-group-item">团队广播<span class="badge">0</span></a>
+			  <a ng-click="currentTab=3;" ng-class="{'active':currentTab==3}" class="list-group-item">站内信<span class="badge">0</span></a>				
+		</div>
+	</div>
+
+	<div class="col-md-9">
+		<div class="content-box profile-content" style="min-height:35em;">
+			<div ng-show="currentTab==0">
+				<div ng-show="official_notices.length==0" style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦</div>
+				<div class="media well" ng-repeat="item in official_notices">
+					  <div class="media-left" style="text-align:center">					  
+					    <img class="media-object " src="../shared/images/kesci_mid.png">			  
+					    <span class="label label-default" ng-show="item.read_flag==1">已读</span>
+					    <span class="label label-info" ng-show="item.read_flag==0" ng-click="markRead('official_notices',$index);">标记为已读</span>
+					    <br>
+					  </div>
+					  <div class="media-body" style="padding-left:5px;padding-top:10px;">
+					    <h4 style="font-weight:bold" class="media-heading">{{item.title}}</h4>
+					    <p style="margin-top:15px;">{{item.content}}</p>
+					  </div>
+				</div>
+			</div>
+			<div ng-show="currentTab!=0">
+				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦</div>
+			</div>
+		</div>
+
+	</div>	
+</div>	

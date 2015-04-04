@@ -4,7 +4,8 @@
 				<img class="img-thumbnail img-circle profile-img" ng-src="{{userStatus.img}}"/>
 				<p class="profile-name">{{userStatus.username}}</p>
 				<table class="table profile-table">
-				<tr><td class="item-table-title">用户ID</td><td>{{userStatus.user_id}}</td></tr>	
+				<tr><td class="item-table-title">邮箱</td><td>{{userStatus.email}}</td></tr>
+				<!--<tr><td class="item-table-title">用户ID</td><td>{{userStatus.user_id}}</td></tr>-->	
 				<tr><td class="item-table-title">当前竞赛</td><td>{{basic_info.active_competitions[0].cptn_name||"暂无"}}</td></tr>	
 				</table>
 			</div>

@@ -31,7 +31,7 @@ myAppModule.constant('selectSource', {
 		universityList:["上海交大","复旦大学","华东师大"],
 		competitionTypeList:["数据分析","数据挖掘","推荐算法","预测","数据建模","数据可视化","数据工程","数据应用构建"],
 		competitionStageList:["不限","尚未开始","报名中","进行中","作品评选中","已结束"],
-		competitionList:["EMC杯智慧校园数据分析大赛"]
+		competitionList:["EMC杯智慧校园开放数据大赛"]
 });
 myAppModule.controller('navbarCtr',
 function($scope,$rootScope,$http,userStatus) { 
@@ -45,15 +45,13 @@ function($scope,$rootScope,$http,userStatus) {
     			window.location.href="../home_def/"
     		}
     		if(typeof(data.username)!="undefined"){
-    			$scope.userStatus.username=data.username;
-    			$scope.userStatus.user_id=data.user_id;
-    			$scope.userStatus.email=data.email;
-    			$scope.userStatus.activated=data.activated;
+    			for(var k in data){
+	    			if(!data.hasOwnProperty(k))
+	    				continue;
+	    			$scope.userStatus[k]=data[k];
+    			}
+
     		}
-    });
-    $http({method:'GET',url:"./data/dynamic_config.json"}).success(
-    	function(data){
-    		$scope.userStatus.noticeMsg=data.noticeMsg;
     });
 	$rootScope.$on('$routeChangeSuccess', function(){
         if(arguments[1]&&arguments[1].$$route&&arguments[1].$$route.controller){
@@ -84,7 +82,18 @@ function($scope) {
 myAppModule.controller('mineCtr',
 function($scope,$http,userStatus) {
 		$scope.emc_data={is_reg:{},reg_num:{}};
-    	$scope.noticeMsg=userStatus.noticeMsg;
+    	$scope.userStatus=userStatus;
+    	$scope.markRead=function(noticeIdx){
+			var tmp=[];
+			tmp.push($scope.userStatus.unread_notices[noticeIdx]["id"]);
+			$scope.userStatus.unread_notices.splice(noticeIdx,1);
+			$http({
+							method  : 'POST',
+							url     : '/kesci_backend/api/notifications/official_notice',
+							data    : "json_data="+encodeURIComponent(JSON.stringify(tmp)),
+							headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+	    		}).success(function(data) {});
+		}
 		$http({
 						method  : 'GET',
 						url     : ' /kesci_backend/api/associations/is_registered?association_id=1,2'
@@ -390,11 +399,32 @@ myAppModule.controller('usercenter_account',
     	});
 	};
 	});
-
+myAppModule.controller('usercenter_msg',
+	function($scope,$http,$location,userStatus){
+		$scope.userStatus=userStatus;
+		$scope.currentTab=0;
+		$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/notifications/official_notice',
+	    }).success(function(data) {
+	    	$scope.official_notices=data.notices;
+	    });
+	    $scope.markRead=function(noticeType,noticeIdx){
+			var tmp=[];
+			tmp.push($scope.official_notices[noticeIdx]["id"]);
+			$scope.official_notices[noticeIdx]["read_flag"]=1;
+			$http({
+							method  : 'POST',
+							url     : '/kesci_backend/api/notifications/official_notice',
+							data    : "json_data="+encodeURIComponent(JSON.stringify(tmp)),
+							headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+	    		}).success(function(data) {});
+		}
+	})
 myAppModule.controller('action_competition_register',
 	function($scope,$http,$routeParams,$location,userStatus,selectSource){	
     $scope.selectSource=selectSource;
-    $scope.comp_map=["EMC杯交大智慧校园数据分析大赛"];
+    $scope.comp_map=["EMC杯智慧校园开放数据大赛"];
     $scope.form_id=$routeParams.id;
     $scope.default_values={student_flag:"1"};
     $scope.updateUniversityList=function(){        
@@ -637,16 +667,13 @@ function($scope,$routeParams) {
 	$scope.trainingType=$routeParams.id;
 });
 myAppModule.config(['$routeProvider',function ($routeProvider) {
-    $routeProvider
-        .when('/news', {
+    $routeProvider.when('/news', {
             templateUrl: 'views/news.html',
             controller: 'newsCtr'
-        })  
-     	.when('/mine', {
+        }).when('/mine', {
             templateUrl: 'views/mine.html',
             controller: 'mineCtr'
-        })  
-        .when('/discover', {
+        }).when('/discover', {
             templateUrl: 'views/discover.html',
             controller: 'discoverCtr'
         }).when('/usercenter/profile', {
@@ -658,6 +685,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/usercenter/account', {
             templateUrl: 'views/usercenter/account.html',
             controller: 'usercenter_account'
+        }).when('/usercenter/msg', {
+            templateUrl: 'views/usercenter/msg.html',
+            controller: 'usercenter_msg'
         }).when('/action/competition/register/:id', {
             templateUrl: 'views/action/competition_register.html',
             controller: 'action_competition_register'
