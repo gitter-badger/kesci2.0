@@ -421,6 +421,71 @@ myAppModule.controller('usercenter_msg',
 	    		}).success(function(data) {});
 		}
 	})
+myAppModule.controller('entity_team',
+  function($scope,$http,$routeParams,userStatus){ 
+    $scope.teamID=$routeParams.id;
+    $scope.teaminfo={
+      name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_name:"EMC杯智慧校园开放数据大赛",
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],  
+      members:[{
+        name:"胡老板",
+        is_leader:1,
+        brief_intro:"您吃了么",
+        district:"弗兰",
+        university:"新东方",
+        department:"厨师部",
+        major:"掂勺",
+        level:"本科",
+        skills:["MySQL","EAT","DOTA"],
+        rollin_date:"2014-7-1"
+      },{
+        name:"胡老板",
+        brief_intro:"您吃了么",
+        district:"弗兰",
+        university:"新东方",
+        department:"厨师部",
+        major:"掂勺",
+        level:"本科",
+        skills:["MySQL","EAT","DOTA"],
+        rollin_date:"2014-7-1"
+      },{
+        name:"胡老板",
+        brief_intro:"您吃了么",
+        district:"弗兰",
+        university:"新东方",
+        department:"厨师部",
+        major:"掂勺",
+        level:"本科",
+        skills:["MySQL","EAT","DOTA"],
+        rollin_date:"2014-7-1"
+      },{
+        name:"胡老板",
+        brief_intro:"您吃了么",
+        district:"弗兰",
+        university:"新东方",
+        department:"厨师部",
+        major:"掂勺",
+        level:"本科",
+        skills:["MySQL","EAT","DOTA"],
+        rollin_date:"2014-7-1"
+      },{
+        name:"胡老板",
+        brief_intro:"您吃了么",
+        district:"弗兰",
+        university:"新东方",
+        department:"厨师部",
+        major:"掂勺",
+        level:"本科",
+        skills:["MySQL","EAT","DOTA"],
+        rollin_date:"2014-7-1"
+      }
+      ]
+    }
+
+  })
 myAppModule.controller('action_competition_register',
 	function($scope,$http,$routeParams,$location,userStatus,selectSource){	
     $scope.selectSource=selectSource;
@@ -598,8 +663,7 @@ myAppModule.controller('action_association_register',
     			console.log(data);
     		}});
      }
-     
-       
+            
     $http({
           method  : 'GET',
           url     : '/kesci_backend/api/api_users/basic_info'
@@ -688,6 +752,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/usercenter/msg', {
             templateUrl: 'views/usercenter/msg.html',
             controller: 'usercenter_msg'
+        }).when('/entity/team/:id', {
+            templateUrl: 'views/entity/team.html',
+            controller: 'entity_team'
         }).when('/action/competition/register/:id', {
             templateUrl: 'views/action/competition_register.html',
             controller: 'action_competition_register'

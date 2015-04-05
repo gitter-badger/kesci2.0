@@ -14,7 +14,7 @@
 .content-box-item-img{display: block;margin: 2em auto 0.5em auto;width: 100%;height: auto;max-width: 140px;}
 .item-title{font-size: 1.2em;font-weight: bold;padding: 0.5em 0;}
 .content-box-item-detail{padding: 1em 1em}
-.item-table-title{font-weight: bold;color:#555;min-width: 4em}
+.item-table-title{font-weight: bold;color:#555;min-width: 2em}
 .friend-news-img-warpper{min-width: 80px;max-width: 120px}
 .friend-news-content{font-size: 1.2em;padding: 1em 2em;}
 .recommed-item{margin: 1em 0}
@@ -23,6 +23,7 @@
 .discover-label-container{padding: 0.5em 0;font-size: 1.2em;}
 .profile-img{display: block;width: 100%;height: auto;max-width: 180px;margin: 0 auto}
 .profile-name{text-align: center;font-size: 18px;font-weight: bold;padding: 1em;}
+
 .profile-heading{padding-top: 2em}
 .table>tbody>tr>td{vertical-align: middle;}
 .profile-table>tbody>tr>td{padding:1em}
@@ -30,7 +31,7 @@
 .profile-label-containera{padding: 0.5em 0;width: 12em;}
 .profile-subtile{font-size:1.3em;padding:1em 0;}
 .profile-well-container{padding:1em 0;border-bottom:1px solid #DDDDDD;}
-
+.team-role-lable{font-size: 1em}
 .my-outline-big-button{
   padding: 0.5em 2em;
   color: #fff;
