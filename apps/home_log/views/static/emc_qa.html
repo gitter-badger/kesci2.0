@@ -1,0 +1,15 @@
+<div >
+<h2>EMC杯智慧校园开放数据大赛 Q&amp;A</h2>
+
+<br>
+<div class="content-box row" ng-repeat="item in qaData.data">
+	<div class="col-sm-2" style="text-align:center">
+		<img src="./images/question.png">
+	</div>
+	<div class="col-sm-10" style="font-size:16px;padding:1em 2em 1em 0;line-height:1.8em">
+		<p><b>Q : {{item.q}}</b></p>
+		<p>A : {{item.a}}</p>
+	</div>
+</div>
+<p style="text-align:right">Version: {{qaData.version}}</p>
+</div>

@@ -1,10 +1,10 @@
-	<ul class="nav nav-tabs">
-	  <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0"><a><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span> 发现比赛</a></li>    
-	  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1"><a><span class="glyphicon glyphicon-star" aria-hidden="true"></span> 发现团队</a></li>
-	  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2"><a><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 发现伙伴</a></li>
-	</ul>
+<ul class="nav nav-tabs">
+ <!-- <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0"><a><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span> 发现比赛</a></li>-->    
+  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1"><a><span class="glyphicon glyphicon-star" aria-hidden="true"></span> 发现团队</a></li>
+  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2"><a><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 发现伙伴</a></li>
+</ul>
 <div class="content-box no_margintop">
-	<div class="discover-form-container" ng-show="currentTab==0">
+	<!--<div class="discover-form-container" ng-show="currentTab==0">
 			<form ng-submit="devInfo();">
 
 			  <div class="form-group">
@@ -32,28 +32,28 @@
 			  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查 找</button>
 			   <button type="button" class="btn btn-default" ng-click="clearAllForms();">清 除</button>
 			</form>
-	</div>
+	</div>-->
 		<div class="discover-form-container" ng-show="currentTab==1">
-			<form ng-submit="devInfo();">
+			<form name="discover_team_form" ng-submit="teamFormSubmit();">
 			  <div class="form-group">
 			  	<label>团队名称</label>			  
-			    <input type="text" ng-model="teamSearch_name" class="form-control" placeholder="输入关键字查找">
+			    <input name="teamname" type="text" ng-model="tmp_team_teamname" class="form-control" placeholder="输入团队名称查找">
 			  </div>
 			   <p class="text-info">使用Ctrl键可以多选哟!</p>
 			  <div class="form-group">
 			    <label>参与比赛</label>
-				<select multiple class="form-control" ng-model="teamSearch_selectedCompetition" ng-options="m for m in selectSource.competitionList"></select>	
-				<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in teamSearch_selectedCompetition">{{rs}}</span></div> 
+				<select ng-model="tmp_team_competition" multiple class="form-control" ng-options="m.id as m.name for m in selectSource.competitionList" name="competition_id" ></select>	
+				<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="id in tmp_team_competition">{{findCompetitionName(id)}}</span></div>
 			</div>
 			  <div class="form-group">
 			  	<label>地区</label>			  
-			  	<select multiple class="form-control" ng-model="teamSearch_selectedDistrict" ng-options="m for m in selectSource.districtList"> </select>	
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in teamSearch_selectedDistrict">{{rs}}</span></div> 
+			  	<select multiple ng-model="tmp_team_district" class="form-control" name="district" ng-options="m for m in selectSource.districtList"> </select>	
+			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_team_district">{{rs}}</span></div> 
 			  </div>
 			  <div class="form-group">
 			  	<label>需求技能</label>				
-			  	<select  multiple class="form-control" ng-model="teamSearch_selectedSkill" ng-options="m for m in selectSource.skillList"> </select><br>		  		
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in teamSearch_selectedSkill">{{rs}}</span></div>  	
+			  	<select  multiple ng-model="tmp_team_skill" class="form-control" name="skill" ng-options="m for m in selectSource.skillList"> </select><br>		  		
+			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_team_skill">{{rs}}</span></div>  	
 			  </div>
 			   <div class="checkbox">
 			    <label>
@@ -65,29 +65,105 @@
 			</form>
 	</div>
 	<div class="discover-form-container" ng-show="currentTab==2">
-			<form ng-submit="devInfo();">
+			<form name="discover_people_form" ng-submit="peopleFormSubmit();">
 			  <div class="form-group">
 			  	<label>用户姓名</label>			  
-			    <input type="text" ng-model="peopleSearch_name" class="form-control" placeholder="输入关键字查找">
+			    <input ng-model="tmp_people_username" name="username" type="text" class="form-control" placeholder="输入用户姓名查找">
 			  </div>
 			   <p class="text-info">使用Ctrl键可以多选哟!</p>
 			 <div class="form-group">
-			    <label>关注的比赛</label>
-				<select class="form-control"  multiple ng-model="peopleSearch_selectedCompetition" ng-options="m for m in selectSource.competitionList"> </select>
-				<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in peopleSearch_selectedCompetition">{{rs}}</span></div>  
+			    <label>参与比赛</label>
+				<select name="competition_id_list" ng-model="tmp_people_competition" class="form-control"  multiple ng-options="m.id as m.name for m in selectSource.competitionList"> </select>
+				<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="id in tmp_people_competition">{{findCompetitionName(id)}}</span></div>
 			</div>
 			  <div class="form-group">
 			  	<label>地区</label>			  
-			  	<select multiple class="form-control" ng-model="peopleSearch_selectedDistrict" ng-options="m for m in selectSource.districtList"> </select>	
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in peopleSearch_selectedDistrict">{{rs}}</span></div> 
+			  	<select name="district_list" ng-model="tmp_people_district" multiple class="form-control" ng-options="m for m in selectSource.districtList"> </select>
+			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_people_district">{{rs}}</span></div>
 			  </div>
 			  <div class="form-group">
 			  	<label>技能</label>				
-			  	<select  multiple class="form-control" ng-model="peopleSearch_selectedSkill" ng-options="m for m in selectSource.skillList"> </select><br>
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in peopleSearch_selectedSkill">{{rs}}</span></div>  	
+			  	<select name="skill_list" ng-model="tmp_people_skill" multiple class="form-control" ng-options="m for m in selectSource.skillList"> </select><br>
+			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_people_skill">{{rs}}</span></div>	
 			  </div>
 			  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查 找</button>
 			  <button type="button" class="btn btn-default" ng-click="clearAllForms();">清 除</button>
 			</form>
 	</div>
 </div>
+
+
+<nav ng-show="pageInfo.show">
+      <ul class="pagination">
+        <li ng-class="{'disabled':pageInfo.current<=1}" ng-click="pageAction('prev');"><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+        <li ng-repeat="item in pageInfo.array" ng-click="pageAction(item);" ng-class="{'active':pageInfo.current==item}"><a>{{item}}</a></li>       
+        <li ng-class="{'disabled':pageInfo.current>=pageInfo.array.length}" ng-click="pageAction('next');"><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+     </ul>
+</nav>
+<div class="content-box" ng-show="currentTab==2">
+
+	<div style="border-bottom:1px solid #ddd;margin:1.5em 0;" ng-repeat="item in people_result.data">	
+	<span class="label label-info" ng-show="item.in_team_flag==1">已有团队</span>
+	<span class="label label-success" ng-show="item.in_team_flag==0">尚无团队</span>
+		<div class="row">   
+			<div class="col-sm-3">
+			  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/de.png">
+			  <p class="profile-name">{{item.fullname}}</p>		    
+			</div> 
+			<div class="col-sm-9 content-box-item-detail"  ng-switch on="item.student_flag">              
+			  <table class="table table-striped" ng-switch-when="0">                 
+			    <tr>
+			    	<td class="item-table-title" style="min-width:4em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+			    </tr>  
+			    <tr>
+			    	<td class="item-table-title">参赛身份</td>
+			    	<td colspan="3">非学生</td>
+			    </tr>  
+			    <tr>
+			    	<td class="item-table-title">参赛原因</td><td colspan="3">{{item.attend_reason||"暂无"}}</td>
+			    </tr> 
+			    <tr>                      
+			      <td class="item-table-title">技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
+			    </tr>                 
+			    <tr>
+			      <td class="item-table-title">所在地区</td><td>{{item.university_district||"暂无"}}</td>
+			      <td class="item-table-title">毕业大学</td><td>{{item.university||"暂无"}}</td>         
+			    </tr>			  
+			    <tr>	      
+			      <td class="item-table-title">专业</td><td>{{item.major||"暂无"}}</td>
+			      <td class="item-table-title">公司</td><td>{{item.company||"暂无"}}</td>       
+			    </tr> 
+			     <tr>
+			      <td class="item-table-title">当前比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>
+			      <td class="item-table-title">上次登录</td><td>{{item.last_login||"暂无"}}</td>       
+			    </tr>
+			  </table>  
+			  <table class="table table-striped" ng-switch-when="1">                 
+			    <tr>
+			    	<td class="item-table-title" style="min-width:4em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+			    </tr>  
+			    <tr>
+			    	<td class="item-table-title">参赛身份</td>
+			    	<td colspan="3">学生</td>
+			    </tr>  
+			    <tr>                      
+			      <td class="item-table-title">技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
+			    </tr>                 
+			    <tr>
+			      <td class="item-table-title">所在地区</td><td>{{item.university_district||"暂无"}}</td>
+			      <td class="item-table-title">就读大学</td><td>{{item.university||"暂无"}}</td>         
+			    </tr>
+			    <tr>	      
+			      <td class="item-table-title">专业</td><td>{{item.major||"暂无"}}</td>
+			      <td class="item-table-title">年级</td><td>{{item.grade||"暂无"}}</td>       
+			    </tr>
+			    <tr>
+			      <td class="item-table-title">当前比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>
+			      <td class="item-table-title">上次登录</td><td>{{item.last_login||"暂无"}}</td>       
+			    </tr>
+			  </table>  		 
+			</div> 
+		</div>
+	</div>
+</div>
+

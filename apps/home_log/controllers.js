@@ -11,7 +11,9 @@ function ng_serialize(ng_form){
   		if(obj.$viewValue){
   			v=obj.$viewValue.join?obj.$viewValue.join(","):obj.$viewValue;
   		}
-  		arr.push(obj.$name+"="+encodeURIComponent(v));
+  		v=v+"";
+  		if(v.length>0)
+  			arr.push(obj.$name+"="+encodeURIComponent(v));
   	}
   	return arr.join("&");
   }
@@ -28,10 +30,9 @@ myAppModule.value('userStatus', {
 myAppModule.constant('selectSource', {
 		skillList:["数学模型","推荐系统","回归","分类","聚类","主成分分析","因子分析","数据清洗","SQL","Hadoop","Spark","自然语言处理","图像处理","机器学习","最优化","R Programming","Python","SAS","SPSS","数据可视化","Tableau","RapidMiner","Weka","Excel","数据分析写作","商业分析","web开发"],
 		districtList:["北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆","台湾","香港","澳门"],
-		universityList:["上海交大","复旦大学","华东师大"],
 		competitionTypeList:["数据分析","数据挖掘","推荐算法","预测","数据建模","数据可视化","数据工程","数据应用构建"],
 		competitionStageList:["不限","尚未开始","报名中","进行中","作品评选中","已结束"],
-		competitionList:["EMC杯智慧校园开放数据大赛"]
+		competitionList:[{name:"EMC杯智慧校园开放数据大赛",id:1}]
 });
 myAppModule.controller('navbarCtr',
 function($scope,$rootScope,$http,userStatus) { 
@@ -115,29 +116,91 @@ function($scope,$http,userStatus) {
     
 });
 myAppModule.controller('discoverCtr',
-function($scope,selectSource) {
-	$scope.currentTab=0;
+function($scope,$http,selectSource) {
+	$scope.currentTab=1;
 	$scope.selectSource=selectSource;
 	$scope.clearAllForms=function(){	
-		$scope.competitionSearch_name="";
-		$scope.competitionSearch_selectedDistrict=[];
-		$scope.competitionSearch_selectedType=[];
-		$scope.competitionSearch_selectedTime="不限";
-		$scope.teamSearch_name="";
-		$scope.teamSearch_selectedCompetition=[];
-		$scope.teamSearch_selectedDistrict=[];
-		$scope.teamSearch_selectedSkill=[];
-		$scope.peopleSearch_name=[];
-		$scope.peopleSearch_selectedCompetition=[];
-		$scope.peopleSearch_selectedDistrict=[];
-		$scope.peopleSearch_selectedSkill=[];
+		//$scope.competitionSearch_name="";
+		//$scope.competitionSearch_selectedDistrict=[];
+		//$scope.competitionSearch_selectedType=[];
+		//$scope.competitionSearch_selectedTime="不限";
+		$scope.tmp_team_teamname="";
+		$scope.tmp_team_competition=[];
+		$scope.tmp_team_district=[];
+		$scope.tmp_team_skill=[];
+		$scope.tmp_people_username="";
+		$scope.tmp_people_competition=[];
+		$scope.tmp_people_district=[];
+		$scope.tmp_people_skill=[];		
 	}
-
 	$scope.clearAllForms();
-
-	$scope.devInfo=function(){
-		alert("此功能尚处于开发之中,敬请期待.");
+	$scope.updatePageNumber=function(page_no,per_page,total_num){
+		var p=Math.ceil(total_num/per_page);
+		$scope.pageInfo={
+			total:Number(total_num),
+			show:p>1?true:false,
+			current:Number(page_no),
+			array:(function(n){var tmp=[];for(var x=0;x<Number(n);x++){tmp.push(x+1)}return tmp})(p)
+		}
 	}
+	$scope.pageAction=function(pageNumber){
+		if(!$scope.pageInfo)
+			return;		
+		if(pageNumber=="prev"){
+			if($scope.pageInfo.current<=1)
+				return;
+			pageNumber=$scope.pageInfo.current-1;
+		}
+		else if(pageNumber=="next"){
+			if($scope.pageInfo.current>=$scope.pageInfo.array.length)
+				return;
+			pageNumber=$scope.pageInfo.current+1;
+		}
+		else if(pageNumber==$scope.pageInfo.current){
+			return;
+		}
+		if($scope.currentTab==2){
+			$scope.peopleFormSubmit(true,pageNumber);
+		}
+	}
+	$scope.clearResult=function(){
+		$scope.people_result=undefined;
+		$scope.pageInfo=undefined;
+	}
+	$scope.findCompetitionName=function(id){
+		for(var idx in $scope.selectSource.competitionList){
+			if (id==$scope.selectSource.competitionList[idx]["id"]) {
+				return $scope.selectSource.competitionList[idx]["name"];
+			};
+		}
+		return '';
+	}
+
+	$scope.peopleFormSubmit=function(isPageAction,targetPage){		
+		
+		var queryStr;
+		if(isPageAction){			
+			queryStr=$scope.lastQuery_people+"&page_no="+targetPage;
+		}
+		else{
+			$scope.clearResult();
+			$scope.lastQuery_people=ng_serialize($scope.discover_people_form);
+			queryStr=$scope.lastQuery_people;
+		}
+			
+		$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/api_users/listing?'+queryStr						
+	    	}).success(function(data) {
+	    		$scope.people_result=data;
+	    		$scope.updatePageNumber(data.page_no,data.per_page,data.total_num);
+	    	});		
+	}
+	$scope.teamFormSubmit=function(){
+		//console.log($scope);
+		console.log(ng_serialize($scope.discover_team_form));
+	}
+	
 
 	 
 });
@@ -461,28 +524,7 @@ myAppModule.controller('entity_team',
         level:"本科",
         skills:["MySQL","EAT","DOTA"],
         rollin_date:"2014-7-1"
-      },{
-        name:"胡老板",
-        brief_intro:"您吃了么",
-        district:"弗兰",
-        university:"新东方",
-        department:"厨师部",
-        major:"掂勺",
-        level:"本科",
-        skills:["MySQL","EAT","DOTA"],
-        rollin_date:"2014-7-1"
-      },{
-        name:"胡老板",
-        brief_intro:"您吃了么",
-        district:"弗兰",
-        university:"新东方",
-        department:"厨师部",
-        major:"掂勺",
-        level:"本科",
-        skills:["MySQL","EAT","DOTA"],
-        rollin_date:"2014-7-1"
-      }
-      ]
+      }]
     }
 
   })
@@ -726,6 +768,16 @@ $scope.teachers=[{
 }
 ];
 });
+myAppModule.controller('emc_qaCtr',
+function($scope,$http) {
+		$http({
+				method  : 'GET',
+				url     : './data/q_a.json',
+
+    		}).success(function(data) {   
+    			$scope.qaData=data;
+    	});
+});
 myAppModule.controller('trainingCtr',
 function($scope,$routeParams) {
 	$scope.trainingType=$routeParams.id;
@@ -767,6 +819,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/static/emc', {
             templateUrl: 'views/static/emc.html',
             controller: 'emcCtr'
+        }).when('/static/emc_qa', {
+            templateUrl: 'views/static/emc_qa.html',
+            controller: 'emc_qaCtr'
         }).otherwise({
             redirectTo: '/mine'
         });

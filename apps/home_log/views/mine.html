@@ -42,11 +42,13 @@
   <strong>{{item.title}}</strong> {{item.content}}
 </div>
 
-
 	<div class="content-box ">
-		<span ng-show="emc_data.is_reg.comp_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
+	<div style="float:right"><a href="#/static/emc_qa"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> EMC杯智慧校园开放数据大赛 Q&amp;A</a></div>
+	
+	<span ng-show="emc_data.is_reg.comp_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
 <!-- 		<span ng-show="emc_data.is_reg.comp_1===true" class="label label-info" style="font-size:1em"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 审核中</span> -->
-		<span class="label label-warning" style="font-size:1em" ng-show="emc_data.is_reg.comp_1===false" > <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
+	<span class="label label-warning" style="font-size:1em" ng-show="emc_data.is_reg.comp_1===false" ><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
+	
 		
 		<div class="content-box-item" >
 	  		<div class="row">		
@@ -86,10 +88,12 @@
 			  	</div>
 	  		</div>
 		</div>
-	<div style="text-align:right"><a href="#/static/emc">了解更多...</a></div>
+	<div style="float:right"><a href="#/static/emc">了解更多...</a></div>
+	
 </div>
 
 	<div class="content-box ">
+	<div style="float:right"><a href="#/static/emc_qa"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> 数据训练营 Q&amp;A</a></div>
 		<span ng-show="emc_data.is_reg.asso_1===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
 		<span ng-show="emc_data.is_reg.asso_1===true" class="label label-info" style="font-size:1em"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 审核中</span>
 		<span ng-show="emc_data.is_reg.asso_1===false" class="label label-warning" style="font-size:1em"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
@@ -133,6 +137,7 @@
 </div>
 
 	<div class="content-box ">
+	<div style="float:right"><a href="#/static/emc_qa"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span> 数据训练营 Q&amp;A</a></div>
 		<span ng-show="emc_data.is_reg.asso_2===true" class="label label-success" style="font-size:1em"> <span class="glyphicon glyphicon-star" aria-hidden="true"></span> 已报名</span>
 		<span ng-show="emc_data.is_reg.asso_2===true" class="label label-info" style="font-size:1em"> <span class="glyphicon glyphicon-time" aria-hidden="true"></span> 审核中</span>
 		<span ng-show="emc_data.is_reg.asso_2===false" class="label label-warning" style="font-size:1em"> <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span> 未报名</span>
