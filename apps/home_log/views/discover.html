@@ -43,17 +43,17 @@
 			  <div class="form-group">
 			    <label>参与比赛</label>
 				<select ng-model="tmp_team_competition" multiple class="form-control" ng-options="m.id as m.name for m in selectSource.competitionList" name="competition_id" ></select>	
-				<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="id in tmp_team_competition">{{findCompetitionName(id)}}</span></div>
+				<div class="discover-label-container"><span class="label label-primary item-table-listItem" ng-repeat="id in tmp_team_competition">{{findCompetitionName(id)}}</span></div>
 			</div>
-			  <div class="form-group">
-			  	<label>地区</label>			  
-			  	<select multiple ng-model="tmp_team_district" class="form-control" name="district" ng-options="m for m in selectSource.districtList"> </select>	
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_team_district">{{rs}}</span></div> 
+	  		<div class="form-group">
+			  	<label>已有技能</label>				
+			  	<select  multiple ng-model="tmp_team_skill" class="form-control" name="skill" ng-options="m for m in selectSource.skillList"> </select><br>		  		
+			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_team_skill">{{rs}}</span></div>  	
 			  </div>
 			  <div class="form-group">
 			  	<label>需求技能</label>				
-			  	<select  multiple ng-model="tmp_team_skill" class="form-control" name="skill" ng-options="m for m in selectSource.skillList"> </select><br>		  		
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_team_skill">{{rs}}</span></div>  	
+			  	<select  multiple ng-model="tmp_team_require_skill" class="form-control" name="require_skill" ng-options="m for m in selectSource.skillList"> </select><br>		  		
+			  	<div class="discover-label-container"><span class="label label-info item-table-listItem" ng-repeat="rs in tmp_team_require_skill">{{rs}}</span></div>  	
 			  </div>
 			   <div class="checkbox">
 			    <label>
@@ -74,12 +74,12 @@
 			 <div class="form-group">
 			    <label>参与比赛</label>
 				<select name="competition_id_list" ng-model="tmp_people_competition" class="form-control"  multiple ng-options="m.id as m.name for m in selectSource.competitionList"> </select>
-				<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="id in tmp_people_competition">{{findCompetitionName(id)}}</span></div>
+				<div class="discover-label-container"><span class="label label-primary item-table-listItem" ng-repeat="id in tmp_people_competition">{{findCompetitionName(id)}}</span></div>
 			</div>
 			  <div class="form-group">
 			  	<label>地区</label>			  
 			  	<select name="district_list" ng-model="tmp_people_district" multiple class="form-control" ng-options="m for m in selectSource.districtList"> </select>
-			  	<div class="discover-label-container"><span class="label label-success item-table-listItem" ng-repeat="rs in tmp_people_district">{{rs}}</span></div>
+			  	<div class="discover-label-container"><span class="label label-warning item-table-listItem" ng-repeat="rs in tmp_people_district">{{rs}}</span></div>
 			  </div>
 			  <div class="form-group">
 			  	<label>技能</label>				
