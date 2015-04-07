@@ -5,7 +5,7 @@
 #news-news-div{min-height: 90em;}
 #news-recommed-div{min-height: 90em;}
 #view-container{min-height: 40em}
-.discover-form-container{padding:1em 2em;max-width: 30em}
+.discover-form-container{padding:1em 2em;max-width: 35em}
 .content-box{background: white;	box-shadow: #aaa 1px 1px 5px;padding: 1.4em;margin-top: 1em;margin-bottom:2em;overflow: hidden;}
 .content-box-nopadding{background: white;	box-shadow: #aaa 1px 1px 5px;margin-top: 1em;margin-bottom:2em;overflow: hidden;} 
 .content-box-heading{padding-bottom:2px;color:#444;font-size: 1.2em;text-shadow:#aaa 2px 2px 5px;letter-spacing: 2px;border-bottom:2px solid #999}
@@ -24,6 +24,8 @@
 .profile-img{display: block;width: 100%;height: auto;max-width: 180px;margin: 0 auto}
 .profile-name{text-align: center;font-size: 18px;font-weight: bold;padding: 1em;}
 
+.list-entity-item{border-bottom:1px solid #ddd;padding:1em 2em 1em 0;}
+.list-entity-item:last-child{border-bottom:none}
 .profile-heading{padding-top: 2em}
 .table>tbody>tr>td{vertical-align: middle;}
 .profile-table>tbody>tr>td{padding:1em}
@@ -32,6 +34,7 @@
 .profile-subtile{font-size:1.3em;padding:1em 0;}
 .profile-well-container{padding:1em 0;border-bottom:1px solid #DDDDDD;}
 .team-role-lable{font-size: 1em}
+.myteam-content-box-heading{font-weight: bold;color:#555;font-size:1.5em;padding-bottom:0.5em;}
 .my-outline-big-button{
   padding: 0.5em 2em;
   color: #fff;

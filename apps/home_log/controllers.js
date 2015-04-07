@@ -165,6 +165,7 @@ function($scope,$http,selectSource) {
 	}
 	$scope.clearResult=function(){
 		$scope.people_result=undefined;
+		$scope.team_result=undefined;
 		$scope.pageInfo=undefined;
 	}
 	$scope.findCompetitionName=function(id){
@@ -176,7 +177,7 @@ function($scope,$http,selectSource) {
 		return '';
 	}
 
-	$scope.peopleFormSubmit=function(isPageAction,targetPage){		
+	$scope.peopleFormSubmit=function(isPageAction,targetPage){	
 		
 		var queryStr;
 		if(isPageAction){			
@@ -196,13 +197,85 @@ function($scope,$http,selectSource) {
 	    		$scope.updatePageNumber(data.page_no,data.per_page,data.total_num);
 	    	});		
 	}
-	$scope.teamFormSubmit=function(){
-		//console.log($scope);
+	$scope.teamFormSubmit=function(isPageAction,targetPage){
 		console.log(ng_serialize($scope.discover_team_form));
+	/*	var queryStr;
+		if(isPageAction){			
+			queryStr=$scope.lastQuery_team+"&page_no="+targetPage;
+		}
+		else{
+			$scope.clearResult();
+			$scope.lastQuery_team=ng_serialize($scope.discover_team_form);
+			queryStr=$scope.lastQuery_team;
+		}
+			
+		$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/api_teams/listing?'+queryStr						
+	    	}).success(function(data) {
+	    		$scope.team_result=data;
+	    		$scope.updatePageNumber(data.page_no,data.per_page,data.total_num);
+	    	});		*/
 	}
-	
+	$scope.team_result={data:[{ 
+	  name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_id:1,
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],
+      members:["周大胖","王小瘦","大岛","李青","赵信"]
+      },{ 
+	  name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_id:1,
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],
+      members:["周大胖","王小瘦","大岛","李青","赵信"]
+      },{ 
+	  name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_id:1,
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],
+      members:["周大胖","王小瘦","大岛","李青","赵信"]
+      },{ 
+	  name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_id:1,
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],
+      members:["周大胖","王小瘦","大岛","李青","赵信"]
+      }]};
 
 	 
+});
+myAppModule.controller('myteamCtr',
+function($scope,$http,selectSource) {
+	$scope.selectSource=selectSource;
+	$scope.findCompetitionName=function(id){
+		for(var idx in $scope.selectSource.competitionList){
+			if (id==$scope.selectSource.competitionList[idx]["id"]) {
+				return $scope.selectSource.competitionList[idx]["name"];
+			};
+		}
+		return '';
+	}
+	$scope.p_team=[
+	{ 
+	  name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_id:1,
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],
+      members:["周大胖","王小瘦","大岛","李青","赵信"]
+      },{ 
+	  name:"天热吃饺子",
+      brief_intro:"天热吃饺子,吃了更热",
+      competition_id:1,
+      skills:["MySQL","PHP","DEMO","DOTA"],
+      require_skills:["MySQL","PHP","DEMO","DOTA"],
+      members:["周大胖","王小瘦","大岛","李青","赵信"]
+      }];
 });
 myAppModule.controller('usercenter_profile_edit',
 function($scope,$http,selectSource,userStatus) {
@@ -792,6 +865,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/discover', {
             templateUrl: 'views/discover.html',
             controller: 'discoverCtr'
+        }).when('/myteam', {
+            templateUrl: 'views/myteam.html',
+            controller: 'myteamCtr'
         }).when('/usercenter/profile', {
             templateUrl: 'views/usercenter/profile.html',
             controller: 'usercenter_profile'

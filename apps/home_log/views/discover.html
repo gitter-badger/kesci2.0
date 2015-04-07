@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs">
- <!-- <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0"><a><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span> 发现比赛</a></li>-->    
-  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1"><a><span class="glyphicon glyphicon-star" aria-hidden="true"></span> 发现团队</a></li>
-  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2"><a><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 发现伙伴</a></li>
+ <!-- <li role="presentation" ng-class="{'active':currentTab==0}" ng-click="currentTab=0;clearResult();"><a><span class="glyphicon glyphicon-pawn" aria-hidden="true"></span> 发现比赛</a></li>-->    
+  <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1;clearResult();"><a><span class="glyphicon glyphicon-star" aria-hidden="true"></span> 发现团队</a></li>
+  <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2;clearResult();"><a><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 发现伙伴</a></li>
 </ul>
 <div class="content-box no_margintop">
 	<!--<div class="discover-form-container" ng-show="currentTab==0">
@@ -39,7 +39,7 @@
 			  	<label>团队名称</label>			  
 			    <input name="teamname" type="text" ng-model="tmp_team_teamname" class="form-control" placeholder="输入团队名称查找">
 			  </div>
-			   <p class="text-info">使用Ctrl键可以多选哟!</p>
+			  <p class="muted">Tips : 使用Ctrl键可以多选/取消选择.</p>
 			  <div class="form-group">
 			    <label>参与比赛</label>
 				<select ng-model="tmp_team_competition" multiple class="form-control" ng-options="m.id as m.name for m in selectSource.competitionList" name="competition_id" ></select>	
@@ -70,7 +70,7 @@
 			  	<label>用户姓名</label>			  
 			    <input ng-model="tmp_people_username" name="username" type="text" class="form-control" placeholder="输入用户姓名查找">
 			  </div>
-			   <p class="text-info">使用Ctrl键可以多选哟!</p>
+			   <p class="muted">Tips : 使用Ctrl键可以多选/取消选择.</p>
 			 <div class="form-group">
 			    <label>参与比赛</label>
 				<select name="competition_id_list" ng-model="tmp_people_competition" class="form-control"  multiple ng-options="m.id as m.name for m in selectSource.competitionList"> </select>
@@ -93,6 +93,8 @@
 </div>
 
 
+<div ng-show="pageInfo" class="alert alert-info" role="alert">查找完成 , 找到{{pageInfo.total}}个结果.</div>
+
 <nav ng-show="pageInfo.show">
       <ul class="pagination">
         <li ng-class="{'disabled':pageInfo.current<=1}" ng-click="pageAction('prev');"><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
@@ -100,9 +102,38 @@
         <li ng-class="{'disabled':pageInfo.current>=pageInfo.array.length}" ng-click="pageAction('next');"><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
      </ul>
 </nav>
-<div class="content-box" ng-show="currentTab==2">
 
-	<div style="border-bottom:1px solid #ddd;margin:1.5em 0;" ng-repeat="item in people_result.data">	
+<div class="content-box" ng-show="currentTab==1&&team_result.data.length>0">
+	<div class="list-entity-item row" ng-repeat="item in team_result.data">			
+		<div class="col-sm-3">
+		  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
+		  <p class="profile-name">{{item.name}}</p>		    
+		</div> 
+		<div class="col-sm-9 content-box-item-detail">              
+		  <table class="table table-striped">                 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+		    </tr>  
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队成员</td><td colspan="3"><span ng-repeat="s in item.members">{{s}} </span></td>
+		    </tr>  
+		    <tr>                      
+		      <td class="item-table-title">已有技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
+		    </tr>  
+		     <tr>                      
+		      <td class="item-table-title">需求技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-info item-table-listItem" ng-repeat="s in item.require_skills">{{s}}</span></td>
+		    </tr>   
+		    <tr>
+		      <td class="item-table-title">参加比赛</td><td colspan="3">{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		    </tr>
+		  </table>   		 
+		</div> 		
+	</div>
+</div>
+
+<div class="content-box" ng-show="currentTab==2&&people_result.data.length>0">
+
+	<div class="list-entity-item" ng-repeat="item in people_result.data">	
 	<span class="label label-info" ng-show="item.in_team_flag==1">已有团队</span>
 	<span class="label label-success" ng-show="item.in_team_flag==0">尚无团队</span>
 		<div class="row">   
@@ -167,3 +198,10 @@
 	</div>
 </div>
 
+<nav ng-show="pageInfo.show">
+      <ul class="pagination">
+        <li ng-class="{'disabled':pageInfo.current<=1}" ng-click="pageAction('prev');"><a aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+        <li ng-repeat="item in pageInfo.array" ng-click="pageAction(item);" ng-class="{'active':pageInfo.current==item}"><a>{{item}}</a></li>       
+        <li ng-class="{'disabled':pageInfo.current>=pageInfo.array.length}" ng-click="pageAction('next');"><a aria-label="Next"><span aria-hidden="true">»</span></a></li>
+     </ul>
+</nav>
