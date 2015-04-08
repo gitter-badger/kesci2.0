@@ -1,7 +1,7 @@
 <div class="content-box" ng-show="show_create_form">	
 	<div class="discover-form-container">	
 	  <p class="myteam-content-box-heading">创建团队</p>
-		<form name="create_team_form" ng-submit=";">
+		<form name="create_team_form" ng-submit="submitTeamCreate();">
 		  <div class="form-group">
 		  	<label>团队名称</label>			  
 		    <input name="team_name" type="text" ng-model="tmp_team_teamname" class="form-control" placeholder="输入团队名称" required>
@@ -12,19 +12,19 @@
 		</div>
 		  <div class="form-group">
 		  	<label>团队简介</label>			  
-		  	  <input name="short_description" type="text" ng-model="tmp_team_teamname" class="form-control" placeholder="一句话长度" required>
+		  	  <input name="short_description" type="text" ng-model="tmp_team_short_description" class="form-control" placeholder="一句话长度" required>
 		  </div>
 		  <div class="form-group">
 		  	<label>需求技能</label>				
-		  	<select  multiple ng-model="tmp_team_skill" class="form-control" name="skill" ng-options="m for m in selectSource.skillList"> </select><br>		  		
+		  	<select  multiple ng-model="tmp_team_skill" class="form-control" name="require_skills" ng-options="m for m in selectSource.skillList"> </select><br>		  		
 		  	<div class="discover-label-container"><span class="label label-info item-table-listItem" ng-repeat="rs in tmp_team_skill">{{rs}}</span></div>  	
 		  	 <p class="muted">Tips : 使用Ctrl键可以多选/取消选择.</p>
 		  </div>
 		  <div class="form-group">
 		  	<label>团队描述</label>			  
-		  	  <textarea name="description" type="text" ng-model="tmp_team_teamname" class="form-control" placeholder="详细描述" required rows="5"></textarea>
+		  	  <textarea name="description" type="text" ng-model="tmp_team_description" class="form-control" placeholder="详细描述" required rows="5"></textarea>
 		  </div>
-		  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 创建团队</button> <button type="button" class="btn btn-default" ng-click="show_create_form=false;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 取消创建</button>
+		  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 创建团队</button> <button type="button" class="btn btn-default" ng-click="show_create_form=false;clearTeamCreate();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 取消创建</button>
 		</form>
 	</div>
 </div>
@@ -35,7 +35,7 @@
 <div style="float:left;" class="myteam-content-box-heading"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span> 我加入的</div>	
 <div class="clearfix"></div>
 
-	<div ng-show="!p_team||p_team.length<1" style="padding:10em 1em;width:38em;max-width:100%;line-height:1.8em;" class="text-muted center-block">
+	<div ng-show="!teamData.teams||teamData.teams.length<1" style="padding:10em 1em;width:38em;max-width:100%;line-height:1.8em;" class="text-muted center-block">
 		<p>当前还没有加入任何团队 , 你可以通过以下方法之一来加入一个团队</p>
 		<ul>
 		 <li>使用 [创建团队] 功能创建一个新团队</li>
@@ -43,29 +43,30 @@
 		 <li>让一个已在团队中的小伙伴 [邀请] 你加入</li>
 		 </ul>
 	</div>
-	<div class="row list-entity-item" ng-repeat="item in p_team">   
+	<div class="row list-entity-item" ng-repeat="item in teamData.teams">   
 		<div class="col-sm-3">
 		  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
-		  <p class="profile-name">{{item.name}}</p>		    
+		  <p class="profile-name">{{item.team_name}}</p>		    
 		</div> 
 		<div class="col-sm-9 content-box-item-detail">              
 		  <table class="table table-striped">                 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td>{{item.short_description||"暂无"}}</td>
 		    </tr>  
-		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队成员</td><td colspan="3"><span ng-repeat="s in item.members">{{s}} </span></td>
-		    </tr>  
-		    <tr>                      
-		      <td class="item-table-title">已有技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
-		    </tr>  
-		     <tr>                      
-		      <td class="item-table-title">需求技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-info item-table-listItem" ng-repeat="s in item.require_skills">{{s}}</span></td>
-		    </tr>   
-		    <tr>
-		      <td class="item-table-title">参加比赛</td><td colspan="3">{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		     <tr>
+		      <td class="item-table-title">参加比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
 		    </tr>
-		  </table>   		 
+		     <tr>
+		    	<td class="item-table-title" style="min-width:4em">当前成员</td><td>{{item.team_member.length}}</td>
+		    </tr> 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
+		    </tr>  
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{item.description||"暂无"}}</td>
+		    </tr>  		   
+		  </table>   
+		  <div style="float:right"><a target="_blank" ng-href="{{'#/entity/team/'+item.team_id}}">团队主页</a></div>		 
 		</div> 
 	</div>
 </div>
@@ -73,59 +74,10 @@
 
 <div class="content-box">
 	<div class="myteam-content-box-heading"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 我申请的</div>	
-	<div class="row list-entity-item" ng-repeat="item in p_team">   
-		<div class="col-sm-3">
-		  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
-		  <p class="profile-name">{{item.name}}</p>		    
-		</div> 
-		<div class="col-sm-9 content-box-item-detail">              
-		  <table class="table table-striped">                 
-		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
-		    </tr>  
-		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队成员</td><td colspan="3"><span ng-repeat="s in item.members">{{s}} </span></td>
-		    </tr>  
-		    <tr>                      
-		      <td class="item-table-title">已有技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
-		    </tr>  
-		     <tr>                      
-		      <td class="item-table-title">需求技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-info item-table-listItem" ng-repeat="s in item.require_skills">{{s}}</span></td>
-		    </tr>   
-		    <tr>
-		      <td class="item-table-title">参加比赛</td><td colspan="3">{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
-		    </tr>
-		  </table>   		 
-		</div> 
-	</div>
+
 </div>
 
 
 <div class="content-box">
 	<div class="myteam-content-box-heading"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> 邀请我的</div>	
-		<div class="row list-entity-item" ng-repeat="item in p_team">   
-		<div class="col-sm-3">
-		  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
-		  <p class="profile-name">{{item.name}}</p>		    
-		</div> 
-		<div class="col-sm-9 content-box-item-detail">              
-		  <table class="table table-striped">                 
-		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
-		    </tr>  
-		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队成员</td><td colspan="3"><span ng-repeat="s in item.members">{{s}} </span></td>
-		    </tr>  
-		    <tr>                      
-		      <td class="item-table-title">已有技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
-		    </tr>  
-		     <tr>                      
-		      <td class="item-table-title">需求技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-info item-table-listItem" ng-repeat="s in item.require_skills">{{s}}</span></td>
-		    </tr>   
-		    <tr>
-		      <td class="item-table-title">参加比赛</td><td colspan="3">{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
-		    </tr>
-		  </table>   		 
-		</div> 
-	</div>
 </div>

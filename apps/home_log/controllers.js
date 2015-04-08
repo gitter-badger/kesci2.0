@@ -6,14 +6,17 @@ function ng_serialize(ng_form){
   		var v ="";
   		var obj = ng_form[k];
   		if(! ng_form.hasOwnProperty(k)||!obj||!obj.$name)
-  			continue;
-  	
+  			continue;  	
   		if(obj.$viewValue){
   			v=obj.$viewValue.join?obj.$viewValue.join(","):obj.$viewValue;
-  		}
-  		v=v+"";
-  		if(v.length>0)
-  			arr.push(obj.$name+"="+encodeURIComponent(v));
+  		}  		
+  		if(v==="")
+  			continue;
+  		else if(v===true)
+  			v="1";
+  		else if(v===false)
+  			v="0"
+  		arr.push(obj.$name+"="+encodeURIComponent(v));
   	}
   	return arr.join("&");
   }
@@ -187,19 +190,20 @@ function($scope,$http,selectSource) {
 			$scope.clearResult();
 			$scope.lastQuery_people=ng_serialize($scope.discover_people_form);
 			queryStr=$scope.lastQuery_people;
-		}
-			
+		}			
 		$http({
-				method  : 'GET',
-				url     : '/kesci_backend/api/api_users/listing?'+queryStr						
+				method  : 'POST',
+				url     : '/kesci_backend/api/api_users/listing',
+				data    : queryStr	,
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    	}).success(function(data) {
 	    		$scope.people_result=data;
 	    		$scope.updatePageNumber(data.page_no,data.per_page,data.total_num);
 	    	});		
 	}
 	$scope.teamFormSubmit=function(isPageAction,targetPage){
-		console.log(ng_serialize($scope.discover_team_form));
-	/*	var queryStr;
+		//console.log(ng_serialize($scope.discover_team_form));
+		var queryStr;
 		if(isPageAction){			
 			queryStr=$scope.lastQuery_team+"&page_no="+targetPage;
 		}
@@ -209,44 +213,19 @@ function($scope,$http,selectSource) {
 			queryStr=$scope.lastQuery_team;
 		}
 			
+		console.log(queryStr);
 		$http({
-				method  : 'GET',
-				url     : '/kesci_backend/api/api_teams/listing?'+queryStr						
+				method  : 'POST',
+				url     : '/kesci_backend/api/teams/listing',
+				data    : queryStr	,
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    	}).success(function(data) {
+	    		 console.log(data);
 	    		$scope.team_result=data;
 	    		$scope.updatePageNumber(data.page_no,data.per_page,data.total_num);
-	    	});		*/
+	    	});		
 	}
-	$scope.team_result={data:[{ 
-	  name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_id:1,
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],
-      members:["周大胖","王小瘦","大岛","李青","赵信"]
-      },{ 
-	  name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_id:1,
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],
-      members:["周大胖","王小瘦","大岛","李青","赵信"]
-      },{ 
-	  name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_id:1,
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],
-      members:["周大胖","王小瘦","大岛","李青","赵信"]
-      },{ 
-	  name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_id:1,
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],
-      members:["周大胖","王小瘦","大岛","李青","赵信"]
-      }]};
-
+	
 	 
 });
 myAppModule.controller('myteamCtr',
@@ -260,22 +239,41 @@ function($scope,$http,selectSource) {
 		}
 		return '';
 	}
-	$scope.p_team=[
-	{ 
-	  name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_id:1,
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],
-      members:["周大胖","王小瘦","大岛","李青","赵信"]
-      },{ 
-	  name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_id:1,
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],
-      members:["周大胖","王小瘦","大岛","李青","赵信"]
-      }];
+	$scope.clearTeamCreate=function(){
+		$scope.tmp_team_teamname="";
+		$scope.tmp_team_competition="";
+		$scope.short_description="";
+		$scope.tmp_team_description="";
+		$scope.tmp_team_skill=[];
+	}
+	$scope.submitTeamCreate=function(){
+		$http({
+				method  : 'POST',
+				url     : '/kesci_backend/api/teams/create',
+				data    : ng_serialize($scope.create_team_form),
+				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+	    }).success(function(data) {
+	    	   if(data.errors.length<1){
+	    			alert("团队创建成功 : "+data.data.team_name);
+	    			$scope.clearTeamCreate();
+	    			$scope.show_create_form=false;
+	    		}
+	    		else{
+	    			alert("创建团队时出现问题 : "+data.errors.join(","));
+	    			console.log("创建团队时出现问题",data);
+	    		}	    	
+	    }).error(function(data){
+	    			alert("创建团队时出现问题. Code:"+arguments[1]);
+	    			//console.log("创建团队时出现问题",data);
+	    });
+	}
+	$scope.loadTeamData=function(){	
+		$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/teams/my_team'				
+	    }).success(function(data) {$scope.teamData=data;})
+	 }
+	$scope.loadTeamData();
 });
 myAppModule.controller('usercenter_profile_edit',
 function($scope,$http,selectSource,userStatus) {
@@ -558,47 +556,21 @@ myAppModule.controller('usercenter_msg',
 		}
 	})
 myAppModule.controller('entity_team',
-  function($scope,$http,$routeParams,userStatus){ 
+  function($scope,$http,$routeParams,selectSource){
+  	$scope.selectSource=selectSource;  	
     $scope.teamID=$routeParams.id;
-    $scope.teaminfo={
-      name:"天热吃饺子",
-      brief_intro:"天热吃饺子,吃了更热",
-      competition_name:"EMC杯智慧校园开放数据大赛",
-      skills:["MySQL","PHP","DEMO","DOTA"],
-      require_skills:["MySQL","PHP","DEMO","DOTA"],  
-      members:[{
-        name:"胡老板",
-        is_leader:1,
-        brief_intro:"您吃了么",
-        district:"弗兰",
-        university:"新东方",
-        department:"厨师部",
-        major:"掂勺",
-        level:"本科",
-        skills:["MySQL","EAT","DOTA"],
-        rollin_date:"2014-7-1"
-      },{
-        name:"胡老板",
-        brief_intro:"您吃了么",
-        district:"弗兰",
-        university:"新东方",
-        department:"厨师部",
-        major:"掂勺",
-        level:"本科",
-        skills:["MySQL","EAT","DOTA"],
-        rollin_date:"2014-7-1"
-      },{
-        name:"胡老板",
-        brief_intro:"您吃了么",
-        district:"弗兰",
-        university:"新东方",
-        department:"厨师部",
-        major:"掂勺",
-        level:"本科",
-        skills:["MySQL","EAT","DOTA"],
-        rollin_date:"2014-7-1"
-      }]
-    }
+    $http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/teams/details?team_id='+$scope.teamID			
+	}).success(function(data) {$scope.teamData=data.data;});
+	$scope.findCompetitionName=function(id){
+		for(var idx in $scope.selectSource.competitionList){
+			if (id==$scope.selectSource.competitionList[idx]["id"]) {
+				return $scope.selectSource.competitionList[idx]["name"];
+			};
+		}
+		return '';
+	}
 
   })
 myAppModule.controller('action_competition_register',

@@ -4,11 +4,11 @@
         <img class="img-thumbnail img-circle profile-img" src="./images/team_icon.png"/>
         <p class="profile-name">{{teaminfo.name}}</p>
         <table class="table profile-table ">
-        <tr><td class="item-table-title">简介</td><td>{{teaminfo.brief_intro}}</td></tr>
-        <tr><td class="item-table-title">竞赛</td><td>{{teaminfo.competition_name}}</td></tr>
-        <tr><td class="item-table-title">成员</td><td>{{teaminfo.members.length}}</td></tr>
-        <tr><td class="item-table-title">技能</td><td><span class="label label-success item-table-listItem" ng-repeat="s in teaminfo.skills">{{s}}</span></td></tr>
-        <tr><td class="item-table-title">需求</td><td><span class="label label-info item-table-listItem" ng-repeat="rs in teaminfo.require_skills">{{rs}}</span></td></tr>        
+        <tr><td class="item-table-title">简介</td><td>{{teamData.basic_info.short_description}}</td></tr>
+        <tr><td class="item-table-title">竞赛</td><td>{{findCompetitionName(teamData.basic_info.competition_id)}}</td></tr>
+        <tr><td class="item-table-title">成员</td><td>{{teamData.basic_info.teammate_num}}</td></tr>
+        <tr><td class="item-table-title">技能</td><td><span class="label label-success item-table-listItem" ng-repeat="s in teamData.team_skill">{{s}}</span></td></tr>
+        <tr><td class="item-table-title">需求</td><td><span class="label label-info item-table-listItem" ng-repeat="rs in teamData.team_require_skill">{{rs}}</span></td></tr>        
         </table>
         <button class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 申请加入</button>
         <button class="btn btn-warning"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 离开团队</button>
@@ -16,36 +16,69 @@
       </div>
     </div>
     <div class="col-md-8">
-      <div class="content-box profile-content" ng-repeat="item in teaminfo.members">       
-          <span class="label label-info team-role-lable" ng-show="item.is_leader==1"><span class="glyphicon glyphicon-flag " aria-hidden="true"> </span> 队长</span>
+      <div class="content-box profile-content" ng-repeat="item in teamData.team_members">       
+          <span class="label label-info team-role-lable" ng-show="item.admin_flag==2"><span class="glyphicon glyphicon-flag " aria-hidden="true"> </span> 队长</span>
           <div class="row">   
             <div class="col-sm-3">
               <img class="content-box-item-img img-circle img-thumbnail"  src="./images/de.png">
-              <p class="profile-name">{{item.name}}</p>   
+              <p class="profile-name">{{item.username}}</p>   
                 
             </div>  
 
-            <div class="col-sm-9 content-box-item-detail">              
-              <table class="table table-striped">                 
-                <tr>                      
-                  <td class="item-table-title">个人简介</td><td colspan="3">{{item.brief_intro}}</td>
-                </tr>  
-                 <tr>                      
-                  <td class="item-table-title">技能</td><td colspan="3"><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
-                </tr>                 
-                <tr>
-                  <td class="item-table-title">所在地区</td><td>{{item.district}}</td>
-                  <td class="item-table-title">就读大学</td><td>{{item.university}}</td>         
-                </tr>
-                <tr>
-                  <td class="item-table-title">学院</td><td>{{item.department}}</td>
-                  <td class="item-table-title">专业</td><td>{{item.major}}</td>       
-                </tr>
-                 <tr>
-                  <td class="item-table-title">在读学位</td><td>{{item.level}}</td>
-                  <td class="item-table-title">入学时间</td><td>{{item.rollin_date}}</td>       
-                </tr>
-              </table>   
+            <div class="col-sm-9 content-box-item-detail" ng-switch on="item.student_flag">              
+               <table class="table table-striped" ng-switch-when="0">                 
+			    <tr>
+			    	<td class="item-table-title" style="min-width:4em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+			    </tr>  
+			    <tr>
+			    	<td class="item-table-title">参赛身份</td>
+			    	<td colspan="3">非学生</td>
+			    </tr>  			  
+			    <tr>                      
+			      <td class="item-table-title">技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
+			    </tr>                 
+			    <tr>
+			      <td class="item-table-title">所在地区</td><td>{{item.province||"暂无"}}</td>
+			      <td class="item-table-title">毕业大学</td><td>{{item.university||"暂无"}}</td>         
+			    </tr>			  
+			    <tr>	      
+			      <td class="item-table-title">专业</td><td>{{item.major||"暂无"}}</td>
+			      <td class="item-table-title">公司</td><td>{{item.company||"暂无"}}</td>       
+			    </tr> 
+			     <tr>
+			      <td class="item-table-title">当前比赛</td><td colspan="3">{{findCompetitionName(item.competition_id)||"暂无"}}</td>
+			         
+			    </tr>
+			  </table>  
+			  <table class="table table-striped" ng-switch-when="1">                 
+			    <tr>
+			    	<td class="item-table-title" style="min-width:4em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+			    </tr>  
+			    <tr>
+			    	<td class="item-table-title">参赛身份</td>
+			    	<td colspan="3">学生</td>
+			    </tr>  
+			    <tr>                      
+			      <td class="item-table-title">技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
+			    </tr>                 
+			    <tr>
+			      <td class="item-table-title">所在地区</td><td>{{item.province||"暂无"}}</td>
+			      <td class="item-table-title">就读大学</td><td>{{item.university||"暂无"}}</td>         
+			    </tr>
+			    <tr>	    
+			      <td class="item-table-title">学院</td><td>{{item.department||"暂无"}}</td>      
+			      <td class="item-table-title">专业</td><td>{{item.major||"暂无"}}</td>
+			        
+			    </tr>
+			    <tr>	      
+			      <td class="item-table-title">学位</td><td>{{item.level||"暂无"}}</td>
+			      <td class="item-table-title">年级</td><td>{{item.grade||"暂无"}}</td>       
+			    </tr>
+			   <!-- <tr>
+			      <td class="item-table-title">当前比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>
+			      <td class="item-table-title">入学时间</td><td>{{item.start_time||"暂无"}}</td>       
+			    </tr>-->
+			  </table>  	
               <br>  
                   <p style="text-align:right"><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-erase" aria-hidden="true"> </span> 开除成员</button> <button class="btn btn-sm btn-info"><span class="glyphicon glyphicon-check" aria-hidden="true"> </span> 提升为队长</button></p>
             </div>         
