@@ -11,8 +11,8 @@
 			<select ng-model="tmp_team_competition" class="form-control" ng-options="m.id as m.name for m in selectSource.competitionList" name="competition_id" required></select>	
 		</div>
 		  <div class="form-group">
-		  	<label>团队简介</label>			  
-		  	  <input name="short_description" type="text" ng-model="tmp_team_short_description" class="form-control" placeholder="一句话长度" required>
+		  	<label>团队签名</label>			  
+		  	  <input name="short_description" type="text" ng-model="tmp_team_short_description" class="form-control" placeholder="用一句话描述你的团队" required>
 		  </div>
 		  <div class="form-group">
 		  	<label>需求技能</label>				
@@ -22,7 +22,7 @@
 		  </div>
 		  <div class="form-group">
 		  	<label>团队描述</label>			  
-		  	  <textarea name="description" type="text" ng-model="tmp_team_description" class="form-control" placeholder="详细描述" required rows="5"></textarea>
+		  	  <textarea name="description" type="text" ng-model="tmp_team_description" class="form-control" placeholder="详细描述你的团队" required rows="5"></textarea>
 		  </div>
 		  <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 创建团队</button> <button type="button" class="btn btn-default" ng-click="show_create_form=false;clearTeamCreate();"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 取消创建</button>
 		</form>
@@ -51,10 +51,7 @@
 		<div class="col-sm-9 content-box-item-detail">              
 		  <table class="table table-striped">                 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td>{{item.short_description||"暂无"}}</td>
-		    </tr>  
-		     <tr>
-		      <td class="item-table-title">参加比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		    	<td class="item-table-title" style="min-width:4em">团队签名</td><td>{{item.short_description||"暂无"}}</td>
 		    </tr>
 		     <tr>
 		    	<td class="item-table-title" style="min-width:4em">当前成员</td><td>{{item.team_member.length}}</td>
@@ -63,10 +60,13 @@
 		    	<td class="item-table-title" style="min-width:4em">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
 		    </tr>  
 		    <tr>
+		      <td class="item-table-title">参加比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		    </tr>
+		    <tr>
 		    	<td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{item.description||"暂无"}}</td>
 		    </tr>  		   
 		  </table>   
-		  <div style="float:right"><a target="_blank" ng-href="{{'#/entity/team/'+item.team_id}}">团队主页</a></div>		 
+		  <div style="float:right"><a ng-href="{{'#/entity/team/'+item.team_id}}">团队主页</a></div>		 
 		</div> 
 	</div>
 </div>

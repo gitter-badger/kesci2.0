@@ -88,8 +88,8 @@
 	</div>
 </div>
 
-
-<div ng-show="pageInfo" class="alert alert-info" role="alert">查找完成 , 找到{{pageInfo.total}}个结果.</div>
+<div id="scroll_anchor"></div>
+<div  ng-show="pageInfo" class="alert alert-info" role="alert">查找完成 , 找到{{pageInfo.total}}个结果.</div>
 
 <nav ng-show="pageInfo.show">
       <ul class="pagination">
@@ -103,25 +103,31 @@
 	<div class="list-entity-item row" ng-repeat="item in team_result.data">			
 		<div class="col-sm-3">
 		  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
-		  <p class="profile-name">{{item.name}}</p>		    
+		  <p class="profile-name">{{item.team_name}}</p>		    
 		</div> 
 		<div class="col-sm-9 content-box-item-detail">              
 		  <table class="table table-striped">                 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
-		    </tr>  
+		    	<td class="item-table-title" style="min-width:4em">团队签名</td><td>{{item.short_description||"暂无"}}</td>
+		    </tr> 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队成员</td><td colspan="3"><span ng-repeat="s in item.members">{{s}} </span></td>
+		    	<td class="item-table-title" style="min-width:4em">当前成员</td><td><span>{{item.teammate_num}} of {{item.max_num}}</span></td>
+		    </tr> 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
 		    </tr>  
 		    <tr>                      
-		      <td class="item-table-title">已有技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
+		      <td class="item-table-title">已有技能</td><td><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
 		    </tr>  
 		     <tr>                      
-		      <td class="item-table-title">需求技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-info item-table-listItem" ng-repeat="s in item.require_skills">{{s}}</span></td>
+		      <td class="item-table-title">需求技能</td><td><span ng-show="item.require_skills.length==0">暂无</span><span class="label label-info item-table-listItem" ng-repeat="s in item.require_skills">{{s}}</span></td>
 		    </tr>   
 		    <tr>
-		      <td class="item-table-title">参加比赛</td><td colspan="3">{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		      <td class="item-table-title">参加比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
 		    </tr>
+		     <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{item.description||"暂无"}}</td>
+		    </tr> 
 		  </table>   		 
 		</div> 		
 	</div>
@@ -135,7 +141,8 @@
 		<div class="row">   
 			<div class="col-sm-3">
 			  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/de.png">
-			  <p class="profile-name">{{item.fullname}}</p>		    
+			  <p class="profile-name">{{item.fullname}}</p>		 
+			  <p style="text-align:center"> <button class="btn btn-xs btn-default" ng-click="sendMsg(item.user_id,item.fullname);"><span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span> 发送私信</button></p>		 
 			</div> 
 			<div class="col-sm-9 content-box-item-detail"  ng-switch on="item.student_flag">              
 			  <table class="table table-striped" ng-switch-when="0">                 
@@ -146,9 +153,6 @@
 			    	<td class="item-table-title">参赛身份</td>
 			    	<td colspan="3">非学生</td>
 			    </tr>  
-			    <tr>
-			    	<td class="item-table-title">参赛原因</td><td colspan="3">{{item.attend_reason||"暂无"}}</td>
-			    </tr> 
 			    <tr>                      
 			      <td class="item-table-title">技能</td><td colspan="3"><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
 			    </tr>                 

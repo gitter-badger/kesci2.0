@@ -122,6 +122,7 @@ myAppModule.controller('discoverCtr',
 function($scope,$http,selectSource) {
 	$scope.currentTab=1;
 	$scope.selectSource=selectSource;
+
 	$scope.clearAllForms=function(){	
 		//$scope.competitionSearch_name="";
 		//$scope.competitionSearch_selectedDistrict=[];
@@ -144,7 +145,8 @@ function($scope,$http,selectSource) {
 			show:p>1?true:false,
 			current:Number(page_no),
 			array:(function(n){var tmp=[];for(var x=0;x<Number(n);x++){tmp.push(x+1)}return tmp})(p)
-		}
+		}    
+
 	}
 	$scope.pageAction=function(pageNumber){
 		if(!$scope.pageInfo)
@@ -185,6 +187,9 @@ function($scope,$http,selectSource) {
 		var queryStr;
 		if(isPageAction){			
 			queryStr=$scope.lastQuery_people+"&page_no="+targetPage;
+      var a=document.getElementById("scroll_anchor");
+      if(a.scrollIntoView)
+        a.scrollIntoView(); 
 		}
 		else{
 			$scope.clearResult();
@@ -202,29 +207,47 @@ function($scope,$http,selectSource) {
 	    	});		
 	}
 	$scope.teamFormSubmit=function(isPageAction,targetPage){
-		//console.log(ng_serialize($scope.discover_team_form));
 		var queryStr;
 		if(isPageAction){			
 			queryStr=$scope.lastQuery_team+"&page_no="+targetPage;
+      var a=document.getElementById("scroll_anchor");
+      if(a.scrollIntoView)
+        a.scrollIntoView(); 
 		}
 		else{
 			$scope.clearResult();
 			$scope.lastQuery_team=ng_serialize($scope.discover_team_form);
 			queryStr=$scope.lastQuery_team;
-		}
-			
-		console.log(queryStr);
+		}			
 		$http({
 				method  : 'POST',
 				url     : '/kesci_backend/api/teams/listing',
 				data    : queryStr	,
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    	}).success(function(data) {
-	    		 console.log(data);
 	    		$scope.team_result=data;
 	    		$scope.updatePageNumber(data.page_no,data.per_page,data.total_num);
 	    	});		
 	}
+  $scope.sendMsg=function(user_id,name){
+    var msg=prompt("请输入发送给 "+name+" 的私信内容");
+    if(msg===null){
+      return;
+    }
+    else if(msg==""){
+      alert("私信内容不能为空.");
+      return;
+    }
+    $http({
+        method  : 'POST',
+        url     : '/kesci_backend/api/messages/person_to_person',
+        data    : "receiver_id="+user_id+"&"+"content="+encodeURIComponent(msg),
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).success(function(data) {
+          if(data.msg=="message send success")
+            alert("私信发送成功");        
+        });   
+  }
 	
 	 
 });
@@ -456,8 +479,7 @@ function($scope,$http,selectSource,userStatus) {
 	if($scope.basic_info && $scope.basic_info.university_district){
 		$http({
 			method  : 'GET',
-			url     : '../shared/data/college/'+ $scope.basic_info.university_district+'.json',
-
+			url     : '../shared/data/college/'+ $scope.basic_info.university_district+'.json'
 		}).success(function(data) {   
 			for(var c in data){
 				if(data.hasOwnProperty(c)){
@@ -556,13 +578,20 @@ myAppModule.controller('usercenter_msg',
 		}
 	})
 myAppModule.controller('entity_team',
-  function($scope,$http,$routeParams,selectSource){
+  function($scope,$http,$routeParams,selectSource,userStatus){
+    $scope.userStatus=userStatus;
   	$scope.selectSource=selectSource;  	
     $scope.teamID=$routeParams.id;
+
     $http({
 				method  : 'GET',
 				url     : '/kesci_backend/api/teams/details?team_id='+$scope.teamID			
-	}).success(function(data) {$scope.teamData=data.data;});
+      	}).success(function(data) {
+          $scope.teamData=data.data;
+          $scope.is_team_member=data.is_team_member;
+          $scope.admin_flag=data.admin_flag;
+    });
+
 	$scope.findCompetitionName=function(id){
 		for(var idx in $scope.selectSource.competitionList){
 			if (id==$scope.selectSource.competitionList[idx]["id"]) {
