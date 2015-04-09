@@ -1,5 +1,25 @@
 //Home_Default controllers.js
 
+function ng_serialize(ng_form){
+  	var arr=[];
+  	for (var k in ng_form){
+  		var v ="";
+  		var obj = ng_form[k];
+  		if(! ng_form.hasOwnProperty(k)||!obj||!obj.$name)
+  			continue;  	
+  		if(obj.$viewValue){
+  			v=obj.$viewValue.join?obj.$viewValue.join(","):obj.$viewValue;
+  		}  		
+  		if(v==="")
+  			continue;
+  		else if(v===true)
+  			v="1";
+  		else if(v===false)
+  			v="0"
+  		arr.push(obj.$name+"="+encodeURIComponent(v));
+  	}
+  	return arr.join("&");
+  }
 var myAppModule = angular.module('myApp', []);
 
 myAppModule.controller('headerCtr',
@@ -29,7 +49,7 @@ function($scope,$http) {
 		$http({
         	method  : 'POST',
         	url     : '/kesci_backend/api/auth/login',
-        	data    : $("#login-form").serialize(), 
+        	data    : ng_serialize($scope.login_form), 
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
     		if(data.show_captcha){    			
@@ -56,7 +76,7 @@ function($scope,$http) {
 		$http({
         	method  : 'POST',
         	url     : '/kesci_backend/api/auth/register',
-        	data    : (function(s){var r=[],n={};s=s.split("&");for(var i in s){var j=s[i].split("=");j[0].indexOf("name")<0?r.push(s[i]):n[j[0]]=j[1];}return r.join("&")+"&username="+n["name_0"]+n["name_1"];})($("#reg-form").serialize()),
+        	data    : (function(s){var r=[],n={};s=s.split("&");for(var i in s){var j=s[i].split("=");j[0].indexOf("name")<0?r.push(s[i]):n[j[0]]=j[1];}return r.join("&")+"&username="+n["name_0"]+n["name_1"];})(ng_serialize($scope.reg_form)),
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {    		
     		if(data.msg&&data.msg.indexOf("successfully")>0){

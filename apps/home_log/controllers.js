@@ -119,7 +119,7 @@ function($scope,$http,userStatus) {
     
 });
 myAppModule.controller('discoverCtr',
-function($scope,$http,selectSource) {
+function($scope,$http,selectSource,userStatus) {
 	$scope.currentTab=1;
 	$scope.selectSource=selectSource;
 
@@ -137,7 +137,14 @@ function($scope,$http,selectSource) {
 		$scope.tmp_people_district=[];
 		$scope.tmp_people_skill=[];		
 	}
-	$scope.clearAllForms();
+	$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/teams/basic'	
+      	}).success(function(data) {      		
+           if(data.teams.length>0)
+           		$scope.userTeam=data.teams[0];
+    });
+
 	$scope.updatePageNumber=function(page_no,per_page,total_num){
 		var p=Math.ceil(total_num/per_page);
 		$scope.pageInfo={
@@ -230,25 +237,145 @@ function($scope,$http,selectSource) {
 	    	});		
 	}
   $scope.sendMsg=function(user_id,name){
-    var msg=prompt("请输入发送给 "+name+" 的私信内容");
-    if(msg===null){
-      return;
-    }
-    else if(msg==""){
-      alert("私信内容不能为空.");
-      return;
-    }
-    $http({
-        method  : 'POST',
-        url     : '/kesci_backend/api/messages/person_to_person',
-        data    : "receiver_id="+user_id+"&"+"content="+encodeURIComponent(msg),
-        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }).success(function(data) {
-          if(data.msg=="message send success")
-            alert("私信发送成功");        
-        });   
+  	if(user_id==userStatus.user_id){
+  		swal("你好无聊 (﹁\"﹁)","为什么会有人给自己发私信啊啊啊啊啊","warning");
+  		return;
+  	}
+  	swal({   
+  		title: "发送私信",   
+  		text: "请输入发送给 "+name+" 的私信内容",   
+  		type: "input",   
+  		showCancelButton: true,   
+  		closeOnConfirm: false
+  		}, function(msg){ 
+  		   if(msg===false){
+      			return;
+    	   }
+    	   else if(msg==""){
+      			swal("发送失败","私信内容不能为空.","error");
+      			return;
+    	   }
+    	  $http({
+		        method  : 'POST',
+		        url     : '/kesci_backend/api/messages/person_to_person',
+		        data    : "receiver_id="+user_id+"&"+"content="+encodeURIComponent(msg),
+		        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        }).success(function(data) {
+		          if(data.msg&&data.msg.indexOf("success")>-1){
+		            swal("成功!", "私信已发送", "success") ;
+		            } 
+		          else{
+		            swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"发送私信时出现问题","error");   
+		            console.log(data);
+		          }
+		        });  
+		  return;
+  		});
   }
-	
+  $scope.inviteUser=function(user_id,name){
+  /*	if($scope.userTeam&&$scope.userTeam.team_member.indexOf(user_id)>-1){
+  		swal("邀请失败",name+" 已经在你的队伍里了.","warning");
+  		return;
+  	}*/
+  	swal({   
+  		title: "邀请 "+name+" 加入团队 "+$scope.userTeam.team_name,   
+  		text: "请输入邀请信息 :",   
+  		type: "input",   
+  		showCancelButton: true,   
+  		closeOnConfirm: false
+  		}, function(msg){ 
+  		   if(msg===false){
+      			return;
+    	   }
+    	   else if(msg==""){
+      			swal("邀请失败","邀请信息不能为空.","error");
+      			return;
+    	   }
+    	   $http({
+			        method  : 'POST',
+			        url     : '/kesci_backend/api/teams/invitation',
+			        data    : "invite_user_id="+user_id+"&invitation_msg="+encodeURIComponent(msg)+"&team_id="+$scope.userTeam.team_id,
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        }).success(function(data) {
+		          console.log(data);	
+		          if(data.msg&&data.msg.indexOf("success")>-1){
+		            swal("成功!", "邀请已发送", "success") 
+		          }
+		          else{ 
+		          	swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"邀请时出错","error");  
+		          	console.log(data);
+		          }
+		        });  
+  		});   
+  }
+
+$scope.applyTeam=function(team_id,team_name) {	
+	swal({   
+  		title: "申请加入团队 "+team_name,   
+  		text: "请输入申请信息 :",   
+  		type: "input",   
+  		showCancelButton: true,   
+  		closeOnConfirm: false
+  		}, function(msg){ 
+  		   if(msg===false){
+      			return;
+    	   }
+    	   else if(msg==""){
+      			swal("申请失败","申请信息不能为空.","error");
+      			return;
+    	   }
+    	   $http({
+			        method  : 'POST',
+			        url     : '/kesci_backend/api/teams/application',
+			        data    : "team_id="+team_id+"&application_msg="+encodeURIComponent(msg)+"&competition_id=1",
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        }).success(function(data) {	
+		          if(data.msg&&data.msg.indexOf("success")>-1){
+		            swal("成功!", "申请已发送", "success") 
+		          }
+		          else{ 
+		          	swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"申请时出错","error");  
+		          	console.log(data);
+		          }
+		        });  
+  		});   
+}
+$scope.sendMsgToTeam=function(team_id,name){
+	if($scope.userTeam&&$scope.userTeam.team_member.indexOf(userStatus.user_id)>-1){
+  		swal("发送失败","不能给自己所在的团队发送信息","warning");
+  		return;
+  	}
+  	swal({   
+  		title: "发送团队消息",   
+  		text: "请输入发送给团队 "+name+" 的消息 : ",   
+  		type: "input",   
+  		showCancelButton: true,   
+  		closeOnConfirm: false
+  		}, function(msg){ 
+  		   if(msg===false){
+      			return;
+    	   }
+    	   else if(msg==""){
+      			swal("发送失败","消息不能为空.","error");
+      			return;
+    	   }
+    	   $http({
+			        method  : 'POST',
+			        url     : '/kesci_backend/api/messages/person_to_team',
+			        data    : "team_id="+team_id+"&"+"content="+encodeURIComponent(msg),
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        }).success(function(data) {
+		          console.log(data);	
+		          if(data.msg&&data.msg.indexOf("success")>-1){
+		            swal("成功!", "团队消息已发送", "success") 
+		          }
+		          else{ 
+		          	swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"团队消息发送时出错","error");  
+		          	console.log(data);
+		          }
+		        });  
+  		});   
+}
 	 
 });
 myAppModule.controller('myteamCtr',
@@ -277,16 +404,16 @@ function($scope,$http,selectSource) {
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    }).success(function(data) {
 	    	   if(data.errors.length<1){
-	    			alert("团队创建成功 : "+data.data.team_name);
+	    			swal("团队创建成功 : "+data.data.team_name);
 	    			$scope.clearTeamCreate();
 	    			$scope.show_create_form=false;
 	    		}
 	    		else{
-	    			alert("创建团队时出现问题 : "+data.errors.join(","));
+	    			swal("创建团队时出现问题 : "+data.errors.join(","));
 	    			console.log("创建团队时出现问题",data);
 	    		}	    	
 	    }).error(function(data){
-	    			alert("创建团队时出现问题. Code:"+arguments[1]);
+	    			swal("创建团队时出现问题. Code:"+arguments[1]);
 	    			//console.log("创建团队时出现问题",data);
 	    });
 	}
@@ -529,7 +656,7 @@ myAppModule.controller('usercenter_account',
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
     			if(data.msg&&data.msg.indexOf("successfully")>-1){
-    				alert("密码已成功更改.");
+    				swal("成功","密码已更改.","success");
     				$location.path("/");
     			}
     			else if(data.errors){
@@ -546,7 +673,7 @@ myAppModule.controller('usercenter_account',
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {    			
     			if(data.msg&&data.msg.indexOf("confirmation")>-1){
-    				alert(data.msg);
+    				swal("成功","邮箱已更改,激活邮件已发送到新邮箱,请查收","success");
     				$location.path("/");
     			}
     			else if(data.errors){
@@ -643,11 +770,11 @@ myAppModule.controller('action_competition_register',
       }
       for(var k in arr){
       	if(typeof(arr[k][1])=="undefined"||arr[k][1].length===0){
-      		alert("请完整填写表单 : "+arr[k][0]);
+      		swal("请完整填写表单 : "+arr[k][0]);
       		return;
       	}
       	if(arr[k][0]=="mobile"&&arr[k][1]<100000){
-      		alert("请正确填写手机号");
+      		swal("请正确填写手机号");
       		return;
       	}
       	tmp.push(arr[k][0]+"="+encodeURIComponent(arr[k][1]));
@@ -659,11 +786,11 @@ myAppModule.controller('action_competition_register',
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
     		if(data.msg=="insert successful"||data.msg=="record exists"){
-    			alert("申请成功,审核结果将于近日通知您.");
+    			swal("申请成功,审核结果将于近日通知您.");
     			$location.path("/");
     		}
     		else{
-    			alert("报名出错.");
+    			swal("报名出错.");
     			console.log(data);
     		}
     	});        
@@ -718,11 +845,11 @@ myAppModule.controller('action_association_register',
       if(!fileInputElement)
       	return;
       if(fileInputElement.files.length<1){
-      		alert("请选择文件");
+      		swal("请选择文件");
 	  		return;
 	  	}
 	  if(fileInputElement.files[0].size<10000000){
-	  		alert("上传文件过大,请重新选择.");
+	  		swal("上传文件过大,请重新选择.");
 	  		return;
 	  	}
 
@@ -755,11 +882,11 @@ myAppModule.controller('action_association_register',
       }
       for(var k in arr){
       	if(typeof(arr[k][1])=="undefined"||arr[k][1].length===0){
-      		alert("请完整填写表单 : "+arr[k][0]);
+      		swal("请完整填写表单 : "+arr[k][0]);
       		return;
       	}
       	if(arr[k][0]=="mobile"&&arr[k][1]<100000){
-      		alert("请正确填写手机号");
+      		swal("请正确填写手机号");
       		return;
       	}
       	tmp.push(arr[k][0]+"="+encodeURIComponent(arr[k][1]));
@@ -771,11 +898,11 @@ myAppModule.controller('action_association_register',
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
     		if(data.msg=="insert successful"||data.msg=="record exists"){
-    			alert("申请成功,审核结果将于近日通知您.");
+    			swal("申请成功,审核结果将于近日通知您.");
     			$location.path("/");
     		}
     		else{
-    			alert("报名出错.");
+    			swal("报名出错.");
     			console.log(data);
     		}});
      }

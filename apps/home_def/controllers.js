@@ -1,5 +1,25 @@
 //Home_Default controllers.js
 
+function ng_serialize(ng_form){
+  	var arr=[];
+  	for (var k in ng_form){
+  		var v ="";
+  		var obj = ng_form[k];
+  		if(! ng_form.hasOwnProperty(k)||!obj||!obj.$name)
+  			continue;  	
+  		if(obj.$viewValue){
+  			v=obj.$viewValue.join?obj.$viewValue.join(","):obj.$viewValue;
+  		}  		
+  		if(v==="")
+  			continue;
+  		else if(v===true)
+  			v="1";
+  		else if(v===false)
+  			v="0"
+  		arr.push(obj.$name+"="+encodeURIComponent(v));
+  	}
+  	return arr.join("&");
+  }
 var myAppModule = angular.module('myApp', []);
 
 myAppModule.controller('competitionCtr',
