@@ -435,17 +435,22 @@ function($scope,$http,selectSource,userStatus) {
   $scope.selectSource=selectSource;
 
   $scope.removePfRecord=function(type,index){
-
-    if(!confirm("删除此记录?")){
-      return;
-    }        
-    if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp"){
+  sweetAlert({
+    title: "删除",
+    text: "确认删除此记录?",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonText: "删除",
+    closeOnConfirm: true,
+    html: false
+  }, function(){
+     if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp"){
       console.log("removePfRecorError:",type,index);
       return;
     }
     $scope.tabMsg={};
     if(typeof($scope.detail_info[type][index][type+"_id"])=="undefined"){
-      $scope.detail_info[type].splice(index,1);
+      $scope.$apply(function(){$scope.detail_info[type].splice(index,1);});      
     }
     else{
       $http({
@@ -461,7 +466,8 @@ function($scope,$http,selectSource,userStatus) {
 
             });
    }   
-  };
+  });
+};
   $scope.addPfRecord=function(type){
     switch(type){
       case "edu_exp":
