@@ -252,7 +252,7 @@ function($scope,$http,selectSource,userStatus) {
       			return;
     	   }
     	   else if(msg==""){
-      			swal("发送失败","私信内容不能为空.","error");
+      			swal("出错了...","私信内容不能为空.","error");
       			return;
     	   }
     	  $http({
@@ -274,7 +274,7 @@ function($scope,$http,selectSource,userStatus) {
   }
   $scope.inviteUser=function(user_id,name){
   /*	if($scope.userTeam&&$scope.userTeam.team_member.indexOf(user_id)>-1){
-  		swal("邀请失败",name+" 已经在你的队伍里了.","warning");
+  		swal("出错了...",name+" 已经在你的队伍里了.","warning");
   		return;
   	}*/
   	swal({   
@@ -288,7 +288,7 @@ function($scope,$http,selectSource,userStatus) {
       			return;
     	   }
     	   else if(msg==""){
-      			swal("邀请失败","邀请信息不能为空.","error");
+      			swal("出错了...","邀请信息不能为空.","error");
       			return;
     	   }
     	   $http({
@@ -321,7 +321,7 @@ $scope.applyTeam=function(team_id,team_name) {
       			return;
     	   }
     	   else if(msg==""){
-      			swal("申请失败","申请信息不能为空.","error");
+      			swal("出错了...","申请信息不能为空.","error");
       			return;
     	   }
     	   $http({
@@ -342,7 +342,7 @@ $scope.applyTeam=function(team_id,team_name) {
 }
 $scope.sendMsgToTeam=function(team_id,name){
 	if($scope.userTeam&&$scope.userTeam.team_member.indexOf(userStatus.user_id)>-1){
-  		swal("发送失败","不能给自己所在的团队发送信息","warning");
+  		swal("出错了...","不能给自己所在的团队发送信息","warning");
   		return;
   	}
   	swal({   
@@ -356,7 +356,7 @@ $scope.sendMsgToTeam=function(team_id,name){
       			return;
     	   }
     	   else if(msg==""){
-      			swal("发送失败","消息不能为空.","error");
+      			swal("出错了...","消息不能为空.","error");
       			return;
     	   }
     	   $http({
@@ -404,16 +404,17 @@ function($scope,$http,selectSource) {
 				headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    }).success(function(data) {
 	    	   if(data.errors.length<1){
-	    			swal("团队创建成功 : "+data.data.team_name);
+	    			swal("创建成功","团队已创建 : "+data.data.team_name,"success");
 	    			$scope.clearTeamCreate();
 	    			$scope.show_create_form=false;
+            $scope.loadTeamData();
 	    		}
 	    		else{
-	    			swal("创建团队时出现问题 : "+data.errors.join(","));
+	    			swal("出错了...",data.errors.join(","),"error");
 	    			console.log("创建团队时出现问题",data);
 	    		}	    	
 	    }).error(function(data){
-	    			swal("创建团队时出现问题. Code:"+arguments[1]);
+	    			swal("出错了...","HTTP Code:"+arguments[1],"error");
 	    			//console.log("创建团队时出现问题",data);
 	    });
 	}
@@ -703,12 +704,25 @@ myAppModule.controller('usercenter_msg',
 							headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    		}).success(function(data) {});
 		}
-	})
+	});
+myAppModule.controller('entity_user',
+  function($scope,$http,$routeParams,userStatus){
+  $scope.userID=$routeParams.id;
+/*
+ $http({
+        method  : 'GET',
+        url     : '/kesci_backend/api/users/details?user_id='+$scope.userID     
+        }).success(function(data) {
+         
+    });*/
+
+  });
 myAppModule.controller('entity_team',
   function($scope,$http,$routeParams,selectSource,userStatus){
     $scope.userStatus=userStatus;
   	$scope.selectSource=selectSource;  	
     $scope.teamID=$routeParams.id;
+    $scope.manageMode=$routeParams.manage==1?true:false;
 
     $http({
 				method  : 'GET',
@@ -786,7 +800,7 @@ myAppModule.controller('action_competition_register',
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
     		if(data.msg=="insert successful"||data.msg=="record exists"){
-    			swal("申请成功,审核结果将于近日通知您.");
+    			swal("申请成功","审核结果将于近日通知您.","success");
     			$location.path("/");
     		}
     		else{
@@ -898,7 +912,7 @@ myAppModule.controller('action_association_register',
         	headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
     	}).success(function(data) {
     		if(data.msg=="insert successful"||data.msg=="record exists"){
-    			swal("申请成功,审核结果将于近日通知您.");
+    			swal("申请成功","审核结果将于近日通知您.","success");
     			$location.path("/");
     		}
     		else{
@@ -1011,6 +1025,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/entity/team/:id', {
             templateUrl: 'views/entity/team.html',
             controller: 'entity_team'
+        }).when('/entity/user/:id', {
+            templateUrl: 'views/entity/user.html',
+            controller: 'entity_user'
         }).when('/action/competition/register/:id', {
             templateUrl: 'views/action/competition_register.html',
             controller: 'action_competition_register'

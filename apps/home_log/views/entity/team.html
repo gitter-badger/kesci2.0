@@ -2,7 +2,7 @@
     <div class="col-md-4">
       <div class="content-box">
         <img class="img-thumbnail img-circle profile-img" src="./images/team_icon.png"/>
-        <p class="profile-name">{{teaminfo.name}}</p>
+        <p class="profile-name">{{teamData.basic_info.team_name}}</p>
         <table class="table profile-table ">
         <tr><td class="item-table-title">团队签名</td><td>{{teamData.basic_info.short_description||"暂无"}}</td></tr>        
         <tr><td class="item-table-title">当前成员</td><td>{{teamData.basic_info.teammate_num}}</td></tr>
@@ -12,9 +12,8 @@
          <tr><td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{teamData.basic_info.description||"暂无"}}</td></tr> 
         </table>
         <div style="text-align:center">
-        <button class="btn btn-success" ng-show="!is_team_member"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 申请加入</button>
-        <button class="btn btn-warning" ng-show="admin_flag==1||admin_flag==0"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 离开团队</button>
-        <button class="btn btn-danger" ng-show="admin_flag==2"><span class="glyphicon glyphicon-off" aria-hidden="true"> </span> 解散团队</button>
+        <button class="btn btn-warning" ng-show="manageMode&&(admin_flag==1||admin_flag==0)"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 离开团队</button>
+        <button class="btn btn-danger" ng-show="manageMode&&admin_flag==2"><span class="glyphicon glyphicon-off" aria-hidden="true"> </span> 解散团队</button>
         </div>
       </div>
     </div>
@@ -83,7 +82,7 @@
 			    </tr>-->
 			  </table>  	
               <br>  
-                  <p ng-show="admin_flag==2&&userStatus.user_id!=item.user_id" style="text-align:right" ng-show=""><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-erase" aria-hidden="true"> </span> 开除成员</button> <!--<button class="btn btn-sm btn-info"><span class="glyphicon glyphicon-check" aria-hidden="true"> </span> 提升为队长</button>--></p>
+                  <p ng-show="manageMode&&admin_flag==2&&userStatus.user_id!=item.user_id" style="text-align:right" ng-show=""><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-erase" aria-hidden="true"> </span> 开除成员</button> <!--<button class="btn btn-sm btn-info"><span class="glyphicon glyphicon-check" aria-hidden="true"> </span> 提升为队长</button>--></p>
             </div>         
 
          </div>

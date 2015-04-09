@@ -45,8 +45,10 @@
 	</div>
 	<div class="row list-entity-item" ng-repeat="item in teamData.teams">   
 		<div class="col-sm-3">
-		  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
-		  <p class="profile-name">{{item.team_name}}</p>		    
+			<a ng-href="{{'#/entity/team/'+item.team_id+'?manage=1'}}" class="no-dec-link">
+			  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
+			  <p class="profile-name">{{item.team_name}}</p>		    
+			</a>
 		</div> 
 		<div class="col-sm-9 content-box-item-detail">              
 		  <table class="table table-striped">                 
@@ -66,7 +68,7 @@
 		    	<td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{item.description||"暂无"}}</td>
 		    </tr>  		   
 		  </table>   
-		  <div style="float:right"><a ng-href="{{'#/entity/team/'+item.team_id}}">团队主页</a></div>		 
+		  <p class="text-muted" style="text-align:right">点击团队图标或团队名称可进入团队主页</p> 
 		</div> 
 	</div>
 </div>

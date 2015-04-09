@@ -1,0 +1,77 @@
+  <div class="row">
+    <div class="col-md-3">
+      <div class="content-box">
+        <img class="img-thumbnail img-circle profile-img" src="./images/de.png"/>
+        <p class="profile-name">{{userStatus.username}}</p>
+        <table class="table profile-table">
+        <tr><td class="item-table-title">邮箱</td><td>{{userStatus.email}}</td></tr>
+        <tr><td class="item-table-title">当前竞赛</td><td>{{basic_info.active_competitions[0].cptn_name||"暂无"}}</td></tr>
+      
+        
+        </table>
+      </div>
+    </div>
+    <div class="col-md-9">
+    <div class="content-box">
+
+       <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 基本信息</div>
+       <div class="profile-well-container">
+          <table class="table profile-table table-striped">                 
+              <tr>
+                <td style="width:8em" class="item-table-title">居住地区</td>
+                <td> 
+                  <span>{{basic_info.province||"暂无"}}</span>  
+                </td>
+              </tr>
+              <tr>
+                <td class="item-table-title">在读学校</td>
+                <td>
+                <span>{{basic_info.university||"暂无"}}</span>  
+                </td>
+              </tr>
+              <tr>
+                <td class="item-table-title">入学时间</td>
+                <td>
+                <span>{{basic_info.start_time||"暂无"}}</span>  
+                </td>
+              </tr>
+              <tr>
+                <td class="item-table-title">在读院系</td>
+                <td>
+                <span>{{basic_info.department||"暂无"}}</span>  
+                </td>
+              </tr>
+              <tr>
+                <td class="item-table-title">在读专业</td>
+                <td>
+                <span>{{basic_info.major||"暂无"}}</span> 
+                </td>
+              </tr>
+              <tr>
+                <td class="item-table-title">在读学位</td>
+                <td>
+                <span>{{basic_info.level||"暂无"}}</span> 
+                </td>
+              </tr>
+              <tr>
+                <td class="item-table-title">个人简介</td>
+                <td>
+                  <span>{{basic_info.brief_intro||"暂无"}}</span>
+                </td>
+              </tr>
+              
+              <tr>
+                <td class="item-table-title">技能</td>
+                <td>        
+                  <div class="profile-label-container"><span class="label label-success item-table-listItem profile-label" ng-repeat="rs in basic_info.skills">{{rs}}</span></div>  
+                  <span ng-show="!basic_info.skills">暂无</span>
+                </td>
+              </tr>   
+
+              </table>
+            </div>    
+      </div>
+    </div>
+  
+  </div>  
+
