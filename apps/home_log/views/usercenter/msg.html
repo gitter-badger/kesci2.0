@@ -9,18 +9,17 @@
 				</table>
 			</div>
 		<div class="list-group content-box-nopadding">			
-			  <a ng-click="currentTab=0;" ng-class="{'active':currentTab==0}" class="list-group-item">系统公告<span class="badge">{{official_notices.length}}</span></a>
-			  <a ng-click="currentTab=1;" ng-class="{'active':currentTab==1}" class="list-group-item">组队通知<span class="badge">0</span></a>			 
-			  <a ng-click="currentTab=2;" ng-class="{'active':currentTab==2}" class="list-group-item">团队广播<span class="badge">0</span></a>
-			  <a ng-click="currentTab=3;" ng-class="{'active':currentTab==3}" class="list-group-item">站内信<span class="badge">0</span></a>				
+			  <a ng-click="currentTab=0;modelLoader(0);" ng-class="{'active':currentTab==0}" class="list-group-item">系统公告<span class="badge">{{official_notice.notices_num}}</span></a>
+			  <a ng-click="currentTab=1;modelLoader(1);" ng-class="{'active':currentTab==1}" class="list-group-item">站内信</a>			 
+			  <a ng-click="currentTab=2;modelLoader(2);" ng-class="{'active':currentTab==2}" class="list-group-item">组队消息</a>		
 		</div>
 	</div>
 
 	<div class="col-md-9">
-		<div class="content-box" style="min-height:35em;">
-			<div ng-show="currentTab==0">
-				<div ng-show="official_notices.length==0" style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦</div>
-				<div class="media well" ng-repeat="item in official_notices">
+		<div class="content-box" style="min-height:35em;" ng-switch on="currentTab">
+			<div ng-switch-when="0">
+				<div ng-show="official_notice.notices_num==0" style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦</div>
+				<div class="media well" ng-repeat="item in official_notice.notices">
 					  <div class="media-left" style="text-align:center">					  
 					    <img class="media-object " src="../shared/images/kesci_mid.png">			  
 					    <span class="label label-default" ng-show="item.read_flag==1">已读</span>
@@ -33,9 +32,15 @@
 					  </div>
 				</div>
 			</div>
-			<div ng-show="currentTab!=0">
-				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦</div>
+
+			<div ng-switch-when="1">
+				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦1</div>
 			</div>
+
+			<div ng-switch-when="2">
+				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦2</div>
+			</div>
+
 		</div>
 
 	</div>	

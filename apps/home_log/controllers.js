@@ -693,16 +693,45 @@ myAppModule.controller('usercenter_msg',
 	function($scope,$http,$location,userStatus){
 		$scope.userStatus=userStatus;
 		$scope.currentTab=0;
-		$http({
-				method  : 'GET',
-				url     : '/kesci_backend/api/notifications/official_notice',
-	    }).success(function(data) {
-	    	$scope.official_notices=data.notices;
-	    });
-	    $scope.markRead=function(noticeType,noticeIdx){
+    $scope.tabLoadFlag=[false,false,false];
+    $scope.modelLoader=function(idx,force){
+      $scope.tabMsg={};
+      var models=["/api/notifications/official_notice",
+                  "/api/messages/insite_msg",
+                  "/api/messages/zudui_msg"];
+      if(!(idx<3 && idx>-1))
+        return;
+      if(!force && $scope.tabLoadFlag[idx])
+        return;  
+      if(!models[idx]){ 
+        console.log("载入model出错",idx); 
+        return;
+      }       
+      $http({
+          method  : 'GET',
+          url     : "/kesci_backend"+models[idx]
+          }).success(function(data) {   
+            $scope.tabLoadFlag[idx]=true;
+            if(idx==0){
+              $scope.official_notice=data;
+            }  
+            else if(idx==1){
+              $scope.insite_msg=[];
+              var tmp_p2p={};
+              for (var i in data.p2p_msg){
+                var f_id=data.p2p_msg[i].friend_id;
+                if(tmp_p2p[f_id]===undefined)
+                  tmp_p2p[f_id]=[];
+                tmp_p2p[f_id].push(data.p2p_msg[i]);
+              }
+            }      
+      });
+    }
+   $scope.modelLoader(0);
+	 $scope.markRead=function(noticeType,noticeIdx){
 			var tmp=[];
-			tmp.push($scope.official_notices[noticeIdx]["id"]);
-			$scope.official_notices[noticeIdx]["read_flag"]=1;
+			tmp.push($scope.official_notice.notices[noticeIdx]["id"]);
+			$scope.official_notice.notices[noticeIdx]["read_flag"]=1;
 			$http({
 							method  : 'POST',
 							url     : '/kesci_backend/api/notifications/official_notice',
