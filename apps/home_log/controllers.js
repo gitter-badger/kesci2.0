@@ -123,6 +123,7 @@ function($scope,$http,selectSource,userStatus) {
 	$scope.currentTab=1;
 	$scope.selectSource=selectSource;
 
+
 	$scope.clearAllForms=function(){	
 		//$scope.competitionSearch_name="";
 		//$scope.competitionSearch_selectedDistrict=[];
@@ -418,11 +419,76 @@ function($scope,$http,selectSource) {
 	    			//console.log("创建团队时出现问题",data);
 	    });
 	}
+  $scope.rejectInvitation=function(record_id){
+     sweetAlert({
+        title: "拒绝邀请",
+        text: "请输入拒绝理由 : ",
+        type: "input",
+        showCancelButton: true,   
+        closeOnConfirm: false   
+      },function(msg){
+        $http({
+            method  : 'POST',
+            url     : '/kesci_backend/api/teams/decline_invitation',
+            data    : "record_id="+record_id+"&decline_reason="+encodeURIComponent(msg),
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }).success(function(data) {
+          if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "拒绝邀请成功", "success") ;
+                $scope.loadTeamData();
+           }
+          else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"拒绝邀请时出错","error");  
+                console.log(data);
+          }
+          });
+      });
+  }
+  $scope.acceptInvitation=function(record_id){
+    sweetAlert({
+        title: "接受邀请",
+        text: "确认接受此邀请?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "接受",
+        closeOnConfirm: false,
+        html: false
+      },function(){
+         $http({
+        method  : 'POST',
+        url     : '/kesci_backend/api/teams/agree_invitation',
+        data    : "record_id="+record_id,
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).success(function(data) {
+          if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "接受邀请成功", "success") ;
+                $scope.loadTeamData();
+           }
+          else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"接受邀请时出错","error");  
+                console.log(data);
+          }
+      });
+      });
+  }
 	$scope.loadTeamData=function(){	
 		$http({
 				method  : 'GET',
 				url     : '/kesci_backend/api/teams/my_team'				
-	    }).success(function(data) {$scope.teamData=data;})
+	    }).success(function(data) {
+        $scope.teamData={};
+        $scope.teamData.teams=data.teams;
+        $scope.teamData.applyTeams=[];
+        $scope.teamData.inviteTeams=[];      
+        for(var i in data.zudui_msg){
+          if(data.zudui_msg[i].type!=1){
+            $scope.teamData.applyTeams.push(data.zudui_msg[i]);
+          }
+          else{
+            $scope.teamData.inviteTeams.push(data.zudui_msg[i]);
+          }
+        }
+      })
 	 }
 	$scope.loadTeamData();
 });
@@ -691,19 +757,28 @@ myAppModule.controller('usercenter_account',
 	});
 myAppModule.controller('usercenter_msg',
 	function($scope,$http,$location,userStatus){
+    $scope.chatWinFlag={};
 		$scope.userStatus=userStatus;
 		$scope.currentTab=0;
-    $scope.tabLoadFlag=[false,false,false];
+    $scope.tabLoadFlag=[false,false,false,false];
+    $http({
+        method  : 'GET',
+        url     : '/kesci_backend/api/teams/basic_info' 
+        }).success(function(data) {         
+           if(data.teams.length>0)
+              $scope.userTeam=data.teams[0];
+    });
+
     $scope.modelLoader=function(idx,force,refresh){
-      $scope.tabMsg={};
-      $scope.insite_msg={};
+      $scope.tabMsg={};      
       var models=["/api/notifications/official_notice",
                   "/api/messages/insite_msg",
+                  "/api/messages/team_insite_msg/",
                   "/api/messages/zudui_msg"];
-      if(!(idx<3 && idx>-1))
+      if(!(idx<4 && idx>-1))
         return;
       if(!force && $scope.tabLoadFlag[idx]){
-      	if(idx==1)
+      	if(idx==1||idx==2)
       		$scope.scrollChat();
       	return;
       }
@@ -711,7 +786,15 @@ myAppModule.controller('usercenter_msg',
       if(!models[idx]){ 
         console.log("载入model出错",idx); 
         return;
-      }      
+      }    
+      if(idx==2){
+        if(!$scope.userTeam){
+          $scope.insiteTeamEmpty=true;
+          return;
+        }          
+        models[2]=models[2]+$scope.userTeam.team_id;
+      }  
+
       $http({
           method  : 'GET',
           url     : "/kesci_backend"+models[idx]
@@ -720,28 +803,66 @@ myAppModule.controller('usercenter_msg',
             if(idx==0){
               $scope.official_notice=data;
             }  
-            else if(idx==1){
-              $scope.userNameDict=data.friend_name;
+            else if(idx==1){ 
+              if(data.p2p_msg.length==0&&data.t2p_msg.length==0)
+                $scope.insiteEmpty=true;
+              else
+                $scope.insiteEmpty=false;
               var tmp_p2p={};       		  
               for (var i in data.p2p_msg){
                 var f_id=data.p2p_msg[i].friend_id;
                 if(tmp_p2p[f_id]===undefined){
                 	tmp_p2p[f_id]=[];
                 	data.p2p_msg[i].friend_name="undefined";
-                	for(var j in data.friend_name){
-      					if(data.friend_name[j].id==f_id){
-      						data.p2p_msg[i].friend_name=data.friend_name[j].username;
-      						break;
-      					}
-      				}
+                	for(var j in data.friend_name){if(data.friend_name[j].id==f_id) {data.p2p_msg[i].friend_name=data.friend_name[j].username;break;}}
                 }
               tmp_p2p[f_id].push(data.p2p_msg[i]);                
               }
+              var tmp_t2p={};
+              for (var i in data.t2p_msg){
+                var t_id=data.t2p_msg[i].team_id;
+                if(tmp_t2p[t_id]===undefined){
+                  tmp_t2p[t_id]=[];
+                  data.t2p_msg[i].team_name="undefined";
+                  for(var j in data.team_name_list){if(data.team_name_list[j].team_id==t_id) { data.t2p_msg[i].team_name=data.team_name_list[j].team_name;break;}}
+                }
+              tmp_t2p[t_id].push(data.t2p_msg[i]);                
+              }
               $scope.p2pChatData=tmp_p2p;
+              $scope.t2pChatData=tmp_t2p;
               if(refresh)
-    			swal('刷新完成!');
-    		  $scope.scrollChat();
-            }      
+                swal('刷新完成!');
+    		      $scope.scrollChat();
+            }
+          else if(idx==2){
+             if(data.p2t_msg.length==0)
+                $scope.insiteTeamEmpty=true;
+              else
+                $scope.insiteTeamEmpty=false;
+
+              var tmp_p2t={};
+              for (var i in data.p2t_msg){
+                var f_id=data.p2t_msg[i].user_id;
+                if(tmp_p2t[f_id]===undefined){
+                  tmp_p2t[f_id]=[];
+                  data.p2t_msg[i].user_name="undefined";
+                  for(var j in data.friend_name){if(data.friend_name[j].id==f_id) { data.p2t_msg[i].user_name=data.friend_name[j].username;break;}}
+                }
+              tmp_p2t[f_id].push(data.p2t_msg[i]);                
+              }
+            $scope.p2tChatData=tmp_p2t;
+            if(refresh)
+                swal('刷新完成!');
+            $scope.scrollChat();
+          }
+        else if(idx==3){
+          for(var i in data.zudui_msg){
+            var t_id=data.zudui_msg[i].team_id;
+            data.zudui_msg[i].team_name="undefined";
+            for(var j in data.team_name_list){if(data.team_name_list[j].team_id==t_id) { data.zudui_msg[i].team_name=data.team_name_list[j].team_name;break;}}
+           }
+          $scope.zudui_msg=data.zudui_msg;
+        }      
       });
 
     }
@@ -757,7 +878,7 @@ myAppModule.controller('usercenter_msg',
 							headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    		}).success(function(data) {});
 		}
-   $scope.sendP2pMsg=function(user_id,name){
+   $scope.sendMsg=function(user_id,name){
   	if(user_id==userStatus.user_id){
   		swal("你好无聊 (﹁\"﹁)","为什么会有人给自己发私信啊啊啊啊啊","warning");
   		return;
@@ -795,6 +916,82 @@ myAppModule.controller('usercenter_msg',
 		  return;
   		});
   }
+  $scope.sendMsgByTeam=function(user_id,name){
+    if($scope.userTeam.admin_flag!=2){
+      swal("没有权限","只有队长有权限代表团队发送信息","warning");
+      return;
+    }
+    swal({   
+      title: "代表团队发送消息",   
+      text: "请输入发送给 "+name+" 的消息内容",   
+      type: "input",   
+      showCancelButton: true,   
+      closeOnConfirm: false
+      }, function(msg){ 
+         if(msg===false){
+            return;
+         }
+         else if(msg==""){
+            swal("出错了...","消息内容不能为空.","error");
+            return;
+         }
+        $http({
+            method  : 'POST',
+            url     : '/kesci_backend/api/messages/team_to_person',
+            data    : "receiver_id="+user_id+"&"+"content="+encodeURIComponent(msg)+"&team_id="+$scope.userTeam.team_id,
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).success(function(data) {
+              if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "消息已发送", "success") ;
+                $scope.p2tChatData[user_id].push({content:msg,friend_id:user_id,direction:1,sendtime:Math.floor((new Date()).valueOf()/1000)});
+                $scope.scrollChat();
+                } 
+              else{
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"发送消息时出现问题","error");   
+                console.log(data);
+              }
+            });  
+      return;
+      });
+  }
+  $scope.sendMsgToTeam=function(team_id,name){
+  if($scope.userTeam&&$scope.userTeam.team_member.indexOf(userStatus.user_id)>-1){
+      swal("出错了...","不能给自己所在的团队发送信息","warning");
+      return;
+    }
+    swal({   
+      title: "发送团队消息",   
+      text: "请输入发送给团队 "+name+" 的消息 : ",   
+      type: "input",   
+      showCancelButton: true,   
+      closeOnConfirm: false
+      }, function(msg){ 
+         if(msg===false){
+            return;
+         }
+         else if(msg==""){
+            swal("出错了...","消息不能为空.","error");
+            return;
+         }
+         $http({
+              method  : 'POST',
+              url     : '/kesci_backend/api/messages/person_to_team',
+              data    : "team_id="+team_id+"&"+"content="+encodeURIComponent(msg),
+          headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).success(function(data) {
+              console.log(data);  
+              if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "团队消息已发送", "success") ;
+                $scope.t2pChatData[team_id].push({content:msg,team_id:team_id,direction:0,sendtime:Math.floor((new Date()).valueOf()/1000)});
+                $scope.scrollChat();
+              }
+              else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"团队消息发送时出错","error");  
+                console.log(data);
+              }
+            });  
+      });   
+}
   $scope.scrollChat=function (){
   	window.setTimeout(function(){
   		var a=$(".usercenter-msg-container");

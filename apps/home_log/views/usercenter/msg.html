@@ -10,8 +10,9 @@
 			</div>
 		<div class="list-group content-box-nopadding">			
 			  <a ng-click="currentTab=0;modelLoader(0);" ng-class="{'active':currentTab==0}" class="list-group-item">系统公告<span class="badge">{{official_notice.notices_num}}</span></a>
-			  <a ng-click="currentTab=1;modelLoader(1);" ng-class="{'active':currentTab==1}" class="list-group-item">站内信</a>			 
-			  <a ng-click="currentTab=2;modelLoader(2);" ng-class="{'active':currentTab==2}" class="list-group-item">组队消息</a>		
+			  <a ng-click="currentTab=1;modelLoader(1);" ng-class="{'active':currentTab==1}" class="list-group-item">我的消息</a>	
+			  <a ng-click="currentTab=2;modelLoader(2);" ng-class="{'active':currentTab==2}" class="list-group-item">团队消息</a>				 
+			  <a ng-click="currentTab=3;modelLoader(3);" ng-class="{'active':currentTab==3}" class="list-group-item">组队消息</a>		
 		</div>
 	</div>
 
@@ -33,27 +34,57 @@
 				</div>
 			</div>
 
-			<div ng-switch-when="1">				
+			<div ng-switch-when="1">		
+			<div ng-if="insiteEmpty" class="content-box usercenter-msg-tabbox">
+					<div ng-show="official_notice.notices_num==0" style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦</div>
+			</div>		
 			<div class="usercenter-msg-panel" ng-repeat="chatSession in p2pChatData">
-				<div ng-click="chatSession.show=!chatSession.show;scrollChat();" class="usercenter-msg-panel-heading">与 {{chatSession[0].friend_name}} 的对话 ({{chatSession.length}})	</div>
-				<div class="usercenter-msg-panel-body" ng-show="chatSession.show">	
+				<div class="usercenter-msg-panel-heading" ng-click="chatWinFlag['p2p'+chatSession[0].friend_id]=!chatWinFlag['p2p'+chatSession[0].friend_id]">与用户 {{chatSession[0].friend_name}} 的对话 ({{chatSession.length}})	</div>
+				<div class="usercenter-msg-panel-body" ng-show="!chatWinFlag['p2p'+chatSession[0].friend_id]">	
 							<!--<div ng-show="!chatSession.showAll&&chatSession.length>1" style="text-align:center;font-size:1em;"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span> </div>-->
 							<div class="usercenter-msg-container">
 								<div ng-repeat="item in chatSession">
 									<div>
 									<div ng-if="item.sender_id==item.user_id" class="alert alert-info usercenter-msg-mine">
-										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"yyyy-MM-dd hh:mm:ss" }} )</div>
+										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
 										<div>{{item.content}}</div>
 									</div>
 									<div ng-if="item.sender_id!=item.user_id" class="alert usercenter-msg-others">
-										<div><b>{{chatSession[0].friend_name}}</b> ( {{item.sendtime*1000|date:"yyyy-MM-dd hh:mm:ss" }} )</div>
+										<div><b><a class="no-dec-link" ng-href="#/entity/user/{{chatSession[0].friend_id}}" target="_blank">{{chatSession[0].friend_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
 										<div>{{item.content}}</div>
 									</div>
 									</div>
 								</div>								
 							</div>
 							<p style="text-align:center;line-height:2em">						
-							<a ng-click="sendP2pMsg(chatSession[0].friend_id,chatSession[0].friend_name);" class="insite-msg-action">
+							<a ng-click="sendMsg(chatSession[0].friend_id,chatSession[0].friend_name);" class="insite-msg-action">
+			  			发新消息 <span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
+			  				<a ng-click="modelLoader(1,true,true);" class="insite-msg-action">
+			  			刷新 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
+						</p>
+				</div>
+		</div>
+
+			<div class="usercenter-msg-panel" ng-repeat="chatSession in t2pChatData">
+				<div class="usercenter-msg-panel-heading" ng-click="chatWinFlag['t2p'+chatSession[0].team_id]=!chatWinFlag['t2p'+chatSession[0].team_id]">与团队 {{chatSession[0].team_name}} 的对话 ({{chatSession.length}})	</div>
+				<div class="usercenter-msg-panel-body" ng-show="!chatWinFlag['t2p'+chatSession[0].team_id]">	
+							<!--<div ng-show="!chatSession.showAll&&chatSession.length>1" style="text-align:center;font-size:1em;"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span> </div>-->
+							<div class="usercenter-msg-container">
+								<div ng-repeat="item in chatSession">
+									<div>
+									<div ng-if="item.direction==0" class="alert alert-info usercenter-msg-mine">
+										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+										<div>{{item.content}}</div>
+									</div>
+									<div ng-if="item.direction!=0" class="alert usercenter-msg-others">
+										<div><b><a class="no-dec-link" ng-href="#/entity/team/{{chatSession[0].team_id}}" target="_blank">{{chatSession[0].team_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+										<div>{{item.content}}</div>
+									</div>
+									</div>
+								</div>								
+							</div>
+							<p style="text-align:center;line-height:2em">						
+							<a ng-click="sendMsgToTeam(chatSession[0].team_id,chatSession[0].team_name);" class="insite-msg-action">
 			  			发新消息 <span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
 			  				<a ng-click="modelLoader(1,true,true);" class="insite-msg-action">
 			  			刷新 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
@@ -62,9 +93,57 @@
 		</div>
 		</div>
  
-			<div ng-switch-when="2" class="content-box usercenter-msg-tabbox">
-				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦2</div>
+			<div ng-switch-when="2" >
+			<div class="content-box usercenter-msg-tabbox" ng-show="insiteTeamEmpty">
+				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息或者你尚未加入一个团队</div>
 			</div>
+				<div class="usercenter-msg-panel" ng-repeat="chatSession in p2tChatData">
+					<div class="usercenter-msg-panel-heading" ng-click="chatWinFlag['p2t'+chatSession[0].team_id]=!chatWinFlag['p2t'+chatSession[0].team_id]">团队 {{userTeam.team_name}} 与 {{chatSession[0].user_name}} 的对话 ({{chatSession.length}})	</div>
+					<div class="usercenter-msg-panel-body" ng-show="!chatWinFlag['p2t'+chatSession[0].team_id]">	
+								<!--<div ng-show="!chatSession.showAll&&chatSession.length>1" style="text-align:center;font-size:1em;"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span> </div>-->
+								<div class="usercenter-msg-container">
+									<div ng-repeat="item in chatSession">
+										<div>
+										<div ng-if="item.direction!=0" class="alert alert-info usercenter-msg-mine">
+											<div><b>{{userTeam.team_name}}</b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+											<div>{{item.content}}</div>
+										</div>
+										<div ng-if="item.direction==0" class="alert usercenter-msg-others">
+											<div><b><a class="no-dec-link" ng-href="#/entity/user/{{chatSession[0].user_id}}" target="_blank">{{chatSession[0].user_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+											<div>{{item.content}}</div>
+										</div>
+										</div>
+									</div>								
+								</div>
+								<p style="text-align:center;line-height:2em">						
+								<a ng-click="sendMsgByTeam(chatSession[0].user_id,chatSession[0].user_name);" class="insite-msg-action">
+				  			发新消息 <span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
+				  				<a ng-click="modelLoader(2,true,true);" class="insite-msg-action">
+				  			刷新 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
+							</p>
+					</div>
+			</div>
+		</div>
+		<div ng-switch-when="3" >
+				<div class="content-box usercenter-msg-tabbox">
+					<div ng-show="zudui_msg.length==0" style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息</div>
+
+					<div class="media well" ng-repeat="item in zudui_msg">
+					  <div class="media-left" style="text-align:center">					  
+					    <img class="media-object " src=".//images/apply.png">	
+					    <span class="label label-info">{{item.sendtime*1000|date:"MM-dd  h:mma"}}</span>
+					    <br>
+					  </div>
+					  <div class="media-body" style="padding-left:5px;padding-top:20px;">
+					    <h4 ng-if="item.type==0" style="font-weight:bold" class="media-heading">你申请加入团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
+					    <h4 ng-if="item.type==1" style="font-weight:bold" class="media-heading">团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 邀请你加入</h4>
+					    <h4 ng-if="item.type==4" style="font-weight:bold" class="media-heading">你同意邀请, 加入了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
+					    <p ng-if="item.type==0||item.type==1" style="margin-top:15px;">附加消息 {{item.content}}</p>
+					  </div>
+				</div>
+				</div>
+
+		</div>
 
 		</div>
 

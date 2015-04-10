@@ -74,12 +74,71 @@
 </div>
 
 
-<div class="content-box">
+<div class="content-box" ng-if="teamData.teams.length==0&&teamData.applyTeams.length>0">
 	<div class="myteam-content-box-heading"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> 我申请的</div>	
+		<div class="row list-entity-item" ng-repeat="item in teamData.applyTeams">   
+		<div class="col-sm-3">
+			<a ng-href="{{'#/entity/team/'+item.team_id}}" class="no-dec-link" target="_blank">
+			  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
+			  <p class="profile-name">{{item.team_name}}</p>		    
+			</a>
+		</div> 
+		<div class="col-sm-9 content-box-item-detail">              
+		  <table class="table table-striped">                 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队签名</td><td>{{item.short_description||"暂无"}}</td>
+		    </tr>
+		     <tr>
+		    	<td class="item-table-title" style="min-width:4em">当前成员</td><td>{{item.team_member.length}}</td>
+		    </tr> 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
+		    </tr>  
+		    <tr>
+		      <td class="item-table-title">参加比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		    </tr>
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{item.description||"暂无"}}</td>
+		    </tr>  		   
+		  </table>  
+		  <div class="alert alert-info"> <b>{{item.sendtime*1000|date:"MM-dd  h:mma"}}</b> 你申请加入此团队 附加消息 : {{item.content}}</div>
+		</div> 
+	</div>
 
 </div>
 
 
-<div class="content-box">
+<div class="content-box" ng-if="teamData.teams.length==0&&teamData.inviteTeams.length>0">
 	<div class="myteam-content-box-heading"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> 邀请我的</div>	
+			<div class="row list-entity-item" ng-repeat="item in teamData.inviteTeams">   
+		<div class="col-sm-3">
+			<a ng-href="{{'#/entity/team/'+item.team_id}}" class="no-dec-link" target="_blank">
+			  <img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
+			  <p class="profile-name">{{item.team_name}}</p>			  	    
+			</a>
+			<p style="text-align:center"><button ng-click="acceptInvitation(item.record_id,$index);" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 接受邀请</button> 
+		    <button class="btn btn-sm btn-danger" ng-click="rejectInvitation(item.record_id,$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 拒绝邀请</button></p>	
+		</div> 
+		<div class="col-sm-9 content-box-item-detail">              
+		  <table class="table table-striped">                 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队签名</td><td>{{item.short_description||"暂无"}}</td>
+		    </tr>
+		     <tr>
+		    	<td class="item-table-title" style="min-width:4em">当前成员</td><td>{{item.team_member.length}}</td>
+		    </tr> 
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
+		    </tr>  
+		    <tr>
+		      <td class="item-table-title">参加比赛</td><td>{{findCompetitionName(item.competition_id)||"暂无"}}</td>			         
+		    </tr>
+		    <tr>
+		    	<td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{item.description||"暂无"}}</td>
+		    </tr>  		   
+		  </table>  
+		  <div class="alert alert-info"> <b>{{item.sendtime*1000|date:"MM-dd  h:mma"}}</b> 此团队邀请你加入 附加消息 : {{item.content}}</div>
+		  		  
+		</div> 
+	</div>
 </div>
