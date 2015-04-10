@@ -694,6 +694,15 @@ myAppModule.controller('usercenter_msg',
 		$scope.userStatus=userStatus;
 		$scope.currentTab=0;
     $scope.tabLoadFlag=[false,false,false];
+    $scope.testData=[
+{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:1,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:1,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:1,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
+{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"}];
     $scope.modelLoader=function(idx,force){
       $scope.tabMsg={};
       var models=["/api/notifications/official_notice",

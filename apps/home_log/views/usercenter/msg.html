@@ -33,10 +33,38 @@
 				</div>
 			</div>
 
-			<div ng-switch-when="1">
-				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦1</div>
-			</div>
 
+
+			<div ng-switch-when="1">				
+			<div class="panel panel-primary">	
+
+				<div class="panel-heading">与 {{testData[0].friend_name}} 的对话</div>
+				<div class="panel-body">		
+							<!--<div ng-show="!showAll&&testData.length>1" style="text-align:center;font-size:1em;"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span> </div>-->
+							<div ng-repeat="item in testData">
+								<div ng-show="showAll||testData.length-$index<2">
+								<div ng-if="item.sender_id==item.user_id" class="alert alert-success">
+									<div><b>{{item.user_name}}</b></div>
+									<div>{{item.content}}</div>
+								</div>
+								<div ng-if="item.sender_id!=item.user_id" class="alert alert-info">
+									<div><b>{{item.friend_name}}</b></div>
+									<div>{{item.content}}</div>
+								</div>
+							</div>
+							</div>
+							<p style="text-align:center">
+							<a ng-show="showAll" ng-click="showAll=false;">
+							收起对话 <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span></a>
+							<a ng-show="!showAll&&testData.length>1" ng-click="showAll=true;">
+			  			显示全部 <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span></a>　　　
+							<a ng-click="">
+			  			回复消息 <span class="glyphicon glyphicon-send" aria-hidden="true"></span></a>
+						</p>
+				</div>
+		</div>
+		</div>
+ 
 			<div ng-switch-when="2">
 				<div style="margin-top:15em;text-align:center" class="text-muted">当前还没有消息哦2</div>
 			</div>

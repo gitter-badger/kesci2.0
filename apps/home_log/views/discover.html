@@ -102,7 +102,7 @@
 <div class="content-box" ng-show="currentTab==1&&team_result.data.length>0">
 	<div class="list-entity-item row" ng-repeat="item in team_result.data">			
 		<div class="col-sm-3">
-		<button class="btn btn-xs btn-success" ng-show="userTeam===undefined" ng-click="applyTeam(item.team_id,item.team_name)"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 申请加入</button>
+		<button class="btn btn-xs btn-success" ng-if="userTeam===undefined" ng-click="applyTeam(item.team_id,item.team_name)"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 申请加入</button>
 		<a target="_blank" ng-href="{{'#/entity/team/'+item.team_id}}" class="no-dec-link">
 			<img class="content-box-item-img img-circle img-thumbnail"  src="./images/team_icon.png">
 			<p class="profile-name">{{item.team_name}}</p>	
@@ -140,8 +140,8 @@
 <div class="content-box" ng-show="currentTab==2&&people_result.data.length>0">
 
 	<div class="list-entity-item" ng-repeat="item in people_result.data">	
-	<span class="label label-info" ng-show="item.in_team_flag==1">已有团队</span>
-	<button class="btn btn-xs btn-success" ng-show="item.in_team_flag==0&&userTeam.admin_flag==2" ng-click="inviteUser(item.user_id,item.fullname)"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 邀请加入</button>
+	<span class="label label-info" ng-if="item.in_team_flag==1">已有团队</span>
+	<button class="btn btn-xs btn-success" ng-if="item.in_team_flag==0&&userTeam.admin_flag==2" ng-click="inviteUser(item.user_id,item.fullname)"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 邀请加入</button>
 		<div class="row">   
 			<div class="col-sm-3">
 				<a target="_blank" ng-href="{{'#/entity/user/'+item.user_id}}" class="no-dec-link">
