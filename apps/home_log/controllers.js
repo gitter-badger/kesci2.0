@@ -139,7 +139,7 @@ function($scope,$http,selectSource,userStatus) {
 	}
 	$http({
 				method  : 'GET',
-				url     : '/kesci_backend/api/teams/basic'	
+				url     : '/kesci_backend/api/teams/basic_info'	
       	}).success(function(data) {      		
            if(data.teams.length>0)
            		$scope.userTeam=data.teams[0];
@@ -694,28 +694,24 @@ myAppModule.controller('usercenter_msg',
 		$scope.userStatus=userStatus;
 		$scope.currentTab=0;
     $scope.tabLoadFlag=[false,false,false];
-    $scope.testData=[
-{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:1,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:1,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:1,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"},
-{sender_id:2,user_id:1,user_name:"周大胖",friend_name:"李小瘦",content:"看到梁海大大的名字，感觉很靠谱，但是我觉得行模型那块还大力扩散周知。"}];
-    $scope.modelLoader=function(idx,force){
+    $scope.modelLoader=function(idx,force,refresh){
       $scope.tabMsg={};
+      $scope.insite_msg={};
       var models=["/api/notifications/official_notice",
                   "/api/messages/insite_msg",
                   "/api/messages/zudui_msg"];
       if(!(idx<3 && idx>-1))
         return;
-      if(!force && $scope.tabLoadFlag[idx])
-        return;  
+      if(!force && $scope.tabLoadFlag[idx]){
+      	if(idx==1)
+      		$scope.scrollChat();
+      	return;
+      }
+        
       if(!models[idx]){ 
         console.log("载入model出错",idx); 
         return;
-      }       
+      }      
       $http({
           method  : 'GET',
           url     : "/kesci_backend"+models[idx]
@@ -725,19 +721,32 @@ myAppModule.controller('usercenter_msg',
               $scope.official_notice=data;
             }  
             else if(idx==1){
-              $scope.insite_msg=[];
-              var tmp_p2p={};
+              $scope.userNameDict=data.friend_name;
+              var tmp_p2p={};       		  
               for (var i in data.p2p_msg){
                 var f_id=data.p2p_msg[i].friend_id;
-                if(tmp_p2p[f_id]===undefined)
-                  tmp_p2p[f_id]=[];
-                tmp_p2p[f_id].push(data.p2p_msg[i]);
+                if(tmp_p2p[f_id]===undefined){
+                	tmp_p2p[f_id]=[];
+                	data.p2p_msg[i].friend_name="undefined";
+                	for(var j in data.friend_name){
+      					if(data.friend_name[j].id==f_id){
+      						data.p2p_msg[i].friend_name=data.friend_name[j].username;
+      						break;
+      					}
+      				}
+                }
+              tmp_p2p[f_id].push(data.p2p_msg[i]);                
               }
+              $scope.p2pChatData=tmp_p2p;
+              if(refresh)
+    			swal('刷新完成!');
+    		  $scope.scrollChat();
             }      
       });
+
     }
    $scope.modelLoader(0);
-	 $scope.markRead=function(noticeType,noticeIdx){
+   $scope.markRead=function(noticeType,noticeIdx){
 			var tmp=[];
 			tmp.push($scope.official_notice.notices[noticeIdx]["id"]);
 			$scope.official_notice.notices[noticeIdx]["read_flag"]=1;
@@ -748,7 +757,51 @@ myAppModule.controller('usercenter_msg',
 							headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
 	    		}).success(function(data) {});
 		}
-	});
+   $scope.sendP2pMsg=function(user_id,name){
+  	if(user_id==userStatus.user_id){
+  		swal("你好无聊 (﹁\"﹁)","为什么会有人给自己发私信啊啊啊啊啊","warning");
+  		return;
+  	}
+  	swal({   
+  		title: "发送私信",   
+  		text: "请输入发送给 "+name+" 的私信内容",   
+  		type: "input",   
+  		showCancelButton: true,   
+  		closeOnConfirm: false
+  		}, function(msg){ 
+  		   if(msg===false){
+      			return;
+    	   }
+    	   else if(msg==""){
+      			swal("出错了...","私信内容不能为空.","error");
+      			return;
+    	   }
+    	  $http({
+		        method  : 'POST',
+		        url     : '/kesci_backend/api/messages/person_to_person',
+		        data    : "receiver_id="+user_id+"&"+"content="+encodeURIComponent(msg),
+		        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        }).success(function(data) {
+		          if(data.msg&&data.msg.indexOf("success")>-1){
+		            swal("成功!", "私信已发送", "success") ;
+		           	$scope.p2pChatData[user_id].push({content:msg,friend_id:user_id,sender_id:$scope.userStatus.user_id,user_id:$scope.userStatus.user_id,sendtime:Math.floor((new Date()).valueOf()/1000)});
+		            $scope.scrollChat();
+		            } 
+		          else{
+		            swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"发送私信时出现问题","error");   
+		            console.log(data);
+		          }
+		        });  
+		  return;
+  		});
+  }
+  $scope.scrollChat=function (){
+  	window.setTimeout(function(){
+  		var a=$(".usercenter-msg-container");
+  		for (var i in a){a[i].scrollTop=a[i].scrollHeight}
+  	},300);
+  }
+});
 myAppModule.controller('entity_user',
   function($scope,$http,$routeParams,userStatus){
   $scope.userID=$routeParams.id;
