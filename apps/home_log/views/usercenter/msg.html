@@ -134,11 +134,12 @@
 					    <span class="label label-info">{{item.sendtime*1000|date:"MM-dd  h:mma"}}</span>
 					    <br>
 					  </div>
-					  <div class="media-body" style="padding-left:5px;padding-top:20px;">
-					    <h4 ng-if="item.type==0" style="font-weight:bold" class="media-heading">你申请加入团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
+					  <div class="media-body" style="padding-left:5px;padding-top:20px;">			   
 					    <h4 ng-if="item.type==1" style="font-weight:bold" class="media-heading">团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 邀请你加入</h4>
+					    <h4 ng-if="item.type==2" style="font-weight:bold" class="media-heading">你申请加入团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
+					    <h4 ng-if="item.type==3" style="font-weight:bold" class="media-heading">你拒绝了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 的邀请</h4>
 					    <h4 ng-if="item.type==4" style="font-weight:bold" class="media-heading">你同意邀请, 加入了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
-					    <p ng-if="item.type==0||item.type==1" style="margin-top:15px;">附加消息 {{item.content}}</p>
+					    <p ng-if="item.type==2||item.type==1" style="margin-top:15px;">附加消息 {{item.content}}</p>
 					  </div>
 				</div>
 				</div>

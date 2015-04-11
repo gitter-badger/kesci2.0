@@ -471,6 +471,40 @@ function($scope,$http,selectSource) {
       });
       });
   }
+   $scope.sendMsgToTeam=function(team_id,name){
+    swal({   
+      title: "发送团队消息",   
+      text: "请输入发送给团队 "+name+" 的消息 : ",   
+      type: "input",   
+      showCancelButton: true,   
+      closeOnConfirm: false
+      }, function(msg){ 
+         if(msg===false){
+            return;
+         }
+         else if(msg==""){
+            swal("出错了...","消息不能为空.","error");
+            return;
+         }
+         $http({
+              method  : 'POST',
+              url     : '/kesci_backend/api/messages/person_to_team',
+              data    : "team_id="+team_id+"&"+"content="+encodeURIComponent(msg),
+          headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).success(function(data) {
+              console.log(data);  
+              if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "团队消息已发送", "success") ;
+                $scope.t2pChatData[team_id].push({content:msg,team_id:team_id,direction:0,sendtime:Math.floor((new Date()).valueOf()/1000)});
+                $scope.scrollChat();
+              }
+              else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"团队消息发送时出错","error");  
+                console.log(data);
+              }
+            });  
+      });   
+}
 	$scope.loadTeamData=function(){	
 		$http({
 				method  : 'GET',
@@ -481,10 +515,10 @@ function($scope,$http,selectSource) {
         $scope.teamData.applyTeams=[];
         $scope.teamData.inviteTeams=[];      
         for(var i in data.zudui_msg){
-          if(data.zudui_msg[i].type!=1){
+          if(data.zudui_msg[i].type==2){
             $scope.teamData.applyTeams.push(data.zudui_msg[i]);
           }
-          else{
+          else if(data.zudui_msg[i].type==1){
             $scope.teamData.inviteTeams.push(data.zudui_msg[i]);
           }
         }
@@ -1027,6 +1061,15 @@ myAppModule.controller('entity_team',
           $scope.admin_flag=data.admin_flag;
     });
 
+    if($scope.manageMode){ 
+    	$http({
+				method  : 'GET',
+				url     : '/kesci_backend/api/messages/team_zudui_msg/'+$scope.teamID			
+      	}).success(function(data) {
+          console.log(data);
+   	 });
+    }
+
 	$scope.findCompetitionName=function(id){
 		for(var idx in $scope.selectSource.competitionList){
 			if (id==$scope.selectSource.competitionList[idx]["id"]) {
@@ -1340,4 +1383,4 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).otherwise({
             redirectTo: '/mine'
         });
-}]);
+}]);	
