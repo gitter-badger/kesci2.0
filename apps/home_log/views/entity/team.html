@@ -87,7 +87,7 @@
 
          </div>
       </div>
-      <div class="content-box" ng-if="manageMode">
+      <div class="content-box" ng-if="manageMode&&zudui_msg.length>0">
       	 <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 团队申请/邀请记录</div>		
 	 		<div class="media well" ng-repeat="item in zudui_msg">	 		
 			  <div class="media-left" style="text-align:center">	
@@ -99,12 +99,12 @@
 			  </div>
 			  <div class="media-body" style="padding-left:5px;padding-top:20px;">	
 
-			    <h4 ng-if="item.type==1" style="font-weight:bold" class="media-heading">团队邀请用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 加入</h4>
-			    <h4 ng-if="item.type==2" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 申请加入团队  </h4>			 
-			    <h4 ng-if="item.type==3&&item.direction==0" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 拒绝了团队的邀请</h4>
-			    <h4 ng-if="item.type==4&&item.direction==0" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 同意邀请, 加入了团队</h4>
-			    <h4 ng-if="item.type==3&&item.direction==1" style="font-weight:bold" class="media-heading">团队拒绝了用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 的申请</h4>
-			    <h4 ng-if="item.type==4&&item.direction==1" style="font-weight:bold" class="media-heading">团队接受了用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 的申请, 用户加入了团队</h4>
+			    <h4 ng-if="item.type==1" style="font-weight:bold" class="media-heading">团队邀请用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_name}}</a> 加入</h4>
+			    <h4 ng-if="item.type==2" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_name}}</a> 申请加入团队  </h4>			 
+			    <h4 ng-if="item.type==3&&item.direction==0" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_name}}</a> 拒绝了团队的邀请</h4>
+			    <h4 ng-if="item.type==4&&item.direction==0" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_name}}</a> 同意邀请, 加入了团队</h4>
+			    <h4 ng-if="item.type==3&&item.direction==1" style="font-weight:bold" class="media-heading">团队拒绝了用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_name}}</a> 的申请</h4>
+			    <h4 ng-if="item.type==4&&item.direction==1" style="font-weight:bold" class="media-heading">团队接受了用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_name}}</a> 的申请, 用户加入了团队</h4>
 			    <p ng-if="item.type==2||item.type==1" style="margin-top:15px;">附加消息 {{item.content}}</p>
 			    <p ng-if="item.type==2&&item.readtime==0&&admin_flag==2"><button ng-click="acceptApplication(item.record_id,item.team_id,$index);" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 接受申请</button> 
 		    <button class="btn btn-xs btn-danger" ng-click="rejectApplication(item.record_id,item.team_id,$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 拒绝申请</button></p>

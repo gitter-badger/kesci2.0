@@ -516,9 +516,21 @@ function($scope,$http,selectSource) {
         $scope.teamData.inviteTeams=[];      
         for(var i in data.zudui_msg){
           if(data.zudui_msg[i].type==2&&data.zudui_msg[i].readtime==0){
+          	for(var x in data.zudui_team_info){
+          		if (data.zudui_team_info[x].team_id==data.zudui_msg[i].team_id) {
+          			data.zudui_msg[i].team_info=data.zudui_team_info[x];
+          			break;
+          		};
+          	}
             $scope.teamData.applyTeams.push(data.zudui_msg[i]);
           }
           else if(data.zudui_msg[i].type==1&&data.zudui_msg[i].readtime==0){
+          	for(var x in data.zudui_team_info){
+          		if (data.zudui_team_info[x].team_id==data.zudui_msg[i].team_id) {
+          			data.zudui_msg[i].team_info=data.zudui_team_info[x];
+          			break;
+          		};
+          	}
             $scope.teamData.inviteTeams.push(data.zudui_msg[i]);
           }
         }
@@ -1084,8 +1096,17 @@ myAppModule.controller('entity_team',
 				method  : 'GET',
 				url     : '/kesci_backend/api/messages/team_zudui_msg/'+$scope.teamID			
       	}).success(function(data) {
+        for(var idx in data.zudui_msg){
+        	data.zudui_msg[idx].user_name="undefined";
+        	for(var x in data.user_name){
+        		if(data.user_name[x].id==data.zudui_msg[idx].user_id){
+        			data.zudui_msg[idx].user_name=data.user_name[x].username;
+        			break;
+        		}
+        	}
+        }
       	$scope.zudui_msg=data.zudui_msg;
-          console.log(data);
+       
    	 });
     }
 
