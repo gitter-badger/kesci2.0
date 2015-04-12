@@ -12,13 +12,13 @@
          <tr><td class="item-table-title" style="min-width:4em">团队介绍</td><td>{{teamData.basic_info.description||"暂无"}}</td></tr> 
         </table>
         <div style="text-align:center">
-        <button class="btn btn-warning" ng-show="manageMode&&(admin_flag==1||admin_flag==0)"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 离开团队</button>
-        <button class="btn btn-danger" ng-show="manageMode&&admin_flag==2"><span class="glyphicon glyphicon-off" aria-hidden="true"> </span> 解散团队</button>
+        <button class="btn btn-warning" ng-show="manageMode&&(admin_flag==1||admin_flag==0)" ng-click="leaveTeam();"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 离开团队</button>
+        <button class="btn btn-danger" ng-show="manageMode&&admin_flag==2" ng-click="dismissTeam();"><span class="glyphicon glyphicon-off" aria-hidden="true"> </span> 解散团队</button>
         </div>
       </div>
     </div>
     <div class="col-md-8">
-      <div class="content-box profile-content" ng-repeat="item in teamData.team_members">       
+      <div class="content-box" ng-repeat="item in teamData.team_members">       
           <span class="label label-primary team-role-lable" ng-show="item.admin_flag==2"><span class="glyphicon glyphicon-flag " aria-hidden="true"> </span> 队长</span>
           <div class="row">   
             <div class="col-sm-3">
@@ -82,10 +82,35 @@
 			    </tr>-->
 			  </table>  	
               <br>  
-                  <p ng-show="manageMode&&admin_flag==2&&userStatus.user_id!=item.user_id" style="text-align:right" ng-show=""><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-erase" aria-hidden="true"> </span> 开除成员</button> <!--<button class="btn btn-sm btn-info"><span class="glyphicon glyphicon-check" aria-hidden="true"> </span> 提升为队长</button>--></p>
+                  <!--<p ng-show="manageMode&&admin_flag==2&&userStatus.user_id!=item.user_id" style="text-align:right" ng-show=""><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-erase" aria-hidden="true"> </span> 开除成员</button>--> <!--<button class="btn btn-sm btn-info"><span class="glyphicon glyphicon-check" aria-hidden="true"> </span> 提升为队长</button>--></p>
             </div>         
 
          </div>
+      </div>
+      <div class="content-box" ng-if="manageMode">
+      	 <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> 团队申请/邀请记录</div>		
+	 		<div class="media well" ng-repeat="item in zudui_msg">	 		
+			  <div class="media-left" style="text-align:center">	
+			  	<span ng-if="item.readtime!=0" class="label label-success">已处理</span>		   	  
+			    <img class="media-object " src=".//images/apply.png">	
+			    <span class="label label-info">{{item.sendtime*1000|date:"MM-dd HH:mm"}}</span>
+			    <br>
+
+			  </div>
+			  <div class="media-body" style="padding-left:5px;padding-top:20px;">	
+
+			    <h4 ng-if="item.type==1" style="font-weight:bold" class="media-heading">团队邀请用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 加入</h4>
+			    <h4 ng-if="item.type==2" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 申请加入团队  </h4>			 
+			    <h4 ng-if="item.type==3&&item.direction==0" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 拒绝了团队的邀请</h4>
+			    <h4 ng-if="item.type==4&&item.direction==0" style="font-weight:bold" class="media-heading">用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 同意邀请, 加入了团队</h4>
+			    <h4 ng-if="item.type==3&&item.direction==1" style="font-weight:bold" class="media-heading">团队拒绝了用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 的申请</h4>
+			    <h4 ng-if="item.type==4&&item.direction==1" style="font-weight:bold" class="media-heading">团队接受了用户 <a class="no-dec-link" ng-href="#/entity/user/{{item.user_id}}" target="_blank">{{item.user_id}}</a> 的申请, 用户加入了团队</h4>
+			    <p ng-if="item.type==2||item.type==1" style="margin-top:15px;">附加消息 {{item.content}}</p>
+			    <p ng-if="item.type==2&&item.readtime==0&&admin_flag==2"><button ng-click="acceptApplication(item.record_id,item.team_id,$index);" class="btn btn-xs btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 接受申请</button> 
+		    <button class="btn btn-xs btn-danger" ng-click="rejectApplication(item.record_id,item.team_id,$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 拒绝申请</button></p>
+			  </div>
+
+		</div>
       </div>
     </div>
   

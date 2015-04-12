@@ -515,10 +515,10 @@ function($scope,$http,selectSource) {
         $scope.teamData.applyTeams=[];
         $scope.teamData.inviteTeams=[];      
         for(var i in data.zudui_msg){
-          if(data.zudui_msg[i].type==2){
+          if(data.zudui_msg[i].type==2&&data.zudui_msg[i].readtime==0){
             $scope.teamData.applyTeams.push(data.zudui_msg[i]);
           }
-          else if(data.zudui_msg[i].type==1){
+          else if(data.zudui_msg[i].type==1&&data.zudui_msg[i].readtime==0){
             $scope.teamData.inviteTeams.push(data.zudui_msg[i]);
           }
         }
@@ -1084,6 +1084,7 @@ myAppModule.controller('entity_team',
 				method  : 'GET',
 				url     : '/kesci_backend/api/messages/team_zudui_msg/'+$scope.teamID			
       	}).success(function(data) {
+      	$scope.zudui_msg=data.zudui_msg;
           console.log(data);
    	 });
     }
@@ -1096,8 +1097,67 @@ myAppModule.controller('entity_team',
 		}
 		return '';
 	}
+	 $scope.rejectApplication=function(record_id,team_id,idx){
+     sweetAlert({
+        title: "拒绝申请",
+        text: "请输入拒绝理由 : ",
+        type: "input",
+        showCancelButton: true,   
+        closeOnConfirm: false   
+      },function(msg){
+        $http({
+            method  : 'POST',
+            url     : '/kesci_backend/api/teams/decline_application',
+            data    : "record_id="+record_id+"&decline_reason="+encodeURIComponent(msg)+"&team_id="+team_id,
+            headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }).success(function(data) {
+          if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "拒绝申请成功", "success") ;
+                $scope.zudui_msg[idx].readtime=1;
+                
+           }
+          else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"拒绝邀请时出错","error");  
+                console.log(data);
+          }
+          });
+      });
+  }
+  $scope.acceptApplication=function(record_id,team_id,idx){
+    sweetAlert({
+        title: "接受申请",
+        text: "确认接受此申请?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "接受",
+        closeOnConfirm: false,
+        html: false
+      },function(){
+         $http({
+        method  : 'POST',
+        url     : '/kesci_backend/api/teams/agree_application',
+        data    : "record_id="+record_id+"&team_id="+team_id,
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).success(function(data) {
+          if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "接受申请成功", "success") ;
+               
+           }
+          else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"接受邀请时出错","error");  
+                $scope.zudui_msg[idx].readtime=1;
+          }
+      });
+      });
+  }
+  $scope.leaveTeam=function(){
+  	console.log("leave");
+  }
+  $scope.dismissTeam=function(){
+  	console.log("dismiss");
+  }
 
-  })
+  });
 myAppModule.controller('action_competition_register',
 	function($scope,$http,$routeParams,$location,userStatus,selectSource){	
     $scope.selectSource=selectSource;

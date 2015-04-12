@@ -46,11 +46,11 @@
 								<div ng-repeat="item in chatSession">
 									<div>
 									<div ng-if="item.sender_id==item.user_id" class="alert alert-info usercenter-msg-mine">
-										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"MM-dd  HH:mm" }} )</div>
 										<div>{{item.content}}</div>
 									</div>
 									<div ng-if="item.sender_id!=item.user_id" class="alert usercenter-msg-others">
-										<div><b><a class="no-dec-link" ng-href="#/entity/user/{{chatSession[0].friend_id}}" target="_blank">{{chatSession[0].friend_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+										<div><b><a class="no-dec-link" ng-href="#/entity/user/{{chatSession[0].friend_id}}" target="_blank">{{chatSession[0].friend_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  HH:mm" }} )</div>
 										<div>{{item.content}}</div>
 									</div>
 									</div>
@@ -73,11 +73,11 @@
 								<div ng-repeat="item in chatSession">
 									<div>
 									<div ng-if="item.direction==0" class="alert alert-info usercenter-msg-mine">
-										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+										<div><b>{{userStatus.username}}</b> ( {{item.sendtime*1000|date:"MM-dd  HH:mm" }} )</div>
 										<div>{{item.content}}</div>
 									</div>
 									<div ng-if="item.direction!=0" class="alert usercenter-msg-others">
-										<div><b><a class="no-dec-link" ng-href="#/entity/team/{{chatSession[0].team_id}}" target="_blank">{{chatSession[0].team_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+										<div><b><a class="no-dec-link" ng-href="#/entity/team/{{chatSession[0].team_id}}" target="_blank">{{chatSession[0].team_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  HH:mm" }} )</div>
 										<div>{{item.content}}</div>
 									</div>
 									</div>
@@ -105,11 +105,11 @@
 									<div ng-repeat="item in chatSession">
 										<div>
 										<div ng-if="item.direction!=0" class="alert alert-info usercenter-msg-mine">
-											<div><b>{{userTeam.team_name}}</b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+											<div><b>{{userTeam.team_name}}</b> ( {{item.sendtime*1000|date:"MM-dd  HH:mm" }} )</div>
 											<div>{{item.content}}</div>
 										</div>
 										<div ng-if="item.direction==0" class="alert usercenter-msg-others">
-											<div><b><a class="no-dec-link" ng-href="#/entity/user/{{chatSession[0].user_id}}" target="_blank">{{chatSession[0].user_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  h:mma" }} )</div>
+											<div><b><a class="no-dec-link" ng-href="#/entity/user/{{chatSession[0].user_id}}" target="_blank">{{chatSession[0].user_name}}</a></b> ( {{item.sendtime*1000|date:"MM-dd  HH:mm" }} )</div>
 											<div>{{item.content}}</div>
 										</div>
 										</div>
@@ -130,15 +130,18 @@
 
 					<div class="media well" ng-repeat="item in zudui_msg">
 					  <div class="media-left" style="text-align:center">					  
-					    <img class="media-object " src=".//images/apply.png">	
-					    <span class="label label-info">{{item.sendtime*1000|date:"MM-dd  h:mma"}}</span>
-					    <br>
+					   <span ng-if="item.readtime!=0" class="label label-success">已处理</span>		   	  
+			    	   <img class="media-object " src=".//images/apply.png">	
+			   		  <span class="label label-info">{{item.sendtime*1000|date:"MM-dd  HH:mm"}}</span>
+					    
 					  </div>
 					  <div class="media-body" style="padding-left:5px;padding-top:20px;">			   
 					    <h4 ng-if="item.type==1" style="font-weight:bold" class="media-heading">团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 邀请你加入</h4>
 					    <h4 ng-if="item.type==2" style="font-weight:bold" class="media-heading">你申请加入团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
-					    <h4 ng-if="item.type==3" style="font-weight:bold" class="media-heading">你拒绝了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 的邀请</h4>
-					    <h4 ng-if="item.type==4" style="font-weight:bold" class="media-heading">你同意邀请, 加入了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
+					    <h4 ng-if="item.type==3&&item.direction==0" style="font-weight:bold" class="media-heading">你拒绝了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 的邀请</h4>
+					    <h4 ng-if="item.type==4&&item.direction==0" style="font-weight:bold" class="media-heading">你同意邀请, 加入了团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> </h4>
+					    <h4 ng-if="item.type==4&&item.direction==1" style="font-weight:bold" class="media-heading">团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 拒绝了你的申请</h4>
+					    <h4 ng-if="item.type==4&&item.direction==1" style="font-weight:bold" class="media-heading">团队 <a class="no-dec-link" ng-href="#/entity/team/{{item.team_id}}" target="_blank">{{item.team_name}}</a> 接受了你的申请,你已加入该团队</h4>
 					    <p ng-if="item.type==2||item.type==1" style="margin-top:15px;">附加消息 {{item.content}}</p>
 					  </div>
 				</div>
