@@ -2,13 +2,7 @@
     <div class="col-md-3">
       <div class="content-box">
         <img class="img-thumbnail img-circle profile-img" src="./images/de.png"/>
-        <p class="profile-name">{{userStatus.username}}</p>
-        <table class="table profile-table">
-        <tr><td class="item-table-title">邮箱</td><td>{{userStatus.email}}</td></tr>
-        <tr><td class="item-table-title">当前竞赛</td><td>{{basic_info.active_competitions[0].cptn_name||"暂无"}}</td></tr>
-      
-        
-        </table>
+        <p class="profile-name">{{detail_info.basic_info.username}}</p>
       </div>
     </div>
     <div class="col-md-9">
@@ -20,56 +14,162 @@
               <tr>
                 <td style="width:8em" class="item-table-title">居住地区</td>
                 <td> 
-                  <span>{{basic_info.province||"暂无"}}</span>  
+                  <span>{{detail_info.basic_info.province||"暂无"}}</span>  
                 </td>
               </tr>
               <tr>
-                <td class="item-table-title">在读学校</td>
+                <td class="item-table-title">大学</td>
                 <td>
-                <span>{{basic_info.university||"暂无"}}</span>  
+                <span>{{detail_info.basic_info.university||"暂无"}}</span>  
                 </td>
               </tr>
               <tr>
-                <td class="item-table-title">入学时间</td>
+                <td class="item-table-title">院系</td>
                 <td>
-                <span>{{basic_info.start_time||"暂无"}}</span>  
+                <span>{{detail_info.basic_info.department||"暂无"}}</span>  
                 </td>
               </tr>
               <tr>
-                <td class="item-table-title">在读院系</td>
+                <td class="item-table-title">专业</td>
                 <td>
-                <span>{{basic_info.department||"暂无"}}</span>  
+                <span>{{detail_info.basic_info.major||"暂无"}}</span> 
                 </td>
               </tr>
               <tr>
-                <td class="item-table-title">在读专业</td>
+                <td class="item-table-title">学位</td>
                 <td>
-                <span>{{basic_info.major||"暂无"}}</span> 
-                </td>
-              </tr>
-              <tr>
-                <td class="item-table-title">在读学位</td>
-                <td>
-                <span>{{basic_info.level||"暂无"}}</span> 
+                <span>{{detail_info.basic_info.level||"暂无"}}</span> 
                 </td>
               </tr>
               <tr>
                 <td class="item-table-title">个人简介</td>
                 <td>
-                  <span>{{basic_info.brief_intro||"暂无"}}</span>
+                  <span>{{detail_info.basic_info.brief_intro||"暂无"}}</span>
                 </td>
               </tr>
-              
+              <tr>
+                <td class="item-table-title">linkedIn</td>
+                <td>
+                  <span>{{detail_info.basic_info.linkedin||"暂无"}}</span>
+                </td>
+              </tr>
+                 <tr>
+                <td class="item-table-title">github</td>
+                <td>
+                  <span>{{detail_info.basic_info.github||"暂无"}}</span>
+                </td>
+              </tr>
               <tr>
                 <td class="item-table-title">技能</td>
                 <td>        
-                  <div class="profile-label-container"><span class="label label-success item-table-listItem profile-label" ng-repeat="rs in basic_info.skills">{{rs}}</span></div>  
-                  <span ng-show="!basic_info.skills">暂无</span>
+                  <div class="profile-label-container"><span class="label label-success item-table-listItem profile-label" ng-repeat="rs in detail_info.skills">{{rs}}</span></div>  
+                  <span ng-show="!detail_info.skills">暂无</span>
                 </td>
               </tr>   
 
               </table>
-            </div>    
+            </div>   
+             <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 过往教育经历</div>				  	  
+				  	  <div class="profile-well-container">
+				  	  	  <div class="alert alert-warning" role="alert" ng-show="detail_info.edu_exps.length==0">当前还没有教育经历...</div>
+					  	  <div  ng-repeat="item in detail_info.edu_exps">			  			
+					  			<span class="label label-info">{{$index+1}}</span>
+					  				<table class="table table-striped profile-table">
+					  					<tr>
+					  						<td class="item-table-title">学校</td>
+					  						<td><span>{{item.university}}</span></td>
+					  					</tr>
+					  					<tr>
+					  						<td class="item-table-title">时间</td>
+					  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
+					  					</tr>
+					  					<tr>
+					  						<td class="item-table-title">院系</td>
+					  						<td><span>{{item.department}}</span></td>
+					  					</tr>
+					  					<tr>
+					  						<td class="item-table-title">专业</td>
+					  						<td><span>{{item.major}}</span></td>
+					  					</tr>
+					  					<tr>
+					  						<td class="item-table-title">学位</td>
+					  						<td><span>{{item.level}}</span></td>
+					  					</tr>
+					  				</table>					  				
+					  			</div>
+					  		
+				  		</div>			  			
+						
+			  			<div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 比赛经历</div>
+			  			<div class="profile-well-container">
+			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.competition_exps.length==0">当前还没有比赛经历...</div>
+				  			<div ng-repeat="item in detail_info.competition_exps">	
+				  			<span class="label label-info">{{$index+1}}</span>
+				  				<table class="table table-striped profile-table">
+				  					<tr>
+				  						<td class="item-table-title">比赛名称</td>
+				  						<td><span>{{item.competition_name}}</span></td>
+				  					</tr>
+				  					<tr>
+				  						<td class="item-table-title">比赛时间</td>
+				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
+				  					</tr>
+				  					<tr>
+				  						<td class="item-table-title">奖项</td>
+				  						<td><span>{{item.awards}}</span></td>
+				  					</tr>
+				  					<tr>
+				  						<td class="item-table-title">项目地址</td>
+				  						<td><span>{{item.project_url}}</span></td>
+				  					</tr>
+				  				</table>				  				
+				  			</div>
+			  			</div>
+						<div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 实践经历</div>
+			  			<div class="profile-well-container">
+			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.practice_exps.length==0">当前还没有实践经历...</div>
+				  			<div ng-repeat="item in detail_info.practice_exps">	
+				  			<span class="label label-info">{{$index+1}}</span>
+				  				<table class="table table-striped profile-table">
+				  					<tr>
+				  						<td class="item-table-title">实践名称</td>
+				  						<td><span>{{item.practice_name}}</span></td>
+				  					</tr>
+				  					<tr>
+				  						<td class="item-table-title">实践类型</td>
+				  						<td><span>{{practice_type_map[item.practice_type]}}</span></td>
+				  					</tr>
+				  					<tr>
+				  						<td class="item-table-title">时间</td>
+				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
+				  					</tr>			
+				  					<tr>
+				  						<td class="item-table-title">描述</td>
+				  						<td><span>{{item.detail}}</span></td>
+				  					</tr>
+				  				</table>				  			
+				  			</div>				  		
+			  			</div>
+
+			  						
+					    <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 其它荣誉</div>
+			  			<div class="profile-well-container">
+			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.other_honor.length==0">当前还没有其它荣誉...</div>
+				  			<div ng-repeat="item in detail_info.other_honor">	
+				  			<span class="label label-info">{{$index+1}}</span>
+				  				<table class="table table-striped profile-table">
+				  					<tr>
+				  						<td class="item-table-title">荣誉名称</td>
+				  						<td><span>{{item.honor_name}}</span></td>
+				  					</tr>				  					
+				  					<tr>
+				  						<td class="item-table-title">时间</td>
+				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
+				  					</tr>
+				  				</table>				  			
+				  			</div>				  		
+			  			</div>				  			
+			 
       </div>
     </div>
   

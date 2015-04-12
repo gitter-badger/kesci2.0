@@ -544,18 +544,21 @@ function($scope,$http,selectSource,userStatus) {
     closeOnConfirm: true,
     html: false
   }, function(){
-     if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp"){
+     if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp" && type!="other_honor"){
       console.log("removePfRecorError:",type,index);
       return;
     }
     $scope.tabMsg={};
-    if(typeof($scope.detail_info[type][index][type+"_id"])=="undefined"){
+    var idk=type+"_id";
+    if(type=="other_honor")
+    	idk="honor_id";
+    if(typeof($scope.detail_info[type][index][idk])=="undefined"){
       $scope.$apply(function(){$scope.detail_info[type].splice(index,1);});      
     }
     else{
       $http({
                   method  : 'DELETE',
-                  url     : ' /kesci_backend/api/api_users/'+type+'s/'+$scope.detail_info[type][index][type+"_id"]
+                  url     : ' /kesci_backend/api/api_users/'+type+'s/'+$scope.detail_info[type][index][idk]
               }).success(function(data) {       
               if(data.msg=="delete success"){
                 $scope.detail_info[type].splice(index,1);
@@ -578,6 +581,9 @@ function($scope,$http,selectSource,userStatus) {
         break;
       case "practice_exp":
         $scope.detail_info.practice_exp.push({practice_name:"",start_time:"",end_time:"",detail:"",practice_type:3});
+        break;
+      case "other_honor":
+      	$scope.detail_info.other_honor.push({honor_name:"",start_time:"",end_time:""});
         break;
       default:
         console.log("addPfRecorError:",type);
@@ -683,6 +689,16 @@ function($scope,$http,selectSource,userStatus) {
         if(typeof(jsonData["practice_exp"])=="undefined")
           jsonData["practice_exp"]=[];
         jsonData["practice_exp"].push($scope.detail_info.practice_exp[k]); 
+      }
+    }
+     for(var k in $scope.detail_info.other_honor){
+      var obj=document.getElementById("form_other_honor_"+k);
+      if(obj&&obj.className.indexOf("ng-dirty")>-1){        
+        console.log("dirty","form_other_honor_"+k);
+        isDirty=true;
+        if(typeof(jsonData["other_honor"])=="undefined")
+          jsonData["other_honor"]=[];
+        jsonData["other_honor"].push($scope.detail_info.other_honor[k]); 
       }
     }
   if(isDirty){
@@ -1036,13 +1052,15 @@ myAppModule.controller('usercenter_msg',
 myAppModule.controller('entity_user',
   function($scope,$http,$routeParams,userStatus){
   $scope.userID=$routeParams.id;
-/*
+
  $http({
         method  : 'GET',
-        url     : '/kesci_backend/api/users/details?user_id='+$scope.userID     
+        url     : '/kesci_backend/api/api_users/show/'+$scope.userID     
         }).success(function(data) {
+        	$scope.detail_info=data;
+        	console.log(data);
          
-    });*/
+    });
 
   });
 myAppModule.controller('entity_team',

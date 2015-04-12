@@ -229,6 +229,26 @@
 				  			</form>
 				  			</div>
 				  			<button type="button" class="btn btn-success" ng-click="addPfRecord('practice_exp');"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加实践经历</button>
+			  			</div>		
+			  			<div class="item-table-title profile-subtile">其它荣誉</div>
+			  			<div class="profile-well-container">
+				  			<div class="well" ng-repeat="item in detail_info.other_honor">	
+				  			<form id="{{'form_other_honor_'+$index}}">	
+				  			<span class="label label-info">{{$index+1}}</span>
+				  				<table class="table" style="background:#f5f5f5">
+				  					<tr>
+				  						<td>荣誉名称</td><td colspan="3"><input  type="text" ng-model="item.honor_name" class="form-control" placeholder="实践名称"></td>
+				  					</tr>				  
+				  					<tr>
+				  						<td>时间</td><td><input type="text"  ng-model="item.start_time" class="form-control" placeholder="e.g. 2015-12-31"></td>
+				  						<td>~</td><td><input type="text"  ng-model="item.end_time" class="form-control" placeholder="e.g. 2015-12-31"></td>
+				  					</tr>				  	
+
+				  				</table>
+				  				<button type="button" class="btn btn-danger btn-sm" ng-click="removePfRecord('other_honor',$index);"><span class="glyphicon glyphicon-remove" aria-hidden="true"> </span> 删除</button>
+				  			</form>
+				  			</div>
+				  			<button type="button" class="btn btn-success" ng-click="addPfRecord('other_honor');"><span class="glyphicon glyphicon-plus" aria-hidden="true"> </span> 添加其它荣誉</button> 
 			  			</div>			  			
 				<br>
 				<button type="button" ng-click="checkAndSubmit_detail();" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"> </span> 保存修改</button>

@@ -199,7 +199,24 @@
 				  			</div>				  		
 			  			</div>			  			
 			
-				
+					    <div class="item-table-title profile-subtile"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 其它荣誉</div>
+			  			<div class="profile-well-container">
+			  				<div class="alert alert-warning" role="alert" ng-show="detail_info.other_honor.length==0">当前还没有其它荣誉...</div>
+				  			<div ng-repeat="item in detail_info.other_honor">	
+				  			<span class="label label-info">{{$index+1}}</span>
+				  				<table class="table table-striped profile-table">
+				  					<tr>
+				  						<td class="item-table-title">荣誉名称</td>
+				  						<td><span>{{item.honor_name}}</span></td>
+				  					</tr>				  					
+				  					<tr>
+				  						<td class="item-table-title">时间</td>
+				  						<td><span>{{item.start_time}} ~ {{item.end_time}}</span></td>
+				  					</tr>
+				  				</table>				  			
+				  			</div>				  		
+			  			</div>			  			
+			
 				
 			
 			</div>
