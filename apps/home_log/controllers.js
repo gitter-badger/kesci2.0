@@ -357,10 +357,10 @@ $scope.applyTeam=function(team_id,team_name) {
   		});   
 }
 $scope.sendMsgToTeam=function(team_id,name){
-	if($scope.userTeam&&$scope.userTeam.team_member.indexOf(userStatus.user_id)>-1){
+	/*if($scope.userTeam&&$scope.userTeam.team_member.indexOf(userStatus.user_id)>-1){
   		swal("出错了...","不能给自己所在的团队发送信息","warning");
   		return;
-  	}
+  	}*/
   	swal({   
   		title: "发送团队消息",   
   		text: "请输入发送给团队 "+name+" 的消息 : ",   
@@ -1110,6 +1110,42 @@ myAppModule.controller('entity_team',
   	$scope.selectSource=selectSource;  	
     $scope.teamID=$routeParams.id;
     $scope.manageMode=$routeParams.manage==1?true:false;
+    $scope.sendMsgToTeam=function(team_id,name){
+
+  	swal({   
+  		title: "发送团队消息",   
+  		text: "请输入发送给团队 "+name+" 的消息 : ",   
+  		type: "input",   
+  		showCancelButton: true,   
+  		closeOnConfirm: false
+  		}, function(msg){ 
+  		   if(msg===false){
+      			return;
+    	   }
+    	   else if(msg==""){
+      			swal("出错了...","消息不能为空.","error");
+      			return;
+    	   }
+    	   if(swal_mutex()) 
+    	  	return;
+    	   $http({
+			        method  : 'POST',
+			        url     : '/kesci_backend/api/messages/person_to_team',
+			        data    : "team_id="+team_id+"&"+"content="+encodeURIComponent(msg),
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+		        }).success(function(data) {
+		          console.log(data);	
+		          if(data.msg&&data.msg.indexOf("success")>-1){
+		            swal("成功!", "团队消息已发送", "success") 
+		          }
+		          else{ 
+		          	swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"团队消息发送时出错","error");  
+		          	console.log(data);
+		          }
+		        });  
+  		});   
+}
+	 
 $scope.loadTeamData=function(){
     $http({
 				method  : 'GET',
