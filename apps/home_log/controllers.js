@@ -1315,7 +1315,7 @@ $scope.loadTeamData=function(){
   }
 
   });
-/*
+
 myAppModule.controller('action_competition_register',
 	function($scope,$http,$routeParams,$location,userStatus,selectSource){	
     $scope.selectSource=selectSource;
@@ -1402,7 +1402,7 @@ myAppModule.controller('action_competition_register',
       });			
 	});
 
-
+/*
 myAppModule.controller('action_association_register',
 	function($scope,$http,$routeParams,$location,userStatus,selectSource){
     $scope.selectSource=selectSource;
@@ -1601,10 +1601,10 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/entity/user/:id', {
             templateUrl: 'views/entity/user.html',
             controller: 'entity_user'
-       /* }).when('/action/competition/register/:id', {
+      }).when('/action/competition/register/:id', {
             templateUrl: 'views/action/competition_register.html',
             controller: 'action_competition_register'
-        }).when('/action/association/register/:id', {
+       /*   }).when('/action/association/register/:id', {
             templateUrl: 'views/action/association_register.html',
             controller: 'action_association_register'*/
         }).when('/static/training/:id', {
