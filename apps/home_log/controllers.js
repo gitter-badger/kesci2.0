@@ -24,7 +24,7 @@ function swal_mutex(){
 	if(!window.swal_mutex_lock){
 		$("button.confirm").text("Processing...")
 		window.swal_mutex_lock=true,
-		window.setTimeout(function(){window.swal_mutex_lock=false;},5000); 
+		window.setTimeout(function(){window.swal_mutex_lock=false;},4000);
 		return false;
 	}
 	console.log("swal_mutex_reject");
@@ -1105,7 +1105,7 @@ myAppModule.controller('entity_user',
 
   });
 myAppModule.controller('entity_team',
-  function($scope,$http,$routeParams,$window,selectSource,userStatus){
+  function($scope,$http,$routeParams,$window,$location,selectSource,userStatus){
     $scope.userStatus=userStatus;
   	$scope.selectSource=selectSource;  	
     $scope.teamID=$routeParams.id;
@@ -1150,7 +1150,11 @@ $scope.loadTeamData=function(){
     $http({
 				method  : 'GET',
 				url     : '/kesci_backend/api/teams/details?team_id='+$scope.teamID			
-      	}).success(function(data) {
+      	}).success(function(data) {         
+          if(data.errors){
+          	swal("出错了...","加载团队信息时出错,团队不存在或已解散","error");
+          	$location.path("/");
+          }
           $scope.teamData=data.data;
           $scope.is_team_member=data.is_team_member;
           $scope.admin_flag=data.admin_flag;
@@ -1251,10 +1255,62 @@ $scope.loadTeamData=function(){
       });
   }
   $scope.leaveTeam=function(){
-  	console.log("leave");
+  sweetAlert({
+    title: "离开团队",
+    text: "确认离开此团队?",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonText: "离开",
+    closeOnConfirm: false,
+    html: false
+  }, function(){
+  	if(swal_mutex()) 
+    	  	return;
+    $http({
+        method  : 'POST',
+        url     : '/kesci_backend/api/teams/leave/'+$scope.teamID,
+        data    : "",
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).success(function(data) {
+          if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "离开团队成功", "success") ;
+                $window.setTimeout($scope.loadTeamData,1000);              
+           }
+          else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"离开团队时出错","error");  
+               
+          }
+      });  	
+  });
   }
   $scope.dismissTeam=function(){
-  	console.log("dismiss");
+ sweetAlert({
+    title:"解散团队",
+    text: "确认解散此团队?",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonText: "解散",
+    closeOnConfirm: false,
+    html: false
+  }, function(){
+  	if(swal_mutex()) 
+    	  	return;
+    $http({
+        method  : 'POST',
+        url     : '/kesci_backend/api/teams/dismiss/'+$scope.teamID,
+        data    : "",
+        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).success(function(data) {
+          if(data.msg&&data.msg.indexOf("success")>-1){
+                swal("成功!", "解散团队成功", "success") ;                
+                $location.path("/");          
+           }
+          else{ 
+                swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"解散团队时出错","error");  
+               
+          }
+      });  	
+  });
   }
 
   });
