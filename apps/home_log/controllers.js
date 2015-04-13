@@ -94,7 +94,7 @@ function($scope) {
 
 myAppModule.controller('mineCtr',
 function($scope,$http,userStatus) {
-		$scope.emc_data={is_reg:{},reg_num:{}};
+		$scope.emc_data={is_reg:{},reg_num:{},is_admit:{}};
     	$scope.userStatus=userStatus;
     	$scope.markRead=function(noticeIdx){
 			var tmp=[];
@@ -113,6 +113,7 @@ function($scope,$http,userStatus) {
     		}).success(function(data) {    		
     		 for(var k in data.data){
     		 	$scope.emc_data.is_reg["asso_"+data.data[k].association_id]=data.data[k].flag;
+    		 	$scope.emc_data.is_admit["asso_"+data.data[k].association_id]=data.data[k].admit;
     		 	}
     		 
     	});
@@ -1314,6 +1315,7 @@ $scope.loadTeamData=function(){
   }
 
   });
+/*
 myAppModule.controller('action_competition_register',
 	function($scope,$http,$routeParams,$location,userStatus,selectSource){	
     $scope.selectSource=selectSource;
@@ -1423,7 +1425,7 @@ myAppModule.controller('action_association_register',
             }); 
           } 
     }
-  /*  $scope.uploadResume=function(eid){  
+   $scope.uploadResume=function(eid){  
       formMsg={};
       var fileInputElement=document.getElementById(eid);
       console.log(fileInputElement,fileInputElement.files);
@@ -1445,7 +1447,7 @@ myAppModule.controller('action_association_register',
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
             }}).success(function(data) {});      	
-      	}*/
+      	}
     $scope.submitForm=function(){
       var arr=[],tmp=[];
       arr.push(["association_id", $scope.form_id]);
@@ -1512,7 +1514,7 @@ myAppModule.controller('action_association_register',
                            
       });
 	});
-
+*/
 myAppModule.controller('emcCtr',
 function($scope) {
 $scope.teachers=[{
@@ -1599,12 +1601,12 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/entity/user/:id', {
             templateUrl: 'views/entity/user.html',
             controller: 'entity_user'
-        }).when('/action/competition/register/:id', {
+       /* }).when('/action/competition/register/:id', {
             templateUrl: 'views/action/competition_register.html',
             controller: 'action_competition_register'
         }).when('/action/association/register/:id', {
             templateUrl: 'views/action/association_register.html',
-            controller: 'action_association_register'
+            controller: 'action_association_register'*/
         }).when('/static/training/:id', {
             templateUrl: 'views/static/training.html',
             controller: 'trainingCtr'
