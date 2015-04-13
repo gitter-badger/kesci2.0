@@ -576,7 +576,7 @@ function($scope,$http,selectSource,userStatus) {
     type: "warning",
     showCancelButton: true,
     confirmButtonText: "删除",
-    closeOnConfirm: false,
+    closeOnConfirm: true,
     html: false
   }, function(){
      if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp" && type!="other_honor"){
