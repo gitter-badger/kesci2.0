@@ -645,7 +645,7 @@ function($scope,$http,selectSource,userStatus) {
   $scope.modelLoader(0);
 
   $scope.checkAndSubmit_basic=function(){
-  	console.log(ng_serialize($scope.basic_info_form));
+  //	console.log(ng_serialize($scope.basic_info_form));
     $scope.tabMsg={};
   	if(!$scope.basic_info_form.$dirty){
   		$scope.tabMsg={warn:true};
@@ -698,7 +698,7 @@ function($scope,$http,selectSource,userStatus) {
     for(var k in $scope.detail_info.edu_exp){
       var obj=document.getElementById("form_edu_exp_"+k);
       if(obj&&obj.className.indexOf("ng-dirty")>-1){      
-        console.log("dirty","form_edu_exp_"+k);
+       // console.log("dirty","form_edu_exp_"+k);
         isDirty=true;
         if(typeof(jsonData["edu_exp"])=="undefined")
           jsonData["edu_exp"]=[];
@@ -708,7 +708,7 @@ function($scope,$http,selectSource,userStatus) {
     for(var k in $scope.detail_info.competition_exp){
       var obj=document.getElementById("form_competition_exp_"+k);      
       if(obj&&obj.className.indexOf("ng-dirty")>-1){             
-        console.log("dirty","competition_exp"+k);
+        //console.log("dirty","competition_exp"+k);
         isDirty=true;
         if(typeof(jsonData["competition_exp"])=="undefined")
           jsonData["competition_exp"]=[];
@@ -719,7 +719,7 @@ function($scope,$http,selectSource,userStatus) {
     for(var k in $scope.detail_info.practice_exp){
       var obj=document.getElementById("form_practice_exp_"+k);
       if(obj&&obj.className.indexOf("ng-dirty")>-1){        
-        console.log("dirty","form_practice_exp_"+k);
+        //console.log("dirty","form_practice_exp_"+k);
         isDirty=true;
         if(typeof(jsonData["practice_exp"])=="undefined")
           jsonData["practice_exp"]=[];
@@ -729,7 +729,7 @@ function($scope,$http,selectSource,userStatus) {
      for(var k in $scope.detail_info.other_honor){
       var obj=document.getElementById("form_other_honor_"+k);
       if(obj&&obj.className.indexOf("ng-dirty")>-1){        
-        console.log("dirty","form_other_honor_"+k);
+       // console.log("dirty","form_other_honor_"+k);
         isDirty=true;
         if(typeof(jsonData["other_honor"])=="undefined")
           jsonData["other_honor"]=[];
@@ -738,7 +738,7 @@ function($scope,$http,selectSource,userStatus) {
     }
   if(isDirty){
       var jsonStr=angular.toJson(jsonData);
-      console.log("json:",jsonStr);
+      //console.log("json:",jsonStr);
       $http({
             method  : 'POST',
             url     : '/kesci_backend/api/api_users/detail_info',
@@ -1071,7 +1071,7 @@ myAppModule.controller('usercenter_msg',
               data    : "team_id="+team_id+"&"+"content="+encodeURIComponent(msg),
           headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
             }).success(function(data) {
-              console.log(data);  
+             
               if(data.msg&&data.msg.indexOf("success")>-1){
                 swal("成功!", "团队消息已发送", "success") ;
                 $scope.t2pChatData[team_id].push({content:msg,team_id:team_id,direction:0,sendtime:Math.floor((new Date()).valueOf()/1000)});
@@ -1100,8 +1100,7 @@ myAppModule.controller('entity_user',
         url     : '/kesci_backend/api/api_users/show/'+$scope.userID     
         }).success(function(data) {
         	$scope.detail_info=data;
-        	console.log(data);
-         
+        	         
     });
 
   });
