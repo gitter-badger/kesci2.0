@@ -1152,7 +1152,7 @@ $scope.loadTeamData=function(){
 				method  : 'GET',
 				url     : '/kesci_backend/api/teams/details?team_id='+$scope.teamID			
       	}).success(function(data) {         
-          if(data.errors){
+          if(data.errors.length>0){
           	swal("出错了...","加载团队信息时出错,团队不存在或已解散","error");
           	$location.path("/");
           }
