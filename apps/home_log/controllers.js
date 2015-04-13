@@ -20,7 +20,16 @@ function ng_serialize(ng_form){
   	}
   	return arr.join("&");
   }
-
+function swal_mutex(){
+	if(!window.swal_mutex_lock){
+		$("button.confirm").text("Processing...")
+		window.swal_mutex_lock=true,
+		window.setTimeout(function(){window.swal_mutex_lock=false;},5000); 
+		return false;
+	}
+	console.log("swal_mutex_reject");
+	return true;
+	}
 
 var myAppModule = angular.module('myApp', ['ngRoute']);
 
@@ -256,6 +265,8 @@ function($scope,$http,selectSource,userStatus) {
       			swal("出错了...","私信内容不能为空.","error");
       			return;
     	   }
+    	  if(swal_mutex()) 
+    	  	return;
     	  $http({
 		        method  : 'POST',
 		        url     : '/kesci_backend/api/messages/person_to_person',
@@ -292,6 +303,8 @@ function($scope,$http,selectSource,userStatus) {
       			swal("出错了...","邀请信息不能为空.","error");
       			return;
     	   }
+    	   if(swal_mutex()) 
+    	  	return;
     	   $http({
 			        method  : 'POST',
 			        url     : '/kesci_backend/api/teams/invitation',
@@ -325,6 +338,8 @@ $scope.applyTeam=function(team_id,team_name) {
       			swal("出错了...","申请信息不能为空.","error");
       			return;
     	   }
+    	   if(swal_mutex()) 
+    	  	return;
     	   $http({
 			        method  : 'POST',
 			        url     : '/kesci_backend/api/teams/application',
@@ -360,6 +375,8 @@ $scope.sendMsgToTeam=function(team_id,name){
       			swal("出错了...","消息不能为空.","error");
       			return;
     	   }
+    	   if(swal_mutex()) 
+    	  	return;
     	   $http({
 			        method  : 'POST',
 			        url     : '/kesci_backend/api/messages/person_to_team',
@@ -380,7 +397,7 @@ $scope.sendMsgToTeam=function(team_id,name){
 	 
 });
 myAppModule.controller('myteamCtr',
-function($scope,$http,selectSource) {
+function($scope,$http,$window,selectSource) {
 	$scope.selectSource=selectSource;
 	$scope.findCompetitionName=function(id){
 		for(var idx in $scope.selectSource.competitionList){
@@ -398,6 +415,8 @@ function($scope,$http,selectSource) {
 		$scope.tmp_team_skill=[];
 	}
 	$scope.submitTeamCreate=function(){
+	    if(swal_mutex()) 
+    	  	return;
 		$http({
 				method  : 'POST',
 				url     : '/kesci_backend/api/teams/create',
@@ -427,6 +446,8 @@ function($scope,$http,selectSource) {
         showCancelButton: true,   
         closeOnConfirm: false   
       },function(msg){
+        if(swal_mutex()) 
+    	  	return;
         $http({
             method  : 'POST',
             url     : '/kesci_backend/api/teams/decline_invitation',
@@ -435,7 +456,7 @@ function($scope,$http,selectSource) {
           }).success(function(data) {
           if(data.msg&&data.msg.indexOf("success")>-1){
                 swal("成功!", "拒绝邀请成功", "success") ;
-                $scope.loadTeamData();
+                $window.setTimeout($scope.loadTeamData,1000);               
            }
           else{ 
                 swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"拒绝邀请时出错","error");  
@@ -454,7 +475,9 @@ function($scope,$http,selectSource) {
         closeOnConfirm: false,
         html: false
       },function(){
-         $http({
+        if(swal_mutex()) 
+    	  	return;
+        $http({
         method  : 'POST',
         url     : '/kesci_backend/api/teams/agree_invitation',
         data    : "record_id="+record_id,
@@ -462,7 +485,7 @@ function($scope,$http,selectSource) {
       }).success(function(data) {
           if(data.msg&&data.msg.indexOf("success")>-1){
                 swal("成功!", "接受邀请成功", "success") ;
-                $scope.loadTeamData();
+                $window.setTimeout($scope.loadTeamData,1000);     
            }
           else{ 
                 swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"接受邀请时出错","error");  
@@ -486,6 +509,8 @@ function($scope,$http,selectSource) {
             swal("出错了...","消息不能为空.","error");
             return;
          }
+         if(swal_mutex()) 
+    	  	return;
          $http({
               method  : 'POST',
               url     : '/kesci_backend/api/messages/person_to_team',
@@ -494,9 +519,7 @@ function($scope,$http,selectSource) {
             }).success(function(data) {
               console.log(data);  
               if(data.msg&&data.msg.indexOf("success")>-1){
-                swal("成功!", "团队消息已发送", "success") ;
-                $scope.t2pChatData[team_id].push({content:msg,team_id:team_id,direction:0,sendtime:Math.floor((new Date()).valueOf()/1000)});
-                $scope.scrollChat();
+                swal("成功!", "团队消息已发送", "success") ;            
               }
               else{ 
                 swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"团队消息发送时出错","error");  
@@ -553,7 +576,7 @@ function($scope,$http,selectSource,userStatus) {
     type: "warning",
     showCancelButton: true,
     confirmButtonText: "删除",
-    closeOnConfirm: true,
+    closeOnConfirm: false,
     html: false
   }, function(){
      if(type!="edu_exp" && type!="competition_exp" && type!="practice_exp" && type!="other_honor"){
@@ -952,6 +975,7 @@ myAppModule.controller('usercenter_msg',
   		showCancelButton: true,   
   		closeOnConfirm: false
   		}, function(msg){ 
+  		 
   		   if(msg===false){
       			return;
     	   }
@@ -959,6 +983,8 @@ myAppModule.controller('usercenter_msg',
       			swal("出错了...","私信内容不能为空.","error");
       			return;
     	   }
+    	  if(swal_mutex()) 
+    	  	return;
     	  $http({
 		        method  : 'POST',
 		        url     : '/kesci_backend/api/messages/person_to_person',
@@ -997,6 +1023,8 @@ myAppModule.controller('usercenter_msg',
             swal("出错了...","消息内容不能为空.","error");
             return;
          }
+        if(swal_mutex()) 
+    	  	return;
         $http({
             method  : 'POST',
             url     : '/kesci_backend/api/messages/team_to_person',
@@ -1035,6 +1063,8 @@ myAppModule.controller('usercenter_msg',
             swal("出错了...","消息不能为空.","error");
             return;
          }
+         if(swal_mutex()) 
+    	  	return;
          $http({
               method  : 'POST',
               url     : '/kesci_backend/api/messages/person_to_team',
@@ -1076,12 +1106,12 @@ myAppModule.controller('entity_user',
 
   });
 myAppModule.controller('entity_team',
-  function($scope,$http,$routeParams,selectSource,userStatus){
+  function($scope,$http,$routeParams,$window,selectSource,userStatus){
     $scope.userStatus=userStatus;
   	$scope.selectSource=selectSource;  	
     $scope.teamID=$routeParams.id;
     $scope.manageMode=$routeParams.manage==1?true:false;
-
+$scope.loadTeamData=function(){
     $http({
 				method  : 'GET',
 				url     : '/kesci_backend/api/teams/details?team_id='+$scope.teamID			
@@ -1109,7 +1139,8 @@ myAppModule.controller('entity_team',
        
    	 });
     }
-
+  }
+	$scope.loadTeamData();
 	$scope.findCompetitionName=function(id){
 		for(var idx in $scope.selectSource.competitionList){
 			if (id==$scope.selectSource.competitionList[idx]["id"]) {
@@ -1124,8 +1155,17 @@ myAppModule.controller('entity_team',
         text: "请输入拒绝理由 : ",
         type: "input",
         showCancelButton: true,   
-        closeOnConfirm: false   
+        closeOnConfirm: false 
       },function(msg){
+      	if(msg===false){
+            return;
+         }
+         else if(msg==""){
+            swal("出错了...","拒绝理由不能为空.","error");
+            return;
+         }
+      	if(swal_mutex()) 
+    	  	return;
         $http({
             method  : 'POST',
             url     : '/kesci_backend/api/teams/decline_application',
@@ -1135,6 +1175,7 @@ myAppModule.controller('entity_team',
           if(data.msg&&data.msg.indexOf("success")>-1){
                 swal("成功!", "拒绝申请成功", "success") ;
                 $scope.zudui_msg[idx].readtime=1;
+                $window.setTimeout($scope.loadTeamData,1000);
                 
            }
           else{ 
@@ -1151,10 +1192,12 @@ myAppModule.controller('entity_team',
         type: "warning",
         showCancelButton: true,
         confirmButtonText: "接受",
-        closeOnConfirm: false,
+        closeOnConfirm:false,
         html: false
       },function(){
-         $http({
+      	if(swal_mutex()) 
+    	  	return;
+        $http({
         method  : 'POST',
         url     : '/kesci_backend/api/teams/agree_application',
         data    : "record_id="+record_id+"&team_id="+team_id,
@@ -1162,11 +1205,12 @@ myAppModule.controller('entity_team',
       }).success(function(data) {
           if(data.msg&&data.msg.indexOf("success")>-1){
                 swal("成功!", "接受申请成功", "success") ;
-               
+                $scope.zudui_msg[idx].readtime=1;
+                $window.setTimeout($scope.loadTeamData,1000);
            }
           else{ 
                 swal("出错了...",data.error||(data.errors&&data.errors.join(","))||"接受邀请时出错","error");  
-                $scope.zudui_msg[idx].readtime=1;
+               
           }
       });
       });
