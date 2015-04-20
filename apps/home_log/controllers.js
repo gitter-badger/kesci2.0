@@ -185,6 +185,9 @@ function($scope,$http,selectSource,userStatus) {
 		if($scope.currentTab==2){
 			$scope.peopleFormSubmit(true,pageNumber);
 		}
+    else if($scope.currentTab==1){
+      $scope.teamFormSubmit(true,pageNumber);
+    }
 	}
 	$scope.clearResult=function(){
 		$scope.people_result=undefined;
@@ -1570,6 +1573,9 @@ myAppModule.controller('trainingCtr',
 function($scope,$routeParams) {
 	$scope.trainingType=$routeParams.id;
 });
+myAppModule.controller('emc_dataCtr',
+function($scope) {  
+});
 myAppModule.config(['$routeProvider',function ($routeProvider) {
     $routeProvider.when('/news', {
             templateUrl: 'views/news.html',
@@ -1613,6 +1619,9 @@ myAppModule.config(['$routeProvider',function ($routeProvider) {
         }).when('/static/emc', {
             templateUrl: 'views/static/emc.html',
             controller: 'emcCtr'
+        }).when('/static/emc_data', {
+            templateUrl: 'views/static/emc_data.html',
+            controller: 'emc_dataCtr'    
         }).when('/static/emc_qa', {
             templateUrl: 'views/static/emc_qa.html',
             controller: 'emc_qaCtr'

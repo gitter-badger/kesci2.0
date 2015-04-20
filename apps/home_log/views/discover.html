@@ -112,13 +112,13 @@
 		<div class="col-sm-9 content-box-item-detail">              
 		  <table class="table table-striped">                 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">团队签名</td><td>{{item.short_description||"暂无"}}</td>
+		    	<td class="item-table-title" style="width:6em">团队签名</td><td>{{item.short_description||"暂无"}}</td>
 		    </tr> 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">当前成员</td><td><span>{{item.teammate_num}} of {{item.max_num}}</span></td>
+		    	<td class="item-table-title">当前成员</td><td><span>{{item.teammate_num}} of {{item.max_num}}</span></td>
 		    </tr> 
 		    <tr>
-		    	<td class="item-table-title" style="min-width:4em">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
+		    	<td class="item-table-title">成员列表</td><td><span ng-repeat="s in item.team_member">{{s.username}} </span></td>
 		    </tr>  
 		    <tr>                      
 		      <td class="item-table-title">已有技能</td><td><span ng-show="item.skills.length==0">暂无</span><span class="label label-success item-table-listItem" ng-repeat="s in item.skills">{{s}}</span></td>
@@ -153,7 +153,7 @@
 			<div class="col-sm-9 content-box-item-detail"  ng-switch on="item.student_flag">              
 			  <table class="table table-striped" ng-switch-when="0">                 
 			    <tr>
-			    	<td class="item-table-title" style="min-width:4em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+			    	<td class="item-table-title" style="width:6em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
 			    </tr>  
 			    <tr>
 			    	<td class="item-table-title">参赛身份</td>
@@ -177,7 +177,7 @@
 			  </table>  
 			  <table class="table table-striped" ng-switch-when="1">                 
 			    <tr>
-			    	<td class="item-table-title" style="min-width:4em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
+			    	<td class="item-table-title" style="width:6em">个人简介</td><td colspan="3">{{item.brief_intro||"暂无"}}</td>
 			    </tr>  
 			    <tr>
 			    	<td class="item-table-title">参赛身份</td>
