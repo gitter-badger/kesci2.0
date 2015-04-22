@@ -3,6 +3,13 @@
   <li role="presentation" ng-class="{'active':currentTab==1}" ng-click="currentTab=1;clearResult();"><a><span class="glyphicon glyphicon-star" aria-hidden="true"></span> 发现团队</a></li>
   <li role="presentation" ng-class="{'active':currentTab==2}" ng-click="currentTab=2;clearResult();"><a><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> 发现伙伴</a></li>
 </ul>
+<div class="hidden-sm hidden-xs" style="position:absolute;width:30%;left:52%;top:20em;color:#555;line-height:1.8em">	
+		<ul>
+			<li>完善的技能信息和用户资料能够大幅提高你的组队成功率，别人能够通过技能搜索到你，组队申请也更容易得到通过哒！</li><br>
+			<li> 其他成员对你发出的组队申请都在“组队信息“之中 。收到邮件提醒后，别让潜在的队友等请太久哦。</li><br>
+			<li>“发现伙伴”的个人名片上，没有“已有团队”标签的用户，都是没有完成组队的潜在队友。组队的时候不妨主动一些， 通过“发送私信”和“邀请加入”来建立和队友间的合作吧。</li>
+	</ul>
+</div>
 <div class="content-box no_margintop">
 	<!--<div class="discover-form-container" ng-show="currentTab==0">
 			<form ng-submit="devInfo();">
@@ -35,13 +42,7 @@
 	</div>-->
 
 	<div class="text-muted">Tips : <ul><li>使用Ctrl键可以多选/取消选择.</li><li>查找条件可留空, 表示不限.</li></ul></div>
-	<div class="hidden-sm" style="position:absolute;width:30%;left:45em;top:17em;color:#555;">	
-		<ul>
-			<li>完善的技能信息和用户资料能够大幅提高你的组队成功率，别人能够通过技能搜索到你，组队申请也更容易得到通过哒！</li><br>
-			<li> 其他成员对你发出的组队申请都在“组队信息“之中 。收到邮件提醒后，别让潜在的队友等请太久哦。</li><br>
-			<li>“发现伙伴”的个人名片上，没有“已有团队”标签的用户，都是没有完成组队的潜在队友。组队的时候不妨主动一些， 通过“发送私信”和“邀请加入”来建立和队友间的合作吧。</li>
-	</ul>
-	</div>
+	
 		<div class="discover-form-container" ng-show="currentTab==1">
 
 			<form name="discover_team_form" ng-submit="teamFormSubmit();">
