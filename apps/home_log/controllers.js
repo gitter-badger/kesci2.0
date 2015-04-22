@@ -94,6 +94,9 @@ function($scope) {
 
 myAppModule.controller('mineCtr',
 function($scope,$http,userStatus) {
+		window.setTimeout(function(){
+			$("#wechat-link").mouseover(function(){$("#wechat-qr").show();}).mouseleave(function(){$("#wechat-qr").hide();});
+		},1000);
 		$scope.emc_data={is_reg:{},reg_num:{},is_admit:{}};
     	$scope.userStatus=userStatus;
     	$scope.markRead=function(noticeIdx){
